@@ -49,7 +49,7 @@ public class ModeAction extends Mode{
 	public void touchEvent(MotionEvent event) {
 		final int act = event.getAction();
 		Log.d("Mes", act+"");
-		if((act & DOWN) > 0){
+		if((act & DOWN) > 0 || act == 0){
 			player.setTouch(true);
 		}
 		if((act & UP) > 0){

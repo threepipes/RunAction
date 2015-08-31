@@ -92,7 +92,7 @@ public class MainGameView extends SurfaceView
 			bgmPlayer = MediaPlayer.create(context, R.raw.chiptune);
 			try {
 				bgmPlayer.setLooping(true);
-				bgmPlayer.setVolume(0.1f, 0.1f);
+//				bgmPlayer.setVolume(0.1f, 0.1f);
 				bgmPlayer.start();
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
