@@ -8,12 +8,17 @@ import android.graphics.drawable.Drawable;
 
 public abstract class AbstractGameObject {
 	protected Drawable drawableImg;
+	protected ModeAction parent;
 	protected int width, height;
 	protected int x, y;
-	public AbstractGameObject(Context context, int resourceID, int width, int height) {
+	public AbstractGameObject(Context context
+			, ModeAction parent
+			, int resourceID
+			, int width, int height) {
 		if(resourceID > 0) drawableImg = context.getResources().getDrawable(resourceID);
 		this.width = width;
 		this.height = height;
+		this.parent = parent;
 	}
 	
 	public void draw(Canvas c){
@@ -26,6 +31,8 @@ public abstract class AbstractGameObject {
 			c.drawRect(new Rect(x, y, x+width, y+height), paint);
 		}
 	}
+	
+	public abstract void update();
 	
 	public void setXY(int x, int y){
 		this.x = x;
