@@ -25,11 +25,11 @@ public class MainGameView extends SurfaceView
 	implements SurfaceHolder.Callback{
 	GameThread gameThread;
 	
-	public MainGameView(Context context){
+	public MainGameView(Context context, int setting){
 		super(context);
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
-		gameThread = new GameThread(holder, context, new Handler(){
+		gameThread = new GameThread(holder, setting, context, new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
@@ -79,13 +79,15 @@ public class MainGameView extends SurfaceView
 		public int height;
 		
 		boolean shouldContinue = true;
-		public GameThread(SurfaceHolder surfaceHolder, Context context, Handler handler){
+		public GameThread(SurfaceHolder surfaceHolder, int setting, Context context, Handler handler){
 			this.surfaceHolder = surfaceHolder;
 			mode = new ModeAction(context, this);
 			event = null;
 			
-			setBGM(context);
-			loadMusic(context);
+			if((setting & TitleActivity.SET_VOLUME) == 0){
+				setBGM(context);
+				loadMusic(context);
+			}
 		}
 		
 		void setBGM(Context context){
@@ -99,6 +101,15 @@ public class MainGameView extends SurfaceView
 			}
 		}
 		
+		void switchBGM(){
+			if(bgmPlayer == null) return;
+			if(bgmPlayer.isPlaying()){
+				bgmPlayer.pause();
+			}else{
+				bgmPlayer.start();
+			}
+		}
+		
 		SparseIntArray seMap;
 		private void loadMusic(Context context){
 			seMap = new SparseIntArray();
@@ -109,6 +120,7 @@ public class MainGameView extends SurfaceView
 		}
 		
 		public void playSE(int id){
+			if(sePlayer == null) return;
 			sePlayer.play(seMap.get(id), 1.0f, 1.0f, 1, 0, 1.0f);
 //			mp.start();
 			Log.d("Sound", "PlaySE");
@@ -146,9 +158,11 @@ public class MainGameView extends SurfaceView
 		
 		public void destroy(){
 			shouldContinue = false;
-			sePlayer.release();
-			bgmPlayer.stop();
-			bgmPlayer.release();
+			if(bgmPlayer != null){
+				sePlayer.release();
+				bgmPlayer.stop();
+				bgmPlayer.release();
+			}
 		}
 		
 		public void setWindowSize(int width, int height){
