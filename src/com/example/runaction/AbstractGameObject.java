@@ -28,6 +28,7 @@ public abstract class AbstractGameObject {
 		}else{
 			Paint paint = new Paint();
 			paint.setColor(0xFFFFFFFF);
+//			c.drawRect(new Rect(0, 0, 10, 10), paint);
 			c.drawRect(new Rect(x, y, x+width, y+height), paint);
 		}
 	}

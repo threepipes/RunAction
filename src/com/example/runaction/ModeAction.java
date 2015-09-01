@@ -4,14 +4,16 @@ import com.example.runaction.MainGameView.GameThread;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 
 public class ModeAction extends Mode{
 	
 	Player player;
-	static int width;
-	static int height;
+//	static int width;
+//	static int height;
 	private GameThread parent;
 	
 	static final int pSize = 32;
@@ -32,7 +34,10 @@ public class ModeAction extends Mode{
 	
 	@Override
 	public void draw(Canvas c) {
-		c.drawColor(0xFF99AAFF);
+		Paint paint = new Paint();
+		c.drawColor(0xFF000000);
+		paint.setColor(0xFF99AAFF);
+		c.drawRect(new Rect(0, 0, width, height), paint);
 //		c.drawARGB(255, 0, 100, 100);
 		player.draw(c);
 		

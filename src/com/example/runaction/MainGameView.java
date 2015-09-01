@@ -75,8 +75,11 @@ public class MainGameView extends SurfaceView
 		SoundPool sePlayer;
 		MediaPlayer bgmPlayer;
 		
-		public int width;
-		public int height;
+		public static final int width = 540;
+		public static final int height = 960;
+		public float scale;
+		public float translateX;
+		public float translateY;
 		
 		boolean shouldContinue = true;
 		public GameThread(SurfaceHolder surfaceHolder, int setting, Context context, Handler handler){
@@ -165,9 +168,13 @@ public class MainGameView extends SurfaceView
 			}
 		}
 		
-		public void setWindowSize(int width, int height){
-			this.width = width;
-			this.height = height;
+		public void setWindowSize(int w, int h){
+			float scaleX = (float)getWidth() / width;
+			float scaleY = (float)getHeight() /  height;
+			scale = scaleX > scaleY ? scaleY : scaleX;
+			translateX = (getWidth() - width*scale)/2;
+			translateY = (getHeight() - height*scale)/2;
+			Log.d("Window", "scale: "+scale+" , tX: "+translateX+" , tY: "+translateY);
 			mode.setWindowSize(width, height);
 		}
 		
@@ -175,12 +182,15 @@ public class MainGameView extends SurfaceView
 		public void run() {
 			while(shouldContinue){
 				Canvas c = surfaceHolder.lockCanvas();
+				if(c == null) break;
+				c.translate(translateX, translateY); // 画面の中央になるように移動させる
+				c.scale(scale, scale); // 端末の画面に合わせて拡大・縮小する
+				
 				if(event != null){
 					mode.touchEvent(event);
 					event = null;
 				}
 				mode.update();
-				if(c == null) break;
 				mode.draw(c);
 				surfaceHolder.unlockCanvasAndPost(c);
 			}
