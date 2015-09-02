@@ -1,28 +1,12 @@
 package com.example.runaction;
 
-import java.io.IOException;
-
-import com.example.runaction.game.Mode;
-import com.example.runaction.game.ModeAction;
-
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
-import android.media.SoundPool.OnLoadCompleteListener;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 public class MainGameView extends SurfaceView
 	implements SurfaceHolder.Callback{

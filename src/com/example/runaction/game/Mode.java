@@ -4,12 +4,12 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 public abstract class Mode {
-	static int width, height;
+	static int Width, Height;
 	public abstract void update();
 	public abstract void draw(Canvas c);
-	public abstract void touchEvent(MotionEvent event);
+	public abstract void touchEvent(int event);
 	public void setWindowSize(int w, int h){
-		width = w;
-		height = h;
+		Width = w;
+		Height = h;
 	}
 }

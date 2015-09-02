@@ -1,7 +1,7 @@
 package com.example.runaction;
 
+import com.example.runaction.game.GameManager;
 import com.example.runaction.game.Mode;
-import com.example.runaction.game.ModeAction;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -20,7 +20,7 @@ import android.view.SurfaceHolder;
 public 	class GameThread extends Thread{
 	SurfaceHolder surfaceHolder;
 	Mode mode;
-	MotionEvent event;
+	int keyEvent;
 	SoundPool sePlayer;
 	MediaPlayer bgmPlayer;
 	
@@ -33,8 +33,7 @@ public 	class GameThread extends Thread{
 	boolean shouldContinue = true;
 	public GameThread(SurfaceHolder surfaceHolder, int setting, Context context, Handler handler){
 		this.surfaceHolder = surfaceHolder;
-		mode = new ModeAction(context, this);
-		event = null;
+		mode = new GameManager(context, this);
 		
 		if((setting & TitleActivity.SET_VOLUME) == 0){
 			setBGM(context);
@@ -69,6 +68,9 @@ public 	class GameThread extends Thread{
 		
 		int tap = sePlayer.load(context, R.raw.landing, 1);
 		seMap.put(R.raw.landing, tap);
+		
+		int jump = sePlayer.load(context, R.raw.jump, 1);
+		seMap.put(R.raw.jump, jump);
 	}
 	
 	public void playSE(int id){
@@ -105,7 +107,14 @@ public 	class GameThread extends Thread{
 
 	
 	public void setEvent(MotionEvent e){
-		this.event = e;
+		final int act = e.getAction();
+		Log.d("Mes", act+"");
+		if((act & 2) > 0 || act == 0){
+			keyEvent |= GameManager.KEY_PRESSED;
+		}
+		if((act & 1) > 0){
+			keyEvent |= GameManager.KEY_RELEASED;
+		}
 	}
 	
 	public void destroy(){
@@ -132,12 +141,12 @@ public 	class GameThread extends Thread{
 		while(shouldContinue){
 			Canvas c = surfaceHolder.lockCanvas();
 			if(c == null) break;
-			c.translate(translateX, translateY); // 逕ｻ髱｢縺ｮ荳ｭ螟ｮ縺ｫ縺ｪ繧九ｈ縺�縺ｫ遘ｻ蜍輔＆縺帙ｋ
-			c.scale(scale, scale); // 遶ｯ譛ｫ縺ｮ逕ｻ髱｢縺ｫ蜷医ｏ縺帙※諡｡螟ｧ繝ｻ邵ｮ蟆上☆繧�
+			c.translate(translateX, translateY);
+			c.scale(scale, scale);
 			
-			if(event != null){
-				mode.touchEvent(event);
-				event = null;
+			if(keyEvent != 0){
+				mode.touchEvent(keyEvent);
+				keyEvent = 0;
 			}
 			mode.update();
 			mode.draw(c);
