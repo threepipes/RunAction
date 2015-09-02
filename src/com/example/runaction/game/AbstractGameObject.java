@@ -1,4 +1,4 @@
-package com.example.runaction;
+package com.example.runaction.game;
 
 import android.content.Context;
 import android.graphics.Canvas;

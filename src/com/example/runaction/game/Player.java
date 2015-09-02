@@ -1,4 +1,7 @@
-package com.example.runaction;
+package com.example.runaction.game;
+
+import com.example.runaction.R;
+import com.example.runaction.R.raw;
 
 import android.content.Context;
 

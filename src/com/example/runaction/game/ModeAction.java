@@ -1,6 +1,6 @@
-package com.example.runaction;
+package com.example.runaction.game;
 
-import com.example.runaction.MainGameView.GameThread;
+import com.example.runaction.GameThread;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -1,4 +1,4 @@
-package com.example.runaction;
+package com.example.runaction.game;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
