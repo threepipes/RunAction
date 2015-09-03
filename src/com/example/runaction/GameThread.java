@@ -26,6 +26,7 @@ public 	class GameThread extends Thread{
 	float keyX, keyY;
 	SoundPool sePlayer;
 	MediaPlayer bgmPlayer;
+	MainActivity activity;
 	
 	public static final int width = 540;
 	public static final int height = 960;
@@ -35,7 +36,7 @@ public 	class GameThread extends Thread{
 	public float translateY;
 	
 	boolean shouldContinue = true;
-	public GameThread(SurfaceHolder surfaceHolder, int setting, Context context, Handler handler){
+	public GameThread(SurfaceHolder surfaceHolder, int setting, MainActivity context, Handler handler){
 		this.surfaceHolder = surfaceHolder;
 		mode = new GameMode(context, this);
 		
@@ -43,6 +44,7 @@ public 	class GameThread extends Thread{
 			setBGM(context);
 			loadMusic(context);
 		}
+		activity = context;
 	}
 	
 	void setBGM(Context context){
@@ -161,5 +163,7 @@ public 	class GameThread extends Thread{
 		}
 	}
 	
-	
+	public void intentToTitle(){
+		activity.intentToTitle();
+	}
 }

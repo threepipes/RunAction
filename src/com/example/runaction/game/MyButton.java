@@ -25,7 +25,7 @@ public class MyButton {
 		p.setColor(0xFFAABBCC);
 		c.drawRect(rect, p);
 		p.setColor(0xFF110F00);
-		c.drawText(str, rect.left, rect.top, p);
+		c.drawText(str, rect.left, rect.bottom, p);
 	}
 	
 	public boolean touchEvent(int x, int y, int event){

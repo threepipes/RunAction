@@ -13,7 +13,7 @@ public class SubMode extends Mode{
 	
 	@Override
 	public void draw(Canvas c, Paint p) {
-		p.setColor(0x10000000);
+		p.setColor(0x90000000);
 		c.drawRect(GameThread.WindowRect, p);
 		buttonManager.draw(c, p);
 	}

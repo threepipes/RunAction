@@ -11,8 +11,9 @@ import android.view.SurfaceView;
 public class MainGameView extends SurfaceView
 	implements SurfaceHolder.Callback{
 	GameThread gameThread;
+//	MainActivity activity;
 	
-	public MainGameView(Context context, int setting){
+	public MainGameView(MainActivity context, int setting){
 		super(context);
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
@@ -22,7 +23,7 @@ public class MainGameView extends SurfaceView
 				super.handleMessage(msg);
 			}
 		});
-		
+//		activity = context;
 	}
 	
 	@Override
@@ -54,6 +55,5 @@ public class MainGameView extends SurfaceView
 		gameThread.destroy();
 		gameThread = null;
 	}
-	
 
 }

@@ -34,26 +34,38 @@ public class GameMode extends Mode{
     private SubMode activeSubMode;
     // スタート直前の状態
     private SubMode standby;
+    // ゲームオーバー状態(将来的にはSubModeでなくActivityにしたい)
+    private SubMode gameover;
     
     private boolean alive;// 一時変数
     
 	public GameMode(Context context, GameThread thread){
 		this.parent = thread;
+        // pause画面などの一時画面を生成
+        createSubMode();
+        
 		init(context);
 	}
 	
+	private static final int Player_init_x = 60;
+	private static final int Player_init_y = 850;
+	// 将来的には、ここでステージ名をセット
 	public void init(Context context){
 
         // マップを作成
         map = new Map(this);
 
         // プレイヤーを作成
-        player = new Player(60, 800, map, this);
+        player = new Player(Player_init_x, Player_init_y, map, this);
         
         alive = true;
         
-        // pause画面などの一時画面を生成
-        createSubMode();
+	}
+	
+	public void restart(){
+		player.setPoint(Player_init_x, Player_init_y);
+		alive = true;
+		
 	}
 	
 	private void createSubMode(){
@@ -66,6 +78,23 @@ public class GameMode extends Mode{
 			}
 		}));
 		standby = new SubMode(bm);
+		
+		bm = new ButtonManager();
+		bm.put(0, new MyButton(new Rect(170, 500, 370, 550), "RESTART", new ButtonAction() {
+			@Override
+			public void onClickAction() {
+				releaseSubMode = true;
+				restart();
+			}
+		}));
+		bm.put(1, new MyButton(new Rect(170, 600, 370, 650), "TITLE", new ButtonAction() {
+			@Override
+			public void onClickAction() {
+				releaseSubMode = true;
+				returnTitle();
+			}
+		}));
+		gameover = new SubMode(bm);
 		
 		// standby状態でゲーム開始
 		activeSubMode = standby;
@@ -92,7 +121,6 @@ public class GameMode extends Mode{
 	}
 	
 	public void update(){
-		if(!alive) return;
 		
 		if(releaseSubMode){
 			activeSubMode = null;
@@ -101,6 +129,7 @@ public class GameMode extends Mode{
 		if(activeSubMode != null){
 			return;
 		}
+		if(!alive) return;
 		
 		culcOffset();
         
@@ -142,8 +171,12 @@ public class GameMode extends Mode{
 	
 	public static final int EXIT_DEATH = 1;
 	public void exitRequest(int code){
+		activeSubMode = gameover;
 		alive = false;
 		Log.d("GAME", "exit="+code);
 	}
 
+	public void returnTitle(){
+		parent.intentToTitle();
+	}
 }
