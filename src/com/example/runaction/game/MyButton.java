@@ -22,21 +22,32 @@ public class MyButton {
 	
 	public void draw(Canvas c, Paint p){
 		if(!isVisualize) return;
-		p.setColor(0xFFAABBCC);
+		if(!isPushed) p.setColor(0xFFAABBCC);
+		else p.setColor(0xFF778899);
 		c.drawRect(rect, p);
 		p.setColor(0xFF110F00);
 		c.drawText(str, rect.left, rect.bottom, p);
 	}
 	
 	public boolean touchEvent(int x, int y, int event){
-		if(!isVisualize || !rect.contains(x, y)) return false;
-		if(isPushed && (event | GameMode.KEY_RELEASED) > 0){
+		if(!isVisualize || !rect.contains(x, y)){
+			isPushed = false;
+			return false;
+		}
+		if(isPushed && (event & GameMode.KEY_RELEASED) > 0){
 			isPushed = false;
 			action.onClickAction();
 			return true;
 		}
-		if((event | GameMode.KEY_PRESSED) > 0) isPushed = true;
+		if((event | GameMode.KEY_PRESSED) > 0){
+			isPushed = true;
+//			return true;
+		}
 		return false;
+	}
+	
+	public boolean collision(int x, int y){
+		return rect.contains(x, y);
 	}
 	
 	public void setVisualize(boolean vis){

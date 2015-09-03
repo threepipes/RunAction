@@ -36,6 +36,10 @@ public class GameMode extends Mode{
     private SubMode standby;
     // ゲームオーバー状態(将来的にはSubModeでなくActivityにしたい)
     private SubMode gameover;
+    // ポーズ状態
+    private SubMode pause;
+    private MyButton pauseButton; // ポーズ状態へ遷移するためのボタン
+    private boolean skipTouchEvent;
     
     private boolean alive;// 一時変数
     
@@ -79,6 +83,7 @@ public class GameMode extends Mode{
 		}));
 		standby = new SubMode(bm);
 		
+		// gemeover状態
 		bm = new ButtonManager();
 		bm.put(0, new MyButton(new Rect(170, 500, 370, 550), "RESTART", new ButtonAction() {
 			@Override
@@ -95,6 +100,37 @@ public class GameMode extends Mode{
 			}
 		}));
 		gameover = new SubMode(bm);
+		
+		// pause状態
+		bm = new ButtonManager();
+		bm.put(0, new MyButton(new Rect(170, 500, 370, 550), "CONTINUE", new ButtonAction() {
+			@Override
+			public void onClickAction() {
+				releaseSubMode = true;
+			}
+		}));
+		bm.put(1, new MyButton(new Rect(170, 600, 370, 650), "RESTART", new ButtonAction() {
+			@Override
+			public void onClickAction() {
+				releaseSubMode = true;
+				restart();
+			}
+		}));
+		bm.put(2, new MyButton(new Rect(170, 700, 370, 750), "TITLE", new ButtonAction() {
+			@Override
+			public void onClickAction() {
+//				releaseSubMode = true;
+				returnTitle();
+			}
+		}));
+		pause = new SubMode(bm);
+		pauseButton = new MyButton(new Rect(10, 10, 110, 60), "PAUSE", new ButtonAction() {
+			@Override
+			public void onClickAction() {
+				activeSubMode = pause;
+				skipTouchEvent = true;
+			}
+		});
 		
 		// standby状態でゲーム開始
 		activeSubMode = standby;
@@ -149,6 +185,8 @@ public class GameMode extends Mode{
         // プレイヤーを描画
         player.draw(c, p, offsetX, offsetY);
         
+        // ポーズ用ボタン描画
+        pauseButton.draw(c, p);
 
         if(activeSubMode != null){
         	activeSubMode.draw(c, p);
@@ -157,15 +195,26 @@ public class GameMode extends Mode{
 	
 	public static final int KEY_PRESSED = 1;
 	public static final int KEY_RELEASED = 2;
+	private boolean keyPressed;
 	public void touchEvent(int x, int y, int keytype){
 		Log.d("GAME", "Touched ("+x+","+y+"):code="+keytype);
 		
+		// SubModeが有効なら、SubModeに入力の焦点を合わせる
 		if(activeSubMode != null){
 			activeSubMode.touchEvent(x, y, keytype);
 			return;
 		}
+		// ポーズボタンが押されてたらJump入力は受け付けない
+		if(pauseButton.collision(x, y)){
+			pauseButton.touchEvent(x, y, keytype);
+			return;
+		}
 		if((keytype|KEY_PRESSED) > 0){
-			player.jump();
+			if(!keyPressed) player.jump();
+			keyPressed = true;
+		}
+		if((keytype|KEY_RELEASED) > 0){
+			keyPressed = false;
 		}
 	}
 	
