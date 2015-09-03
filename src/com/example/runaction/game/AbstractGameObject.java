@@ -8,11 +8,11 @@ import android.graphics.drawable.Drawable;
 
 public abstract class AbstractGameObject {
 	protected Drawable drawableImg;
-	protected GameManager parent;
+	protected GameMode parent;
 	protected int width, height;
 	protected int x, y;
 	public AbstractGameObject(Context context
-			, GameManager parent
+			, GameMode parent
 			, int resourceID
 			, int width, int height) {
 		if(resourceID > 0) drawableImg = context.getResources().getDrawable(resourceID);

@@ -41,9 +41,9 @@ public class Player extends GameObject{
     private Map map;
     
     // BGMを鳴らすのに必要
-    private GameManager manager;
+    private GameMode manager;
     
-    public Player(double x, double y, Map map, GameManager manager) {
+    public Player(double x, double y, Map map, GameMode manager) {
         this.x = x;
         this.y = y;
         this.map = map;
