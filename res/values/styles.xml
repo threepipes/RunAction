@@ -16,5 +16,12 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="Animation.Activity" parent="android:Animation.Activity">
+		<item name="android:activityOpenEnterAnimation">@anim/act_enter_anim</item>
+		<item name="android:activityOpenExitAnimation">@anim/act_exit_anim</item>
+		<item name="android:activityCloseEnterAnimation">@anim/act_enter_anim</item>
+		<item name="android:activityCloseExitAnimation">@anim/act_exit_anim</item>
+	</style>
 
 </resources>

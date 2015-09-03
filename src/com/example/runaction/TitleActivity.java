@@ -3,17 +3,18 @@ package com.example.runaction;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class TitleActivity extends Activity {
 
-	private int setting_value = 0;
-	public static final int SET_VOLUME = 1;
+	private Setting setting;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setting = Setting.getInstance();
 		setContentView(R.layout.activity_title);
 		Button btn = (Button) findViewById(R.id.button);
 		btn.setOnClickListener(new OnClickListener() {
@@ -21,23 +22,29 @@ public class TitleActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(TitleActivity.this, MainActivity.class);
-				intent.putExtra("settings", setting_value);
+				intent.putExtra("settings", setting.getAllValue());
 				startActivity(intent);
 			}
 		});
+		
 		btn = (Button) findViewById(R.id.button_volume);
+		if(setting.getSettingValue(Setting.SET_VOLUME)) btn.setText(R.string.button_voleme_off);
 		btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				setting_value = (~setting_value)&SET_VOLUME;
 				Button b = (Button) v;
-				if((setting_value & SET_VOLUME) == 0){
-					b.setText("BGM:ON");
+				setting.setSettingValue(Setting.SET_VOLUME
+						, !setting.getSettingValue(Setting.SET_VOLUME));
+				if(!setting.getSettingValue(Setting.SET_VOLUME)){
+					b.setText(R.string.button_volume);
 				}else{
-					b.setText("BGM:OFF");
+					b.setText(R.string.button_voleme_off);
 				}
 			}
 		});
+
+		Log.d("TITLE", "called onCreate");
 	}
+
 }

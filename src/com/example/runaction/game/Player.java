@@ -53,6 +53,14 @@ public class Player extends GameObject{
         this.manager = manager;
     }
     
+    public void setPoint(double x, double y){
+    	this.x = x;
+        this.y = y;
+        vx = SPEED;
+        vy = 0;
+        onGround = false;
+    }
+    
     /**
      * 停止する
      

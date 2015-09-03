@@ -6,6 +6,8 @@ import com.example.runaction.game.Mode;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -21,24 +23,31 @@ public 	class GameThread extends Thread{
 	SurfaceHolder surfaceHolder;
 	Mode mode;
 	int keyEvent;
+	float keyX, keyY;
 	SoundPool sePlayer;
 	MediaPlayer bgmPlayer;
+	MainActivity activity;
 	
 	public static final int width = 540;
 	public static final int height = 960;
+	public static final Rect WindowRect = new Rect(0, 0, width, height);
 	public float scale;
 	public float translateX;
 	public float translateY;
 	
+	private Setting setting;
+	
 	boolean shouldContinue = true;
-	public GameThread(SurfaceHolder surfaceHolder, int setting, Context context, Handler handler){
+	public GameThread(SurfaceHolder surfaceHolder, MainActivity context, Handler handler){
 		this.surfaceHolder = surfaceHolder;
 		mode = new GameMode(context, this);
+		setting = Setting.getInstance();
 		
-		if((setting & TitleActivity.SET_VOLUME) == 0){
+		if(!setting.getSettingValue(Setting.SET_VOLUME)){
 			setBGM(context);
 			loadMusic(context);
 		}
+		activity = context;
 	}
 	
 	void setBGM(Context context){
@@ -115,6 +124,8 @@ public 	class GameThread extends Thread{
 		if((act & 1) > 0){
 			keyEvent |= GameMode.KEY_RELEASED;
 		}
+		keyX = (e.getX()-translateX)/scale;
+		keyY = (e.getY()-translateY)/scale;
 	}
 	
 	public void destroy(){
@@ -138,6 +149,7 @@ public 	class GameThread extends Thread{
 	
 	@Override
 	public void run() {
+		Paint paint = new Paint();
 		while(shouldContinue){
 			Canvas c = surfaceHolder.lockCanvas();
 			if(c == null) break;
@@ -145,14 +157,16 @@ public 	class GameThread extends Thread{
 			c.scale(scale, scale);
 			
 			if(keyEvent != 0){
-				mode.touchEvent(keyEvent);
+				mode.touchEvent((int)keyX, (int)keyY, keyEvent);
 				keyEvent = 0;
 			}
 			mode.update();
-			mode.draw(c);
+			mode.draw(c, paint);
 			surfaceHolder.unlockCanvasAndPost(c);
 		}
 	}
 	
-	
+	public void intentToTitle(){
+		activity.intentToTitle();
+	}
 }

@@ -15,4 +15,11 @@ public class MainActivity extends Activity {
 		MainGameView gview = new MainGameView(this, setting);
 		setContentView(gview);
 	}
+	
+	public void intentToTitle(){
+		Intent intent = new Intent(MainActivity.this, TitleActivity.class);
+//		intent.putExtra("settings", setting_value);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+	}
 }
