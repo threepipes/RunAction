@@ -6,6 +6,7 @@ import com.example.runaction.game.Mode;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -21,6 +22,7 @@ public 	class GameThread extends Thread{
 	SurfaceHolder surfaceHolder;
 	Mode mode;
 	int keyEvent;
+	float keyX, keyY;
 	SoundPool sePlayer;
 	MediaPlayer bgmPlayer;
 	
@@ -115,6 +117,8 @@ public 	class GameThread extends Thread{
 		if((act & 1) > 0){
 			keyEvent |= GameMode.KEY_RELEASED;
 		}
+		keyX = e.getX();
+		keyY = e.getY();
 	}
 	
 	public void destroy(){
@@ -138,6 +142,7 @@ public 	class GameThread extends Thread{
 	
 	@Override
 	public void run() {
+		Paint paint = new Paint();
 		while(shouldContinue){
 			Canvas c = surfaceHolder.lockCanvas();
 			if(c == null) break;
@@ -145,11 +150,11 @@ public 	class GameThread extends Thread{
 			c.scale(scale, scale);
 			
 			if(keyEvent != 0){
-				mode.touchEvent(keyEvent);
+				mode.touchEvent((int)keyX, (int)keyY, keyEvent);
 				keyEvent = 0;
 			}
 			mode.update();
-			mode.draw(c);
+			mode.draw(c, paint);
 			surfaceHolder.unlockCanvasAndPost(c);
 		}
 	}

@@ -75,23 +75,23 @@ public class GameMode extends Mode{
         player.update();
 	}
 	
-	public void draw(Canvas c){
-		Paint paint = new Paint();
+	public void draw(Canvas c, Paint p){
+//		Paint paint = new Paint();
         // 背景を黒で塗りつぶす
 		c.drawColor(0xFF000000);
-        paint.setColor(0xFF111111);
-        c.drawRect(new Rect(0, 0, Width, Height), paint);
+        p.setColor(0xFF111111);
+        c.drawRect(new Rect(0, 0, Width, Height), p);
 
         // マップを描画
-        map.draw(c, paint, offsetX, offsetY);
+        map.draw(c, p, offsetX, offsetY);
 
         // プレイヤーを描画
-        player.draw(c, paint, offsetX, offsetY);
+        player.draw(c, p, offsetX, offsetY);
 	}
 	
 	public static final int KEY_PRESSED = 1;
 	public static final int KEY_RELEASED = 2;
-	public void touchEvent(int keytype){
+	public void touchEvent(int x, int y, int keytype){
 		if((keytype|KEY_PRESSED) > 0){
 			player.jump();
 		}

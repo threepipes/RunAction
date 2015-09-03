@@ -8,10 +8,11 @@ public class MyButton {
 	private Rect rect;
 	private boolean isPushed;
 	private boolean isVisualize;
+	private ButtonAction action;
 	
 	String str;
 	
-	public MyButton(Rect rect, String str) {
+	public MyButton(Rect rect, String str, ButtonAction action) {
 		this.rect = rect;
 		this.str = str;
 		isPushed = false;
@@ -30,6 +31,7 @@ public class MyButton {
 		if(!isVisualize || !rect.contains(x, y)) return false;
 		if(isPushed && (event | GameMode.KEY_RELEASED) > 0){
 			isPushed = false;
+			action.onClickAction();
 			return true;
 		}
 		if((event | GameMode.KEY_PRESSED) > 0) isPushed = true;
@@ -39,4 +41,8 @@ public class MyButton {
 	public void setVisualize(boolean vis){
 		isVisualize = vis;
 	}
+}
+
+interface ButtonAction {
+	public void onClickAction();
 }
