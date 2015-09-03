@@ -29,6 +29,12 @@ public class GameMode extends Mode{
     
     private GameThread parent;
     
+    private boolean releaseSubMode;
+    // 現在有効なSubMode
+    private SubMode activeSubMode;
+    // スタート直前の状態
+    private SubMode standby;
+    
     private boolean alive;// 一時変数
     
 	public GameMode(Context context, GameThread thread){
@@ -45,6 +51,24 @@ public class GameMode extends Mode{
         player = new Player(60, 800, map, this);
         
         alive = true;
+        
+        // pause画面などの一時画面を生成
+        createSubMode();
+	}
+	
+	private void createSubMode(){
+		// standby状態(スタート直前状態)の生成
+		ButtonManager bm = new ButtonManager();
+		bm.put(0, new MyButton(new Rect(170, 600, 370, 650), "START", new ButtonAction() {
+			@Override
+			public void onClickAction() {
+				releaseSubMode = true;
+			}
+		}));
+		standby = new SubMode(bm);
+		
+		// standby状態でゲーム開始
+		activeSubMode = standby;
 	}
 	
 	public void playSE(int id){
@@ -70,6 +94,14 @@ public class GameMode extends Mode{
 	public void update(){
 		if(!alive) return;
 		
+		if(releaseSubMode){
+			activeSubMode = null;
+			releaseSubMode = false;
+		}
+		if(activeSubMode != null){
+			return;
+		}
+		
 		culcOffset();
         
         player.update();
@@ -87,11 +119,22 @@ public class GameMode extends Mode{
 
         // プレイヤーを描画
         player.draw(c, p, offsetX, offsetY);
+        
+
+        if(activeSubMode != null){
+        	activeSubMode.draw(c, p);
+        }
 	}
 	
 	public static final int KEY_PRESSED = 1;
 	public static final int KEY_RELEASED = 2;
 	public void touchEvent(int x, int y, int keytype){
+		Log.d("GAME", "Touched ("+x+","+y+"):code="+keytype);
+		
+		if(activeSubMode != null){
+			activeSubMode.touchEvent(x, y, keytype);
+			return;
+		}
 		if((keytype|KEY_PRESSED) > 0){
 			player.jump();
 		}

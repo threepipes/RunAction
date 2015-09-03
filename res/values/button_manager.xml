@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="button_strings">
+        <item>PAUSE</item>
+        <item>RETURN</item>
+        <item>RESTART</item>
+        <item>TO TITLE</item>
+    </string-array>
+	<integer-array name="button_pause">
+	    <item>0</item>
+	    <item>10</item>
+	    <item>10</item>
+	    <item>128</item>
+	    <item>64</item>
+	</integer-array>
+	<integer-array name="button_return">
+	    <item>1</item>
+	    <item>170</item>
+	    <item>500</item>
+	    <item>200</item>
+	    <item>64</item>
+	</integer-array>
+	<integer-array name="button_restart">
+	    <item>2</item>
+	    <item>170</item>
+	    <item>600</item>
+	    <item>200</item>
+	    <item>64</item>
+	</integer-array>
+	<integer-array name="button_title">
+	    <item>3</item>
+	    <item>170</item>
+	    <item>700</item>
+	    <item>200</item>
+	    <item>64</item>
+	</integer-array>
+</resources>

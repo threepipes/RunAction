@@ -1,9 +1,11 @@
 package com.example.runaction.game;
 
+import com.example.runaction.GameThread;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public abstract class SubMode extends Mode{
+public class SubMode extends Mode{
 	protected ButtonManager buttonManager;
 	public SubMode(ButtonManager bm) {
 		buttonManager = bm;
@@ -11,7 +13,14 @@ public abstract class SubMode extends Mode{
 	
 	@Override
 	public void draw(Canvas c, Paint p) {
+		p.setColor(0x10000000);
+		c.drawRect(GameThread.WindowRect, p);
 		buttonManager.draw(c, p);
+	}
+	
+	@Override
+	public void update() {
+		
 	}
 	
 	@Override

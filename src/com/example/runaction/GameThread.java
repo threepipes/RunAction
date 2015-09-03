@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -28,6 +29,7 @@ public 	class GameThread extends Thread{
 	
 	public static final int width = 540;
 	public static final int height = 960;
+	public static final Rect WindowRect = new Rect(0, 0, width, height);
 	public float scale;
 	public float translateX;
 	public float translateY;
@@ -117,8 +119,8 @@ public 	class GameThread extends Thread{
 		if((act & 1) > 0){
 			keyEvent |= GameMode.KEY_RELEASED;
 		}
-		keyX = e.getX();
-		keyY = e.getY();
+		keyX = (e.getX()-translateX)/scale;
+		keyY = (e.getY()-translateY)/scale;
 	}
 	
 	public void destroy(){

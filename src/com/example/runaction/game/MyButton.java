@@ -17,6 +17,7 @@ public class MyButton {
 		this.str = str;
 		isPushed = false;
 		isVisualize = true;
+		this.action = action;
 	}
 	
 	public void draw(Canvas c, Paint p){
