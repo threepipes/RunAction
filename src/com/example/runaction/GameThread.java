@@ -1,6 +1,6 @@
 package com.example.runaction;
 
-import com.example.runaction.game.GameManager;
+import com.example.runaction.game.GameMode;
 import com.example.runaction.game.Mode;
 
 import android.annotation.TargetApi;
@@ -33,7 +33,7 @@ public 	class GameThread extends Thread{
 	boolean shouldContinue = true;
 	public GameThread(SurfaceHolder surfaceHolder, int setting, Context context, Handler handler){
 		this.surfaceHolder = surfaceHolder;
-		mode = new GameManager(context, this);
+		mode = new GameMode(context, this);
 		
 		if((setting & TitleActivity.SET_VOLUME) == 0){
 			setBGM(context);
@@ -110,10 +110,10 @@ public 	class GameThread extends Thread{
 		final int act = e.getAction();
 		Log.d("Mes", act+"");
 		if((act & 2) > 0 || act == 0){
-			keyEvent |= GameManager.KEY_PRESSED;
+			keyEvent |= GameMode.KEY_PRESSED;
 		}
 		if((act & 1) > 0){
-			keyEvent |= GameManager.KEY_RELEASED;
+			keyEvent |= GameMode.KEY_RELEASED;
 		}
 	}
 	

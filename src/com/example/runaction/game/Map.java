@@ -62,9 +62,9 @@ public class Map {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1}
     };
     
-    private GameManager manager;
+    private GameMode manager;
 
-    public Map(GameManager manager) {
+    public Map(GameMode manager) {
     	this.manager = manager;
     }
 
@@ -78,12 +78,12 @@ public class Map {
     public void draw(Canvas c, Paint p, int offsetX, int offsetY) {
         // オフセットを元に描画範囲を求める
         int firstTileX = pixelsToTiles(-offsetX);
-        int lastTileX = firstTileX + pixelsToTiles(GameManager.Width) + 1;
+        int lastTileX = firstTileX + pixelsToTiles(GameMode.Width) + 1;
         // 描画範囲がマップの大きさより大きくならないように調整
         lastTileX = Math.min(lastTileX, COL);
 
         int firstTileY = pixelsToTiles(-offsetY);
-        int lastTileY = firstTileY + pixelsToTiles(GameManager.Height) + 1;
+        int lastTileY = firstTileY + pixelsToTiles(GameMode.Height) + 1;
         // 描画範囲がマップの大きさより大きくならないように調整
         lastTileY = Math.min(lastTileY, ROW);
 
@@ -136,7 +136,7 @@ public class Map {
                 	//穴に落ちたらゲームオーバー
 //                	System.exit(0);
                     //return new Point(x, y);
-                	manager.exitRequest(GameManager.EXIT_DEATH);
+                	manager.exitRequest(GameMode.EXIT_DEATH);
                 	return null;
                 }
                 // ブロックがあったら衝突
@@ -168,6 +168,6 @@ public class Map {
     }
     
     public void exitRequest(){
-    	manager.exitRequest(GameManager.EXIT_DEATH);
+    	manager.exitRequest(GameMode.EXIT_DEATH);
     }
 }

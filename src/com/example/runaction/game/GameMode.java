@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
-public class GameManager extends Mode{
+public class GameMode extends Mode{
     // パネルサイズ
 //    public static final int Width = 540;
 //    public static final int Height = 960;
@@ -31,7 +31,7 @@ public class GameManager extends Mode{
     
     private boolean alive;// 一時変数
     
-	public GameManager(Context context, GameThread thread){
+	public GameMode(Context context, GameThread thread){
 		this.parent = thread;
 		init(context);
 	}
