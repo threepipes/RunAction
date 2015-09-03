@@ -90,7 +90,7 @@ public class GameMode extends Mode{
 		bm.put(1, new MyButton(new Rect(170, 600, 370, 650), "TITLE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
-				releaseSubMode = true;
+//				releaseSubMode = true;
 				returnTitle();
 			}
 		}));

@@ -17,7 +17,7 @@ public class MainGameView extends SurfaceView
 		super(context);
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
-		gameThread = new GameThread(holder, setting, context, new Handler(){
+		gameThread = new GameThread(holder, context, new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);

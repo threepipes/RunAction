@@ -35,12 +35,15 @@ public 	class GameThread extends Thread{
 	public float translateX;
 	public float translateY;
 	
+	private Setting setting;
+	
 	boolean shouldContinue = true;
-	public GameThread(SurfaceHolder surfaceHolder, int setting, MainActivity context, Handler handler){
+	public GameThread(SurfaceHolder surfaceHolder, MainActivity context, Handler handler){
 		this.surfaceHolder = surfaceHolder;
 		mode = new GameMode(context, this);
+		setting = Setting.getInstance();
 		
-		if((setting & TitleActivity.SET_VOLUME) == 0){
+		if(!setting.getSettingValue(Setting.SET_VOLUME)){
 			setBGM(context);
 			loadMusic(context);
 		}
