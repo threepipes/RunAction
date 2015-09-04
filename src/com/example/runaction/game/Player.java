@@ -49,7 +49,7 @@ public class Player extends GameObject{
     // GoalするためのX座標   これを超えたらゴールとする
     // マップ自体に設定するのが望ましい
     // ゴール周辺は平らな地形にするように(激突してもゴールみたいなことを防ぐ)
-    private int goalX = (30 - 5) * Map.TILE_SIZE;
+    private int goalX = (30 - 2) * Map.TILE_SIZE - 10;
     
     public Player(double x, double y, Map map, GameMode manager) {
         this.x = x;

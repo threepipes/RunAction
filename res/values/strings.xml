@@ -11,5 +11,6 @@
     <string name="title_name">走って跳んでゴールに行き着くゲーム(仮)</string>
     <string name="goal_string1">Congratulations!</string>
     <string name="goal_string2">ゲームクリアおめでとう</string>
+    <string name="to_title">タイトルに戻る</string>
 
 </resources>
