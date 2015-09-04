@@ -41,7 +41,7 @@ public class GameMode extends Mode{
     private MyButton pauseButton; // ポーズ状態へ遷移するためのボタン
     private boolean skipTouchEvent;
     
-    private boolean alive;// 一時変数
+    private boolean alive;// 一時変数(aliveではなくskipUpdateなどに変更すべき)
     
 	public GameMode(Context context, GameThread thread){
 		this.parent = thread;
@@ -170,6 +170,10 @@ public class GameMode extends Mode{
 		culcOffset();
         
         player.update();
+        if(player.checkGoal()){
+        	alive = false;
+        	gameClear();
+        }
 	}
 	
 	public void draw(Canvas c, Paint p){
@@ -223,6 +227,10 @@ public class GameMode extends Mode{
 		activeSubMode = gameover;
 		alive = false;
 		Log.d("GAME", "exit="+code);
+	}
+	
+	public void gameClear(){
+		parent.intentToGoal();
 	}
 
 	public void returnTitle(){

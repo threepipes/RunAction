@@ -4,25 +4,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:gravity="bottom|center" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/goal_string1" />
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="6"
-        android:text="@string/title_name" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="@string/button_start" />
-
-    <Button
-        android:id="@+id/button_volume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="@string/button_volume" />
+        android:text="@string/goal_string2" />
 
 </LinearLayout>

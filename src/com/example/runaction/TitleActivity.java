@@ -23,6 +23,7 @@ public class TitleActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(TitleActivity.this, MainActivity.class);
 				intent.putExtra("settings", setting.getAllValue());
+				intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				startActivity(intent);
 			}
 		});

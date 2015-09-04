@@ -43,22 +43,34 @@ public class Player extends GameObject{
     // BGMを鳴らすのに必要
     private GameMode manager;
     
+    // Goalかどうかのチェックに必要
+    // Goalしたらupdateでこれをtrueにすることで、ゲームクリアとなる
+    private boolean goal;
+    // GoalするためのX座標   これを超えたらゴールとする
+    // マップ自体に設定するのが望ましい
+    // ゴール周辺は平らな地形にするように(激突してもゴールみたいなことを防ぐ)
+    private int goalX = (30 - 5) * Map.TILE_SIZE;
+    
     public Player(double x, double y, Map map, GameMode manager) {
         this.x = x;
         this.y = y;
+        initState();
         this.map = map;
+        this.manager = manager;
+    }
+    
+    // player状態のリセット
+    private void initState(){
         vx = SPEED;
         vy = 0;
         onGround = false;
-        this.manager = manager;
+        goal = false;
     }
     
     public void setPoint(double x, double y){
     	this.x = x;
         this.y = y;
-        vx = SPEED;
-        vy = 0;
-        onGround = false;
+        initState();
     }
     
     /**
@@ -157,6 +169,14 @@ public class Player extends GameObject{
                 vy = 0;
             }
         }
+        
+        
+        // Goal判定
+        if(x >= goalX) goal = true;
+    }
+    
+    public boolean checkGoal(){
+    	return goal;
     }
 
     /**

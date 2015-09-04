@@ -7,5 +7,9 @@
     <string name="title_activity_title">TitleActivity</string>
     <string name="button_volume">BGM:ON</string>
     <string name="button_voleme_off">BGM:OFF</string>
+    <string name="title_activity_goal">GoalActivity</string>
+    <string name="title_name">走って跳んでゴールに行き着くゲーム(仮)</string>
+    <string name="goal_string1">Congratulations!</string>
+    <string name="goal_string2">ゲームクリアおめでとう</string>
 
 </resources>

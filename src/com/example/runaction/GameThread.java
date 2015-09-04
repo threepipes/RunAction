@@ -169,4 +169,8 @@ public 	class GameThread extends Thread{
 	public void intentToTitle(){
 		activity.intentToTitle();
 	}
+	
+	public void intentToGoal(){
+		activity.intentToGoal();
+	}
 }

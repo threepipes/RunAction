@@ -22,4 +22,10 @@ public class MainActivity extends Activity {
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
+	
+	public void intentToGoal(){
+		Intent intent = new Intent(MainActivity.this, GoalActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		startActivity(intent);
+	}
 }

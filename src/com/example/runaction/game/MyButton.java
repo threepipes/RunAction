@@ -34,14 +34,15 @@ public class MyButton {
 			isPushed = false;
 			return false;
 		}
+
+		if((event | GameMode.KEY_PRESSED) > 0){
+			isPushed = true;
+//			return true;
+		}
 		if(isPushed && (event & GameMode.KEY_RELEASED) > 0){
 			isPushed = false;
 			action.onClickAction();
 			return true;
-		}
-		if((event | GameMode.KEY_PRESSED) > 0){
-			isPushed = true;
-//			return true;
 		}
 		return false;
 	}
