@@ -9,23 +9,13 @@ import android.graphics.Rect;
 import android.util.Log;
 
 public class GameMode extends Mode{
-    // パネルサイズ
-//    public static final int Width = 540;
-//    public static final int Height = 960;
-
     // マップ
     private Map map;
-
     // プレイヤー
     private Player player;
-    
+    // マップのオフセット
     private int offsetX;
     private int offsetY;
-
-    // キーの状態（押されているか、押されてないか）
-//    private boolean leftPressed;
-//    private boolean rightPressed;
-//    private boolean upPressed;
     
     private GameThread parent;
     
@@ -39,9 +29,10 @@ public class GameMode extends Mode{
     // ポーズ状態
     private SubMode pause;
     private MyButton pauseButton; // ポーズ状態へ遷移するためのボタン
-    private boolean skipTouchEvent;
     
-    private boolean alive;// 一時変数(aliveではなくskipUpdateなどに変更すべき)
+    // updateを有効にするか
+    // これがfalseのとき、ゲームは停止状態になる
+    private boolean validateUpdate;
     
 	public GameMode(Context context, GameThread thread){
 		this.parent = thread;
@@ -62,13 +53,14 @@ public class GameMode extends Mode{
         // プレイヤーを作成
         player = new Player(Player_init_x, Player_init_y, map, this);
         
-        alive = true;
+        validateUpdate = true;
         
 	}
 	
 	public void restart(){
+		map.resetStage();
 		player.setPoint(Player_init_x, Player_init_y);
-		alive = true;
+		validateUpdate = true;
 		
 	}
 	
@@ -95,7 +87,6 @@ public class GameMode extends Mode{
 		bm.put(1, new MyButton(new Rect(170, 600, 370, 650), "TITLE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
-//				releaseSubMode = true;
 				returnTitle();
 			}
 		}));
@@ -119,7 +110,6 @@ public class GameMode extends Mode{
 		bm.put(2, new MyButton(new Rect(170, 700, 370, 750), "TITLE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
-//				releaseSubMode = true;
 				returnTitle();
 			}
 		}));
@@ -128,7 +118,6 @@ public class GameMode extends Mode{
 			@Override
 			public void onClickAction() {
 				activeSubMode = pause;
-				skipTouchEvent = true;
 			}
 		});
 		
@@ -165,19 +154,18 @@ public class GameMode extends Mode{
 		if(activeSubMode != null){
 			return;
 		}
-		if(!alive) return;
+		if(!validateUpdate) return;
 		
 		culcOffset();
         
         player.update();
         if(player.checkGoal()){
-        	alive = false;
+        	validateUpdate = false;
         	gameClear();
         }
 	}
 	
 	public void draw(Canvas c, Paint p){
-//		Paint paint = new Paint();
         // 背景を黒で塗りつぶす
 		c.drawColor(0xFF000000);
         p.setColor(0xFF111111);
@@ -225,7 +213,7 @@ public class GameMode extends Mode{
 	public static final int EXIT_DEATH = 1;
 	public void exitRequest(int code){
 		activeSubMode = gameover;
-		alive = false;
+		validateUpdate = false;
 		Log.d("GAME", "exit="+code);
 	}
 	

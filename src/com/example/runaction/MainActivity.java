@@ -18,7 +18,6 @@ public class MainActivity extends Activity {
 	
 	public void intentToTitle(){
 		Intent intent = new Intent(MainActivity.this, TitleActivity.class);
-//		intent.putExtra("settings", setting_value);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}

@@ -58,6 +58,10 @@ public class Map {
     public Map(GameMode manager) {
     	this.manager = manager;
     }
+    
+    public void resetStage(){
+    	// 敵などの動くオブジェクトがある場合初期状態に戻す（マップのリセット）
+    }
 
     /**
      * マップを描画する

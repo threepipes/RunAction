@@ -125,7 +125,6 @@ public class Player extends GameObject{
             x = newX;
         } else {
             // 衝突するタイルがある場合
-//        	System.exit(0);
         	map.exitRequest();
             /*if (vx > 0) { // 右へ移動中なので右のブロックと衝突
                 // ブロックにめりこむ or 隙間がないように位置調整
@@ -141,8 +140,6 @@ public class Player extends GameObject{
         // 移動先座標を求める
         double newY = y + vy;
         //穴に落ちたらゲームオーバー
-        //if (newY >= 609)System.exit(0);
-        //System.out.println(newY);
         // 移動先座標で衝突するタイルの位置を取得
         // y方向だけ考えるのでx座標は変化しないと仮定
         tile = map.getTileCollision(this, x, newY);
@@ -169,7 +166,6 @@ public class Player extends GameObject{
                 vy = 0;
             }
         }
-        
         
         // Goal判定
         if(x >= goalX) goal = true;
