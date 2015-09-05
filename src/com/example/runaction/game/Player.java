@@ -1,5 +1,6 @@
 package com.example.runaction.game;
 
+import com.example.runaction.ImageManager;
 import com.example.runaction.R;
 
 import android.graphics.Canvas;
@@ -54,14 +55,19 @@ public class Player extends GameObject{
     private int goalX = (30 - 2) * Map.TILE_SIZE - 10;
     // キャラクタのアニメーションを実現するためのインスタンス
     private Animation animation;
+    // playerがアクションを変えた場合に設定し、update内でアニメーションを切り替える
+    private int actionChange;
+    private final static int ACTION_NO_CHANGE = -1;
+    private final static int ACTION_RUN = 0;
+    private final static int ACTION_JUMP = 1;
     
     public Player(double x, double y, Map map, GameMode manager) {
         this.x = x;
         this.y = y;
-        initState();
         this.map = map;
         this.manager = manager;
         initAnimation();
+        initState();
     }
     
     // player状態のリセット
@@ -70,6 +76,8 @@ public class Player extends GameObject{
         vy = 0;
         onGround = false;
         goal = false;
+        animation.setAnim(ANIM_JUMP);
+        actionChange = ACTION_NO_CHANGE;
     }
     
     public void setPoint(double x, double y){
@@ -81,8 +89,8 @@ public class Player extends GameObject{
     // ---------- animationの仮データ ----------
     // 以下の通りセル座標で指定する
     private final static int[][][] animationData = {
-    		{{0, 0, 1},{1, 0, 1},{2, 0, 1},{3, 0, 1},{Animation.FLAG_LOOP, 0}},// 走る
-    		{{1, 0, Animation.FRAME_LOOP}},// ジャンプ
+    		{{0, 2, 5},{1, 2, 5},{0, 2, 5},{1, 2, 5},{Animation.FLAG_LOOP, 0}},// 走る
+    		{{0, 2, Animation.FRAME_LOOP}},// ジャンプ
     };
     private final static int ANIM_RUN = 0;
     private final static int ANIM_JUMP = 1;
@@ -146,6 +154,7 @@ public class Player extends GameObject{
             onGround = false;
             // Jump効果音
             manager.playSE(R.raw.jump);
+            actionChange = ACTION_JUMP;
         }
     }
     
@@ -197,6 +206,7 @@ public class Player extends GameObject{
                 y = Map.tilesToPixels(tile.y) - HEIGHT;
                 // 着地したのでy方向速度を0に
                 vy = 0;
+                if(!onGround) actionChange = ACTION_RUN;
                 // 着地
                 onGround = true;
                 // 着地のSE
@@ -208,6 +218,14 @@ public class Player extends GameObject{
                 vy = 0;
             }
         }
+        
+        // アニメーション設定
+        if(actionChange != ACTION_NO_CHANGE){
+        	if(actionChange == ACTION_RUN) animation.setAnim(ANIM_RUN);
+        	else if(actionChange == ACTION_JUMP) animation.setAnim(ANIM_JUMP);
+        	actionChange = ACTION_NO_CHANGE;
+        }
+        animation.update();
         
         // Goal判定
         if(x >= goalX) goal = true;
@@ -228,7 +246,9 @@ public class Player extends GameObject{
         p.setColor(0xFFFF0000);
         final int dx = (int) x + offsetX;
         final int dy = (int) y + offsetY;
-        c.drawRect(new Rect(dx, dy, dx+WIDTH, dy+HEIGHT), p);
+        ImageManager.getInstance().drawBitmap(c, p, R.drawable.player
+        		, animation.getRect(), new Rect(dx, dy, dx+WIDTH, dy+HEIGHT));
+//        c.drawRect(new Rect(dx, dy, dx+WIDTH, dy+HEIGHT), p);
     }
 
     /**

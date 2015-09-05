@@ -12,6 +12,8 @@ public class Animation {
 	public static final int SIZE_Y = 32;
     // 現在のアニメーションにおいて何フレーム目か
     private int animFrame;
+    // アニメーションの時系列番号
+    private int animNumber;
     // 画像上で、表示する位置
     private int animX;
     private int animY;
@@ -29,6 +31,8 @@ public class Animation {
     	// 初期設定アニメーション
     	animation = initAnim;
     	defaultAnimation = initAnim;
+    	animX = animation[0].x*SIZE_X;
+    	animY = animation[0].y*SIZE_Y;
     }
     
     // アニメーションIDのセット
@@ -37,6 +41,7 @@ public class Animation {
     	animation = animMap.get(key, null);
     	if(animation == null) animation = defaultAnimation;
     	animFrame = 0;
+    	animNumber = 0;
     }
     
     public static final int FRAME_LOOP = 0;
@@ -46,31 +51,40 @@ public class Animation {
     public void update(){
     	// 終端はかならず(フラグ, 位置)で指定すること (無限ループの場合を除く)
     	checkAnimationException();
-    	final AnimData data = animation[animFrame];
+    	AnimData data = animation[animNumber];
     	if(data.flag != FLAG_NONE){
     		if(data.flag == FLAG_LOOP){
-    			animFrame = data.frame;
+    			animNumber = data.frame;
+    			animFrame = 0;
+    			data = animation[animNumber];
     		}
     		animX = data.x*SIZE_X;
     		animY = data.y*SIZE_X;
     		return;
     	}
     	if(data.frame == FRAME_LOOP){
+    		animX = data.x*SIZE_X;
+    		animY = data.y*SIZE_Y;
     		// 無限ループ
     		return;
     	}
     	animX = data.x*SIZE_X;
     	animY = data.y*SIZE_Y;
-    	animFrame++;
+    	if(++animFrame >= data.frame){
+    		animNumber++;
+    		animFrame = 0;
+    	}
     }
     
     private void checkAnimationException(){
     	if(animation == null){
     		Log.e("ANIM", "Animation: animation data is null!");
     		animation = defaultAnimation;
+    		animNumber = 0;
     		animFrame = 0;
-    	}else if(animFrame >= animation.length){
+    	}else if(animNumber >= animation.length){
     		Log.e("ANIM", "Animation: frame index is out of range!");
+    		animNumber = 0;
     		animFrame = 0;
     	}
     }
@@ -81,7 +95,7 @@ public class Animation {
     	rect.left = animX;
     	rect.top = animY;
     	rect.right = animX + SIZE_X;
-    	rect.left = animY + SIZE_Y;
+    	rect.bottom = animY + SIZE_Y;
     	return rect;
     }
     

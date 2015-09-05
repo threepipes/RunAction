@@ -24,7 +24,7 @@ public class ImageManager {
 	// 画像をロードする前に必ずセットしておく必要がある
 	private Resources res;
 	// Bitmap保持
-	private SparseArray<Bitmap> bitmaps;
+	private SparseArray<Bitmap> bitmaps = new SparseArray<Bitmap>();
 	
 	public void setResources(Resources r){
 		res = r;
@@ -43,6 +43,6 @@ public class ImageManager {
 			c.drawRect(drawRange, p);
 			return;
 		}
-		c.drawBitmap(bitmap, drawableRange, drawRange, p);
+		c.drawBitmap(bitmap, drawableRange, drawRange, null);
 	}
 }
