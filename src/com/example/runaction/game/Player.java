@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
+import android.util.SparseArray;
 
 /*
  * Created on 2005/06/06
@@ -50,6 +52,8 @@ public class Player extends GameObject{
     // マップ自体に設定するのが望ましい
     // ゴール周辺は平らな地形にするように(激突してもゴールみたいなことを防ぐ)
     private int goalX = (30 - 2) * Map.TILE_SIZE - 10;
+    // キャラクタのアニメーションを実現するためのインスタンス
+    private Animation animation;
     
     public Player(double x, double y, Map map, GameMode manager) {
         this.x = x;
@@ -57,6 +61,7 @@ public class Player extends GameObject{
         initState();
         this.map = map;
         this.manager = manager;
+        initAnimation();
     }
     
     // player状態のリセット
@@ -71,6 +76,43 @@ public class Player extends GameObject{
     	this.x = x;
         this.y = y;
         initState();
+    }
+    
+    // ---------- animationの仮データ ----------
+    // 以下の通りセル座標で指定する
+    private final static int[][][] animationData = {
+    		{{0, 0, 1},{1, 0, 1},{2, 0, 1},{3, 0, 1},{Animation.FLAG_LOOP, 0}},// 走る
+    		{{1, 0, Animation.FRAME_LOOP}},// ジャンプ
+    };
+    private final static int ANIM_RUN = 0;
+    private final static int ANIM_JUMP = 1;
+    // ---------- 仮データここまで ----------
+    
+    private void initAnimation(){
+    	// 将来的には別ファイルでアニメーションデータ(座標配列など)を管理し、ここでは読み込みを行う
+    	SparseArray<AnimData[]> anim = new SparseArray<AnimData[]>();
+    	AnimData[] defaultData = null;
+    	for(int i=0; i<animationData.length; i++){
+    		AnimData[] data = new AnimData[animationData[i].length];
+    		for(int j=0; j<data.length; j++){
+    			if(animationData[i][j][0] >= 0){
+    				final int ax = animationData[i][j][0];
+    				final int ay = animationData[i][j][1];
+    				final int frame = animationData[i][j][2];
+    				data[j] = new AnimData(ax, ay, frame, Animation.FLAG_NONE);
+    			}else{
+    				final int flag = animationData[i][j][0];
+    				final int frame = animationData[i][j][1];
+    				data[j] = new AnimData(0, 0, frame, flag);
+    			}
+    		}
+    		if(i == 0) defaultData = data;
+    		anim.append(i, data);
+    	}
+    	if(defaultData == null){
+    		Log.e("ANIM_SET", "No animation data found");
+    	}
+    	animation = new Animation(anim, defaultData);
     }
     
     /**
