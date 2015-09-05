@@ -90,8 +90,8 @@ public class Player extends GameObject{
     // ---------- animationの仮データ ----------
     // 以下の通りセル座標で指定する
     private final static int[][][] animationData = {
-    		{{0, 2, 5},{1, 2, 5},{0, 2, 5},{1, 2, 5},{Animation.FLAG_LOOP, 0}},// 走る
-    		{{0, 2, Animation.FRAME_LOOP}},// ジャンプ
+    		{{0, 0, 5},{1, 0, 5},{2, 0, 5},{3, 0, 5},{Animation.FLAG_LOOP, 0}},// 走る
+    		{{0, 1, Animation.FRAME_LOOP}},// ジャンプ
     };
     private final static int ANIM_RUN = 0;
     private final static int ANIM_JUMP = 1;
