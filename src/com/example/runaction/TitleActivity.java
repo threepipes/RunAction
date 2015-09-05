@@ -14,6 +14,7 @@ public class TitleActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ImageManager.getInstance().setResources(getResources());
 		setting = Setting.getInstance();
 		setContentView(R.layout.activity_title);
 		Button btn = (Button) findViewById(R.id.button);
