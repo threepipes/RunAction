@@ -9,6 +9,7 @@ public class GameObject {
     private double x;
     private double y;
     
+    
     GameObject(){
     	
     }
