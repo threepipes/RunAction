@@ -44,15 +44,19 @@ public class Animation {
     	animNumber = 0;
     }
     
+    // 指定画像表示時間を無限大にする場合のフレーム値
     public static final int FRAME_LOOP = 0;
+    // フラグが何もない
     public static final int FLAG_NONE = 0;
     // 有効なフラグは必ず負の値にすること
+    // 指定画像に戻るフラグ(基本)
     public static final int FLAG_LOOP = -1;
     public void update(){
     	// 終端はかならず(フラグ, 位置)で指定すること (無限ループの場合を除く)
     	checkAnimationException();
     	AnimData data = animation[animNumber];
     	if(data.flag != FLAG_NONE){
+    		// アニメーションを指定のものに戻す
     		if(data.flag == FLAG_LOOP){
     			animNumber = data.frame;
     			animFrame = 0;
@@ -63,9 +67,9 @@ public class Animation {
     		return;
     	}
     	if(data.frame == FRAME_LOOP){
+    		// その画像を無限時間表示
     		animX = data.x*SIZE_X;
     		animY = data.y*SIZE_Y;
-    		// 無限ループ
     		return;
     	}
     	animX = data.x*SIZE_X;
@@ -91,7 +95,7 @@ public class Animation {
     
     private Rect rect = new Rect();
     public Rect getRect(){
-    	// 画像内の(x, y, x+size, y+size)で囲まれた領域を返す
+    	// 画像リソース内の表示部分を返す
     	rect.left = animX;
     	rect.top = animY;
     	rect.right = animX + SIZE_X;
