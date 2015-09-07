@@ -102,8 +102,6 @@ public class Animation {
     	rect.bottom = animY + SIZE_Y;
     	return rect;
     }
-    
- 
 }
 
 class AnimData{

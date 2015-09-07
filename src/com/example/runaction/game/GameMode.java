@@ -90,7 +90,7 @@ public class GameMode extends Mode{
 				returnTitle();
 			}
 		}));
-		gameover = new SubMode(bm);
+		gameover = new GameOverSubMode(bm);
 
 		// pause状態
 		bm = new ButtonManager();
@@ -117,12 +117,17 @@ public class GameMode extends Mode{
 		pauseButton = new MyButton(new Rect(10, 10, 110, 60), "PAUSE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
-				activeSubMode = pause;
+				changeActiveSubMode(pause);
 			}
 		});
 
 		// standby状態でゲーム開始
-		activeSubMode = standby;
+		changeActiveSubMode(standby);
+	}
+	
+	private void changeActiveSubMode(SubMode mode){
+		activeSubMode = mode;
+		activeSubMode.init();
 	}
 
 	public void playSE(int id){
@@ -152,6 +157,7 @@ public class GameMode extends Mode{
 			releaseSubMode = false;
 		}
 		if(activeSubMode != null){
+			activeSubMode.update();
 			return;
 		}
 		if(!validateUpdate) return;
@@ -212,7 +218,7 @@ public class GameMode extends Mode{
 
 	public static final int EXIT_DEATH = 1;
 	public void exitRequest(int code){
-		activeSubMode = gameover;
+		changeActiveSubMode(gameover);
 		validateUpdate = false;
 		Log.d("GAME", "exit="+code);
 	}

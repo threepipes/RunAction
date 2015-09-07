@@ -11,6 +11,10 @@ public class SubMode extends Mode{
 		buttonManager = bm;
 	}
 	
+	public void init(){
+		// SubModeの呼び出し時に最初に呼ばれる
+	}
+	
 	@Override
 	public void draw(Canvas c, Paint p) {
 		p.setColor(0x90000000);
