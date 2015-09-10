@@ -9,7 +9,7 @@ public class GameOverSubMode extends SubMode{
 	// 背景の暗さを調整するため
 	private int alpha;
 	// ブラックアウトにかける時間(Frame)
-	private static final int BLACKOUT_TIME = 30;
+	private static final int BLACKOUT_TIME = 8;
 	private static final int ADD_ALPHA = 0xFF / BLACKOUT_TIME;
 	// 完全にブラックアウトした後画像表示するためのフラグ
 	private boolean lightUp;
