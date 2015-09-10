@@ -10,7 +10,7 @@ public class UseFile {
         try {
             InputStream in = context.getResources().openRawResource(R.raw.map);
             int row = in.read();
-            int col = in.read();
+            int col = in.read()<<8 | in.read();
             // マップサイズを設定
 //            int width = col * CHIP_SIZE;
 //            int height = row * CHIP_SIZE;
