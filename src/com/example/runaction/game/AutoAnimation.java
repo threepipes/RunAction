@@ -1,6 +1,8 @@
 package com.example.runaction.game;
 
+import com.example.runaction.GameThread;
 import com.example.runaction.ImageManager;
+import com.example.runaction.R;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -20,6 +22,7 @@ public class AutoAnimation {
 	private final static int KEY_VALUE = 2;
 	// アニメーションの値(animation に対応)
 	private final static int KEY_ANIMATION = 3;
+	
 	private int actionCount;
 	private int flameCount;
 	
@@ -39,13 +42,31 @@ public class AutoAnimation {
 	// アニメーション実行中フラグ
 	private boolean onAnimation;
 	
+    // ---------- animationの仮データ ----------
+    // 以下の通りセル座標で指定する
+    private final static int[][][] animationData = {
+    		{{0, 1, Animation.FRAME_LOOP}},// ジャンプ
+    		{{1, 1, Animation.FRAME_LOOP}},// 右を向く
+    		{{0, 0, 5},{1, 0, 5},{2, 0, 5},{3, 0, 5},{Animation.FLAG_LOOP, 0}},// 走る
+    };
+    private final static int ANIM_JUMP = 0;
+    private final static int ANIM_TO_RIGHT = 1;
+    private final static int ANIM_RUN = 2;
+    // ---------- 仮データここまで ----------
+	
 	public AutoAnimation() {
 		// 必要引数: animation, 画像ID, 疑似キー入力(というか動きのマクロ), (x, y)座標
 		int[][] macro = {
-				{0, JUMP, 3, 0},
-				{30, NO_ACTION, 0, 1},
-				{50, WALK, 3, 2},
+				{0, JUMP, 3, ANIM_JUMP},
+				{30, NO_ACTION, 0, ANIM_TO_RIGHT},
+				{50, WALK, 3, ANIM_RUN},
 		};
+		imageID = R.drawable.player;
+		floor = GameThread.height - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
+		x = GameThread.width/2 - SIZE_X;
+		y = GameThread.height - SIZE_Y * 2;
+		// ----------- ここまで引数(予定)のデータ ----------
+		
 		grav = (int) Map.GRAVITY;
 		
 		this.macro = macro;
@@ -66,7 +87,6 @@ public class AutoAnimation {
 		onAnimation = true;
 	}
 	
-	private final static int MAX_SPEED = 10;
 	public void update(){
 		if(!onAnimation) return;
 		actionUpdate();
@@ -75,6 +95,7 @@ public class AutoAnimation {
 		moveUpdate();
 	}
 	
+	private final static int MAX_SPEED = 10;
 	private void moveUpdate(){
 		vy += grav;
 		if(vy > MAX_SPEED){
@@ -129,8 +150,8 @@ public class AutoAnimation {
 	private final static int NO_ACTION = 0;
 	private final static int WALK = 1;
 	private final static int JUMP = 2;
-	private final static int SET_X = 4;
-	private final static int SET_Y = 8;
+	private final static int SET_X = 3;
+	private final static int SET_Y = 4;
 	
 	private void setX(int sx){
 		x = sx;
