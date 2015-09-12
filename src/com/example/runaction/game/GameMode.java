@@ -149,6 +149,10 @@ public class GameMode extends Mode{
 		offsetY = Math.min(offsetY, 0);
 		offsetY = Math.max(offsetY, Height - Map.HEIGHT);	
 	}
+	
+	public int getOffsetX(){
+		return offsetX;
+	}
 
 	public void update(){
 
