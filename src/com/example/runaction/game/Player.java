@@ -67,7 +67,7 @@ public class Player extends GameObject{
         this.y = y;
         this.map = map;
         this.manager = manager;
-        initAnimation();
+        animation = new Animation(animationData);
         initState();
     }
     

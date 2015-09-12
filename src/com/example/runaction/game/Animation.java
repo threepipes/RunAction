@@ -35,6 +35,37 @@ public class Animation {
     	animY = animation[0].y*SIZE_Y;
     }
     
+    public Animation(int[][][] animationData){
+    	animMap = new SparseArray<AnimData[]>();
+    	AnimData[] defaultData = null;
+    	for(int i=0; i<animationData.length; i++){
+    		AnimData[] data = new AnimData[animationData[i].length];
+    		for(int j=0; j<data.length; j++){
+    			if(animationData[i][j][0] >= 0){
+    				final int ax = animationData[i][j][0];
+    				final int ay = animationData[i][j][1];
+    				final int frame = animationData[i][j][2];
+    				data[j] = new AnimData(ax, ay, frame, Animation.FLAG_NONE);
+    			}else{
+    				final int flag = animationData[i][j][0];
+    				final int frame = animationData[i][j][1];
+    				data[j] = new AnimData(0, 0, frame, flag);
+    			}
+    		}
+    		if(i == 0) defaultData = data;
+    		animMap.append(i, data);
+    	}
+    	if(defaultData == null){
+    		Log.e("ANIM_SET", "No animation data found");
+    	}
+    	
+    	// 初期設定アニメーション
+    	animation = defaultData;
+    	defaultAnimation = defaultData;
+    	animX = animation[0].x*SIZE_X;
+    	animY = animation[0].y*SIZE_Y;
+    }
+    
     // アニメーションIDのセット
     // 呼ばれる場合、ループ内においてupdateよりも先に呼び出すこと
     public void setAnim(int key){
