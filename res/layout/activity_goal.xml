@@ -5,31 +5,32 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/button_to_title"
-        style="@style/button_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
-        android:text="@string/to_title" />
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="198dp"
+        android:layout_marginTop="30dp"
         android:text="@string/goal_string1" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView1"
+        android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="28dp"
         android:text="@string/goal_string2" />
+
+    <Button
+        android:id="@+id/button_to_title"
+        style="@style/button_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="@string/to_title" />
 
 </RelativeLayout>
