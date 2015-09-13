@@ -38,6 +38,11 @@ public class GameMode extends Mode{
 	// ゲームクリア用アニメーション
 	private AutoAnimation clearAnimation;
 
+	// 自動アニメーション終了後に行う動作の予約
+	private int reservedEvent;
+	private final static int RESERVE_GAMEOVER = 1;
+	private final static int RESERVE_GAMECLEAR = 2;
+
 	// updateを有効にするか
 	// これがfalseのとき、ゲームは停止状態になる
 	private boolean validateUpdate;
@@ -77,6 +82,7 @@ public class GameMode extends Mode{
 				{{3, 1, Animation.FRAME_LOOP}}
 		};
 		gameoverAnimation = new AutoAnimation(macroG, new Animation(animG), R.drawable.player);
+		gameoverAnimation.setFloor(GameThread.WINDOW_HEIGHT + Player.HEIGHT);
 		
 		// clear
 		int[][] macroC = {
@@ -88,6 +94,7 @@ public class GameMode extends Mode{
 	    		{{0, 0, 5},{1, 0, 5},{2, 0, 5},{3, 0, 5},{Animation.FLAG_LOOP, 0}},// 走る
 		};
 		clearAnimation = new AutoAnimation(macroC, new Animation(animC), R.drawable.player);
+		clearAnimation.setFloor(GameThread.WINDOW_HEIGHT);
 		
 		activeAnimation = null;
 	}
@@ -153,6 +160,16 @@ public class GameMode extends Mode{
 		changeActiveSubMode(standby);
 	}
 	
+	private void executeReservedEvent(){
+		if(reservedEvent == 0) return;
+		if(reservedEvent == RESERVE_GAMEOVER){
+			changeActiveSubMode(gameover);
+		}else if(reservedEvent == RESERVE_GAMECLEAR){
+			gameClear();
+		}
+		reservedEvent = 0;
+	}
+	
 	private void changeActiveSubMode(SubMode mode){
 		activeSubMode = mode;
 		activeSubMode.init();
@@ -168,8 +185,6 @@ public class GameMode extends Mode{
 	}
 
 	private void culcOffset(){
-
-
 		// X方向のオフセットを計算
 		offsetX = Width / 2 - (int)player.getX();
 		// マップの端ではスクロールしないようにする

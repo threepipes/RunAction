@@ -39,6 +39,8 @@ public class AutoAnimation {
 	// その他位置関係値
 	private int vx, vy;
 	private int x, y;
+	// 画面内にいるかどうか
+	private boolean onWindow;
 	
 	// 画像ID
 	private int imageID;
@@ -65,12 +67,12 @@ public class AutoAnimation {
 				{50, WALK, 3, ANIM_RUN},
 		};
 		imageID = R.drawable.player;
-		x = GameThread.width/2 - SIZE_X;
-		y = GameThread.height - SIZE_Y * 2;
+		x = GameThread.WINDOW_WIDTH/2 - SIZE_X;
+		y = GameThread.WINDOW_HEIGHT - SIZE_Y * 2;
 		animation = new Animation(animationData);
 		// ----------- ここまで引数(予定)のデータ ----------
 		
-		floor = GameThread.height - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
+		floor = GameThread.WINDOW_HEIGHT - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
 		grav = (int) Map.GRAVITY;
 		
 		this.macro = macro;
@@ -81,7 +83,7 @@ public class AutoAnimation {
 		this.imageID = imageID;
 		this.macro = macro;
 		animation = anim;
-		floor = GameThread.height - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
+		floor = GameThread.WINDOW_HEIGHT - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
 		grav = (int) Map.GRAVITY;
 		
 		init();
@@ -91,12 +93,17 @@ public class AutoAnimation {
 		actionCount = 0;
 		frameCount = 0;
 		actionFlag = 0;
+		onWindow = true;
 		onAnimation = false;
 	}
 	
 	// アニメーションが継続しているかどうか
 	public boolean inAnimation(){
 		return onAnimation;
+	}
+	
+	public boolean inWindow(){
+		return onWindow;
 	}
 	
 	// アニメーションを開始するときに外部から呼び出す
@@ -131,6 +138,10 @@ public class AutoAnimation {
 			vy = 0;
 			if(!onGround) actionFlag = FLAG_GROUND;
 		}
+	}
+	
+	private boolean checkOutOfWindow(){
+		return y < -SIZE_Y || y > GameThread.WINDOW_HEIGHT || x < -SIZE_X || x > GameThread.WINDOW_WIDTH;
 	}
 	
 	private void actionUpdate(){

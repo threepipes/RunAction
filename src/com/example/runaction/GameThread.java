@@ -28,9 +28,9 @@ public 	class GameThread extends Thread{
 	MediaPlayer bgmPlayer;
 	MainActivity activity;
 	
-	public static final int width = 540;
-	public static final int height = 960;
-	public static final Rect WindowRect = new Rect(0, 0, width, height);
+	public static final int WINDOW_WIDTH = 540;
+	public static final int WINDOW_HEIGHT = 960;
+	public static final Rect WindowRect = new Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	public float scale;
 	public float translateX;
 	public float translateY;
@@ -138,13 +138,13 @@ public 	class GameThread extends Thread{
 	}
 	
 	public void setWindowSize(int w, int h){
-		float scaleX = (float)w / width;
-		float scaleY = (float)h /  height;
+		float scaleX = (float)w / WINDOW_WIDTH;
+		float scaleY = (float)h /  WINDOW_HEIGHT;
 		scale = scaleX > scaleY ? scaleY : scaleX;
-		translateX = (w - width*scale)/2;
-		translateY = (h - height*scale)/2;
+		translateX = (w - WINDOW_WIDTH*scale)/2;
+		translateY = (h - WINDOW_HEIGHT*scale)/2;
 		Log.d("Window", "scale: "+scale+" , tX: "+translateX+" , tY: "+translateY);
-		mode.setWindowSize(width, height);
+		mode.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	
 	@Override
