@@ -38,6 +38,11 @@ implements SurfaceHolder.Callback{
 	public TitleView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
+	
+	public final static int EVENT_START = 1;
+	public void setEvent(int event){
+		titleThread.setEvent(event);
+	}
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
