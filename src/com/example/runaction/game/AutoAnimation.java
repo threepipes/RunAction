@@ -29,6 +29,8 @@ public class AutoAnimation {
 	private int actionFlag;
 	public final static int FLAG_GROUND = -1;
 	public final static int FLAG_OUTOFWINDOW = -2;
+	// 外部からの直接進行命令
+	public final static int FLAG_EXE_COMMAND = -3;
 	
 	private final static int SIZE_X = 32;
 	private final static int SIZE_Y = 32;
@@ -48,6 +50,9 @@ public class AutoAnimation {
 	private int backgroundColor;
 	private int backgroundAlpha;
 	private int blackoutPace;
+	
+	// (重力などの影響を受けず)静止状態かどうか
+	private boolean stop;
 	
 	// 画像ID
 	private int imageID;
@@ -132,6 +137,7 @@ public class AutoAnimation {
 	
 	private final static int MAX_SPEED = 10;
 	private void moveUpdate(){
+		if(stop) return;
 		vy += grav;
 		if(vy > MAX_SPEED){
 			vy = MAX_SPEED;
@@ -151,6 +157,10 @@ public class AutoAnimation {
 		}
 	}
 	
+	public void contact(){
+		actionFlag = FLAG_EXE_COMMAND;
+	}
+	
 	private boolean checkOutOfWindow(){
 		return y < -SIZE_Y || y > GameThread.WINDOW_HEIGHT || x < -SIZE_X || x > GameThread.WINDOW_WIDTH;
 	}
@@ -162,6 +172,9 @@ public class AutoAnimation {
 		}
 		while(frameCount == macro[actionCount][KEY_FRAME]
 				|| actionFlag == macro[actionCount][KEY_FRAME]){
+			// フラグによる進行の場合、この時点でframeが不定なのでリセットされる
+			if(actionFlag < 0) frameCount = 0;
+			stop = false;
 			final int[] act = macro[actionCount];
 			switch(act[KEY_ACTION]){
 			case WALK:
@@ -178,6 +191,9 @@ public class AutoAnimation {
 				break;
 			case BLACKOUT:
 				blackoutPace = act[KEY_VALUE];
+				break;
+			case STOP:
+				stop = true;
 				break;
 			}
 			animation.setAnim(act[KEY_ANIMATION]);
@@ -208,6 +224,7 @@ public class AutoAnimation {
 	public final static int SET_X = 3;
 	public final static int SET_Y = 4;
 	public final static int BLACKOUT = 5;
+	public final static int STOP = 6;
 	
 	private void setX(int sx){
 		x = sx;
