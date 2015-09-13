@@ -28,6 +28,7 @@ public class AutoAnimation {
 	
 	private int actionFlag;
 	public final static int FLAG_GROUND = -1;
+	public final static int FLAG_OUTOFWINDOW = -2;
 	
 	private final static int SIZE_X = 32;
 	private final static int SIZE_Y = 32;
@@ -35,12 +36,18 @@ public class AutoAnimation {
 	// 床の位置
 	private int floor;
 	// 重力加速度
-	private int grav;
+	private double grav;
 	// その他位置関係値
-	private int vx, vy;
-	private int x, y;
+	private double vx, vy;
+	private double x, y;
 	// 画面内にいるかどうか
 	private boolean onWindow;
+	
+	// その他のアニメーション
+	// ブラックアウト
+	private int backgroundColor;
+	private int backgroundAlpha;
+	private int blackoutPace;
 	
 	// 画像ID
 	private int imageID;
@@ -73,7 +80,7 @@ public class AutoAnimation {
 		// ----------- ここまで引数(予定)のデータ ----------
 		
 		floor = GameThread.WINDOW_HEIGHT - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
-		grav = (int) Map.GRAVITY;
+		grav = Map.GRAVITY/4.0;
 		
 		this.macro = macro;
 		init();
@@ -84,7 +91,7 @@ public class AutoAnimation {
 		this.macro = macro;
 		animation = anim;
 		floor = GameThread.WINDOW_HEIGHT - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
-		grav = (int) Map.GRAVITY;
+		grav = Map.GRAVITY/4.0;
 		
 		init();
 	}
@@ -138,6 +145,10 @@ public class AutoAnimation {
 			vy = 0;
 			if(!onGround) actionFlag = FLAG_GROUND;
 		}
+		if(checkOutOfWindow()){
+			onWindow = false;
+			actionFlag = FLAG_OUTOFWINDOW;
+		}
 	}
 	
 	private boolean checkOutOfWindow(){
@@ -163,7 +174,10 @@ public class AutoAnimation {
 				setX(act[KEY_VALUE]);
 				break;
 			case SET_Y:
-				setY(act[KEY_FRAME]);
+				setY(act[KEY_VALUE]);
+				break;
+			case BLACKOUT:
+				blackoutPace = act[KEY_VALUE];
 				break;
 			}
 			animation.setAnim(act[KEY_ANIMATION]);
@@ -177,9 +191,15 @@ public class AutoAnimation {
 	}
 	
 	public void draw(Canvas c, Paint p){
+		backgroundAlpha += blackoutPace;
+		if(backgroundAlpha > 0){
+			if(backgroundAlpha > 0xFF) backgroundAlpha = 0xFF;
+			p.setColor(backgroundAlpha << 6*4 | backgroundColor);
+			c.drawRect(GameThread.WindowRect, p);
+		}
 		// offsetは考慮すべき？
 		ImageManager.getInstance().drawBitmap(c, p, imageID
-				, animation.getRect(), new Rect(x, y, x+SIZE_X, y+SIZE_Y));
+				, animation.getRect(), new Rect((int)x, (int)y, (int)(x+SIZE_X), (int)(y+SIZE_Y)));
 	}
 	
 	public final static int NO_ACTION = 0;
@@ -187,6 +207,7 @@ public class AutoAnimation {
 	public final static int JUMP = 2;
 	public final static int SET_X = 3;
 	public final static int SET_Y = 4;
+	public final static int BLACKOUT = 5;
 	
 	private void setX(int sx){
 		x = sx;
@@ -206,5 +227,13 @@ public class AutoAnimation {
 	
 	public void setFloor(int f){
 		floor = f;
+	}
+	
+	public void setVX(int svx){
+		vx = svx;
+	}
+	
+	public void setVY(int svy){
+		vy = svy;
 	}
 }

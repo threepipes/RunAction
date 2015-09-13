@@ -37,6 +37,9 @@ public class GameMode extends Mode{
 	private AutoAnimation gameoverAnimation;
 	// ゲームクリア用アニメーション
 	private AutoAnimation clearAnimation;
+	
+	// 画面を暗くする
+	private boolean blackout;
 
 	// 自動アニメーション終了後に行う動作の予約
 	private int reservedEvent;
@@ -51,6 +54,8 @@ public class GameMode extends Mode{
 		this.parent = thread;
 		// pause画面などの一時画面を生成
 		createSubMode();
+		// AutoAnimationの設定
+		createAutoAnimation();
 
 		init(context);
 	}
@@ -64,19 +69,22 @@ public class GameMode extends Mode{
 		// プレイヤーを作成
 		player = new Player(Player_init_x, Player_init_y, map, this);
 		validateUpdate = true;
+		blackout = false;
 	}
 
 	public void restart(){
 		map.resetStage();
 		player.setPoint(Player_init_x, Player_init_y);
 		validateUpdate = true;
+		blackout = false;
 	}
 	
 	// 自動アニメーションの生成(マクロやアニメーションのデータは別ファイルから持ってくるようにしたい)
 	private void createAutoAnimation(){
 		// gameover
 		int[][] macroG = {
-				{0, AutoAnimation.JUMP, 10, 0}
+				{0, AutoAnimation.JUMP, 5, 0},
+				{AutoAnimation.FLAG_OUTOFWINDOW, AutoAnimation.NO_ACTION, 0, 0},
 		};
 		int[][][] animG = {
 				{{3, 1, Animation.FRAME_LOOP}}
@@ -86,15 +94,17 @@ public class GameMode extends Mode{
 		
 		// clear
 		int[][] macroC = {
-				{0, AutoAnimation.WALK, 5, 0},
-				{AutoAnimation.FLAG_GROUND, AutoAnimation.NO_ACTION, 0, 1}
+				{0, AutoAnimation.NO_ACTION, 0, 0},
+				{0, AutoAnimation.BLACKOUT, 0xFF/10, 0},
+				{AutoAnimation.FLAG_GROUND, AutoAnimation.WALK, 5, 1},
+				{AutoAnimation.FLAG_OUTOFWINDOW, AutoAnimation.NO_ACTION, 0, 1},
 		};
 		int[][][] animC = {
 				{{0, 1, Animation.FRAME_LOOP}},
 	    		{{0, 0, 5},{1, 0, 5},{2, 0, 5},{3, 0, 5},{Animation.FLAG_LOOP, 0}},// 走る
 		};
 		clearAnimation = new AutoAnimation(macroC, new Animation(animC), R.drawable.player);
-		clearAnimation.setFloor(GameThread.WINDOW_HEIGHT);
+		clearAnimation.setFloor(GameThread.WINDOW_HEIGHT - Player.HEIGHT);
 		
 		activeAnimation = null;
 	}
@@ -175,7 +185,8 @@ public class GameMode extends Mode{
 		activeSubMode.init();
 	}
 	
-	private void startActiveAnimation(AutoAnimation anim, int x, int y){
+	private void startAutoAnimation(AutoAnimation anim, int x, int y){
+		player.setExist(false);
 		activeAnimation = anim;
 		activeAnimation.startAnimation(x, y);
 	}
@@ -203,6 +214,13 @@ public class GameMode extends Mode{
 	}
 
 	public void update(){
+		if(activeAnimation != null){
+			if(!activeAnimation.inAnimation() || !activeAnimation.inWindow()){
+				activeAnimation = null;
+				executeReservedEvent();
+			}else activeAnimation.update();
+			return;
+		}
 
 		if(releaseSubMode){
 			activeSubMode = null;
@@ -219,7 +237,8 @@ public class GameMode extends Mode{
 		player.update();
 		if(player.checkGoal()){
 			validateUpdate = false;
-			gameClear();
+			startAutoAnimation(clearAnimation, (int)(player.getX() + offsetX), (int)player.getY());
+			reservedEvent = RESERVE_GAMECLEAR;
 		}
 	}
 
@@ -232,6 +251,10 @@ public class GameMode extends Mode{
 		// マップを描画
 		map.draw(c, p, offsetX, offsetY);
 
+		if(activeAnimation != null){
+			activeAnimation.draw(c, p);
+			return;
+		}
 		// プレイヤーを描画
 		player.draw(c, p, offsetX, offsetY);
 
@@ -241,6 +264,10 @@ public class GameMode extends Mode{
 		if(activeSubMode != null){
 			activeSubMode.draw(c, p);
 		}
+		if(blackout){
+			p.setColor(0xFF000000);
+			c.drawRect(new Rect(0, 0, Width, Height), p);
+		}
 	}
 
 	public static final int KEY_PRESSED = 1;
@@ -248,6 +275,7 @@ public class GameMode extends Mode{
 	private boolean keyPressed;
 	public void touchEvent(int x, int y, int keytype){
 		Log.d("GAME", "Touched ("+x+","+y+"):code="+keytype);
+		if(activeAnimation != null) return;
 
 		// SubModeが有効なら、SubModeに入力の焦点を合わせる
 		if(activeSubMode != null){
@@ -270,12 +298,14 @@ public class GameMode extends Mode{
 
 	public static final int EXIT_DEATH = 1;
 	public void exitRequest(int code){
-		changeActiveSubMode(gameover);
+		startAutoAnimation(gameoverAnimation, (int)player.getX()+offsetX, (int)player.getY());
+		reservedEvent = RESERVE_GAMEOVER;
 		validateUpdate = false;
 		Log.d("GAME", "exit="+code);
 	}
 
 	public void gameClear(){
+		blackout = true;
 		parent.intentToGoal();
 	}
 

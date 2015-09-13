@@ -41,6 +41,9 @@ public class Player extends GameObject{
     // 着地しているか
     private boolean onGround;
     
+    // 描画されるか
+    private boolean isExist;
+    
     // マップへの参照
     private Map map;
     
@@ -79,6 +82,11 @@ public class Player extends GameObject{
         goal = false;
         animation.setAnim(ANIM_JUMP);
         actionChange = ACTION_NO_CHANGE;
+        isExist = true;
+    }
+    
+    public void setExist(boolean flag){
+    	isExist = flag;
     }
     
     public void setPoint(double x, double y){
@@ -163,6 +171,7 @@ public class Player extends GameObject{
 	 * プレイヤーの状態を更新する
 	 */
 	public void update() {
+		if(!isExist) return;
 		// 重力で下向きに加速度がかかる
 		vy += Map.GRAVITY;
 
@@ -243,6 +252,7 @@ public class Player extends GameObject{
      * @param offsetY Y方向オフセット
      */
     public void draw(Canvas c, Paint p, int offsetX, int offsetY) {
+    	if(!isExist) return;
         p.setColor(0xFFFF0000);
         final int dx = (int) x + offsetX;
         final int dy = (int) y + offsetY;
