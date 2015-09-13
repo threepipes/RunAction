@@ -22,7 +22,7 @@
         <activity
             android:name=".TitleActivity"
             android:label="@string/title_activity_title"
-            android:theme="@style/slideAnim" >
+            android:theme="@style/slideAnimFullScrean" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +32,7 @@
         <activity
             android:name=".GoalActivity"
             android:label="@string/title_activity_goal"
-            android:theme="@style/slideAnim" >
+            android:theme="@style/slideAnimFullScrean" >
         </activity>
     </application>
 

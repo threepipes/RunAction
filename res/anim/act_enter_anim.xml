@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <translate
-        android:duration="1000"
+        android:duration="800"
         android:fillAfter="true"
         android:fillEnabled="true"
         android:fromXDelta="100%"

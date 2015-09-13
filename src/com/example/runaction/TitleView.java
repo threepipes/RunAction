@@ -28,7 +28,6 @@ implements SurfaceHolder.Callback{
 	private void init(TitleActivity context){
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
-		// 画像の設定(ここで呼び出すべきかどうか TODO )
 		setTitleImage();
 		titleThread = new TitleThread(holder, context, new Handler(){
 			@Override
@@ -202,7 +201,7 @@ class TitleManager{
 		int[][] animMacro = {
 				{0, AutoAnimation.STOP, 0, 0},
 				{AutoAnimation.FLAG_EXE_COMMAND, AutoAnimation.STOP, 0, 1},
-				{20, AutoAnimation.JUMP, 5, 2},
+				{20, AutoAnimation.JUMP, 10, 2},
 				{AutoAnimation.FLAG_GROUND, AutoAnimation.NO_ACTION, 0, 3},
 				{10, AutoAnimation.NO_ACTION, 0, 4},
 				{20, AutoAnimation.WALK, 5, 5},
