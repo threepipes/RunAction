@@ -73,7 +73,7 @@ public class Map {
 	public void draw(Canvas c, Paint p, int offsetX, int offsetY) {
 		// オフセットを元に描画範囲を求める
 		int firstTileX = pixelsToTiles(-offsetX);
-		int lastTileX = firstTileX + pixelsToTiles(GameMode.Width) + 1;
+		int lastTileX = firstTileX + pixelsToTiles(GameMode.Width) + 2;
 		// 描画範囲がマップの大きさより大きくならないように調整
 		lastTileX = Math.min(lastTileX, COL);
 
