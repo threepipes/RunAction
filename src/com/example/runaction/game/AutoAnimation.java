@@ -59,38 +59,6 @@ public class AutoAnimation {
 	// アニメーション実行中フラグ
 	private boolean onAnimation;
 	
-    // ---------- animationの仮データ ----------
-    // 以下の通りセル座標で指定する
-    private final static int[][][] animationData = {
-    		{{1, 1, Animation.FRAME_LOOP}},// ジャンプ
-    		{{2, 1, Animation.FRAME_LOOP}},// 右を向く
-    		{{0, 0, 5},{1, 0, 5},{2, 0, 5},{3, 0, 5},{Animation.FLAG_LOOP, 0}},// 走る
-    };
-    private final static int ANIM_JUMP = 0;
-    private final static int ANIM_TO_RIGHT = 1;
-    private final static int ANIM_RUN = 2;
-    // ---------- 仮データここまで ----------
-	
-	public AutoAnimation() {
-		// 必要引数: animation, 画像ID, 疑似キー入力(というか動きのマクロ), (x, y)座標
-		int[][] macro = {
-				{0, JUMP, 3, ANIM_JUMP},
-				{30, NO_ACTION, 0, ANIM_TO_RIGHT},
-				{50, WALK, 3, ANIM_RUN},
-		};
-		imageID = R.drawable.player;
-		x = GameThread.WINDOW_WIDTH/2 - SIZE_X;
-		y = GameThread.WINDOW_HEIGHT - SIZE_Y * 2;
-		animation = new Animation(animationData);
-		// ----------- ここまで引数(予定)のデータ ----------
-		
-		floor = GameThread.WINDOW_HEIGHT - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
-		grav = Map.GRAVITY/4.0;
-		
-		this.macro = macro;
-		init();
-	}
-	
 	public AutoAnimation(int[][] macro, Animation anim, int imageID) {
 		this.imageID = imageID;
 		this.macro = macro;
@@ -244,6 +212,10 @@ public class AutoAnimation {
 	
 	public void setFloor(int f){
 		floor = f;
+	}
+	
+	public void setGravity(double grav){
+		this.grav = grav;
 	}
 	
 	public void setVX(int svx){

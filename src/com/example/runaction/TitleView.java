@@ -202,14 +202,15 @@ class TitleManager{
 		int[][] animMacro = {
 				{0, AutoAnimation.STOP, 0, 0},
 				{AutoAnimation.FLAG_EXE_COMMAND, AutoAnimation.STOP, 0, 1},
-				{30, AutoAnimation.JUMP, 5, 2},
+				{20, AutoAnimation.JUMP, 5, 2},
 				{AutoAnimation.FLAG_GROUND, AutoAnimation.NO_ACTION, 0, 3},
-				{20, AutoAnimation.NO_ACTION, 0, 4},
-				{40, AutoAnimation.WALK, 5, 5},
+				{10, AutoAnimation.NO_ACTION, 0, 4},
+				{20, AutoAnimation.WALK, 5, 5},
 				{AutoAnimation.FLAG_OUTOFWINDOW, AutoAnimation.NO_ACTION, 0, 6},
 		};
 		playerAnimation = new AutoAnimation(animMacro, new Animation(playerAnim), R.drawable.player);
 		playerAnimation.setFloor(GameThread.WINDOW_HEIGHT - Player.HEIGHT*3);
+		playerAnimation.setGravity(1);
 		playerAnimation.startAnimation(PLAYER_X, PLAYER_Y);
 	}
 	

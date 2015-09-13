@@ -61,5 +61,12 @@ public class TitleActivity extends Activity {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(intent);
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
+		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
+	}
 
 }
