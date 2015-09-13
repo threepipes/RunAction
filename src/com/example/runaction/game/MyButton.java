@@ -11,28 +11,26 @@ public class MyButton {
 	private boolean isPushed;
 	private boolean isVisualize;
 	private ButtonAction action;
-	private int width;
-	private int height;
 	private int imageID;
+	private int imageID_pushed;
 	
 	private String str;
 	
-	public MyButton(Rect rect, int imageID, String str, ButtonAction action) {
+	public MyButton(Rect rect, int imageID, int pushedID, String str, ButtonAction action) {
 		this.rect = rect;
 		this.str = str;
 		isPushed = false;
 		isVisualize = true;
 		this.action = action;
 		this.imageID = imageID;
+		this.imageID_pushed = pushedID;
 		if(imageID < 0) return;
-		width = rect.right - rect.left;
-		height = rect.bottom - rect.top;
-		nomalRange = new Rect(0, 0, width, height);
-		pushedRange = new Rect(0, height, width, height*2);
+		final int width = rect.right - rect.left;
+		final int height = rect.bottom - rect.top;
+		range = new Rect(0, 0, width, height);
 	}
 	
-	private Rect nomalRange;
-	private Rect pushedRange;
+	private Rect range;
 	public void draw(Canvas c, Paint p){
 		if(!isVisualize) return;
 		if(imageID < 0){
@@ -41,8 +39,8 @@ public class MyButton {
 			c.drawRect(rect, p);
 			p.setColor(0xFF110F00);
 		}else{
-			ImageManager.getInstance().drawBitmap(c, p, imageID
-					, isPushed ? pushedRange : nomalRange, rect);
+			ImageManager.getInstance().drawBitmap(c, p
+					, isPushed ? imageID_pushed : imageID, range, rect);
 		}
 		if(str != null) c.drawText(str, rect.left, rect.bottom, p);
 	}

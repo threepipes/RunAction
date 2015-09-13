@@ -1,28 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:gravity="center" >
-    
+    android:gravity="center"
+    android:orientation="vertical" >
+
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="6"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="@string/title_name" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="@string/button_start" />
-
-    <Button
         android:id="@+id/button_volume"
+        style="@style/button_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:text="@string/button_volume" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/button"
+        style="@style/button_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/button_start" />
+
+</RelativeLayout>

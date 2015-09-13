@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -23,5 +23,9 @@
 		<item name="android:activityCloseEnterAnimation">@anim/act_enter_anim</item>
 		<item name="android:activityCloseExitAnimation">@anim/act_exit_anim</item>
 	</style>
+	
+    <style name="button_state">
+        <item name="android:background">@drawable/button_state</item>
+    </style>
 
 </resources>

@@ -117,9 +117,10 @@ public class GameMode extends Mode{
 		final int TOP = 400;
 		final int SPACE = 50;
 		final int BUTTON_ID = R.drawable.button;
+		final int BUTTON_ID_PUSHED = R.drawable.button_pressed;
 		// standby状態(スタート直前状態)の生成
 		ButtonManager bm = new ButtonManager();
-		bm.put(0, new MyButton(new Rect(LEFT, 600, RIGHT, 650), BUTTON_ID, "START", new ButtonAction() {
+		bm.put(0, new MyButton(new Rect(LEFT, 600, RIGHT, 650), BUTTON_ID, BUTTON_ID_PUSHED, "START", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;
@@ -129,7 +130,7 @@ public class GameMode extends Mode{
 
 		// gameover状態
 		bm = new ButtonManager();
-		bm.put(0, new MyButton(new Rect(LEFT, TOP, RIGHT, TOP+BUTTON_HEIGHT), BUTTON_ID, "RESTART", new ButtonAction() {
+		bm.put(0, new MyButton(new Rect(LEFT, TOP, RIGHT, TOP+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "RESTART", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;
@@ -137,7 +138,7 @@ public class GameMode extends Mode{
 			}
 		}));
 		bm.put(1, new MyButton(new Rect(LEFT, TOP+BUTTON_HEIGHT + SPACE, RIGHT, TOP+BUTTON_HEIGHT + SPACE + BUTTON_HEIGHT)
-				, BUTTON_ID, "TITLE", new ButtonAction() {
+				, BUTTON_ID, BUTTON_ID_PUSHED, "TITLE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				returnTitle();
@@ -147,14 +148,14 @@ public class GameMode extends Mode{
 
 		// pause状態
 		bm = new ButtonManager();
-		bm.put(0, new MyButton(new Rect(LEFT, TOP, RIGHT, TOP+BUTTON_HEIGHT), BUTTON_ID, "CONTINUE", new ButtonAction() {
+		bm.put(0, new MyButton(new Rect(LEFT, TOP, RIGHT, TOP+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "CONTINUE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;
 			}
 		}));
 		bm.put(1, new MyButton(new Rect(LEFT, TOP+BUTTON_HEIGHT + SPACE, RIGHT, TOP+BUTTON_HEIGHT + SPACE + BUTTON_HEIGHT)
-				, BUTTON_ID, "RESTART", new ButtonAction() {
+				, BUTTON_ID, BUTTON_ID_PUSHED, "RESTART", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;
@@ -162,14 +163,14 @@ public class GameMode extends Mode{
 			}
 		}));
 		bm.put(2, new MyButton(new Rect(LEFT, TOP+(BUTTON_HEIGHT + SPACE)*2, RIGHT, TOP+(BUTTON_HEIGHT + SPACE)*2 + BUTTON_HEIGHT)
-				, BUTTON_ID, "TITLE", new ButtonAction() {
+				, BUTTON_ID, BUTTON_ID_PUSHED, "TITLE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				returnTitle();
 			}
 		}));
 		pause = new SubMode(bm);
-		pauseButton = new MyButton(new Rect(10, 10, 110, 60), -1, "PAUSE", new ButtonAction() {
+		pauseButton = new MyButton(new Rect(10, 10, 110, 60), -1, -1, "PAUSE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				changeActiveSubMode(pause);
