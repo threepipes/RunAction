@@ -15,7 +15,7 @@ public class AutoAnimation {
 	private int[][] macro;
 	// macro の第二添え字の役割
 	// アクション実行開始フレーム
-	private final static int KEY_FLAME = 0;
+	private final static int KEY_FRAME = 0;
 	// アクションの種類
 	private final static int KEY_ACTION = 1;
 	// (速度、ジャンプ力などの)値
@@ -24,7 +24,10 @@ public class AutoAnimation {
 	private final static int KEY_ANIMATION = 3;
 	
 	private int actionCount;
-	private int flameCount;
+	private int frameCount;
+	
+	private int actionFlag;
+	public final static int FLAG_GROUND = -1;
 	
 	private final static int SIZE_X = 32;
 	private final static int SIZE_Y = 32;
@@ -45,8 +48,8 @@ public class AutoAnimation {
     // ---------- animationの仮データ ----------
     // 以下の通りセル座標で指定する
     private final static int[][][] animationData = {
-    		{{0, 1, Animation.FRAME_LOOP}},// ジャンプ
-    		{{1, 1, Animation.FRAME_LOOP}},// 右を向く
+    		{{1, 1, Animation.FRAME_LOOP}},// ジャンプ
+    		{{2, 1, Animation.FRAME_LOOP}},// 右を向く
     		{{0, 0, 5},{1, 0, 5},{2, 0, 5},{3, 0, 5},{Animation.FLAG_LOOP, 0}},// 走る
     };
     private final static int ANIM_JUMP = 0;
@@ -62,35 +65,53 @@ public class AutoAnimation {
 				{50, WALK, 3, ANIM_RUN},
 		};
 		imageID = R.drawable.player;
-		floor = GameThread.height - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
 		x = GameThread.width/2 - SIZE_X;
 		y = GameThread.height - SIZE_Y * 2;
+		animation = new Animation(animationData);
 		// ----------- ここまで引数(予定)のデータ ----------
 		
+		floor = GameThread.height - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
 		grav = (int) Map.GRAVITY;
 		
 		this.macro = macro;
 		init();
 	}
 	
+	public AutoAnimation(int[][] macro, Animation anim, int imageID) {
+		this.imageID = imageID;
+		this.macro = macro;
+		animation = anim;
+		floor = GameThread.height - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
+		grav = (int) Map.GRAVITY;
+		
+		init();
+	}
+	
 	private void init(){
 		actionCount = 0;
-		flameCount = 0;
+		frameCount = 0;
+		actionFlag = 0;
 		onAnimation = false;
 	}
 	
+	// アニメーションが継続しているかどうか
 	public boolean inAnimation(){
 		return onAnimation;
 	}
 	
-	public void startAnimation(){
+	// アニメーションを開始するときに外部から呼び出す
+	// 呼び出しておかないとUpdateされない
+	public void startAnimation(int x, int y){
+		init();
 		onAnimation = true;
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void update(){
 		if(!onAnimation) return;
 		actionUpdate();
-		flameCount++;
+		frameCount++;
 		animation.update();
 		moveUpdate();
 	}
@@ -101,13 +122,14 @@ public class AutoAnimation {
 		if(vy > MAX_SPEED){
 			vy = MAX_SPEED;
 		}
-		
+		final boolean onGround = y >= floor; 
 		x += vx;
 		y += vy;
 		
 		if(y > floor){
 			y = floor;
 			vy = 0;
+			if(!onGround) actionFlag = FLAG_GROUND;
 		}
 	}
 	
@@ -116,7 +138,8 @@ public class AutoAnimation {
 			onAnimation = false;
 			return;
 		}
-		while(flameCount == macro[actionCount][KEY_FLAME]){
+		while(frameCount == macro[actionCount][KEY_FRAME]
+				|| actionFlag == macro[actionCount][KEY_FRAME]){
 			final int[] act = macro[actionCount];
 			switch(act[KEY_ACTION]){
 			case WALK:
@@ -129,7 +152,7 @@ public class AutoAnimation {
 				setX(act[KEY_VALUE]);
 				break;
 			case SET_Y:
-				setY(act[KEY_FLAME]);
+				setY(act[KEY_FRAME]);
 				break;
 			}
 			animation.setAnim(act[KEY_ANIMATION]);
@@ -139,6 +162,7 @@ public class AutoAnimation {
 				return;
 			}
 		}
+		actionFlag = 0;
 	}
 	
 	public void draw(Canvas c, Paint p){
@@ -147,11 +171,11 @@ public class AutoAnimation {
 				, animation.getRect(), new Rect(x, y, x+SIZE_X, y+SIZE_Y));
 	}
 	
-	private final static int NO_ACTION = 0;
-	private final static int WALK = 1;
-	private final static int JUMP = 2;
-	private final static int SET_X = 3;
-	private final static int SET_Y = 4;
+	public final static int NO_ACTION = 0;
+	public final static int WALK = 1;
+	public final static int JUMP = 2;
+	public final static int SET_X = 3;
+	public final static int SET_Y = 4;
 	
 	private void setX(int sx){
 		x = sx;
@@ -169,7 +193,7 @@ public class AutoAnimation {
 		this.vx = vx;
 	}
 	
-	private void setFloor(int f){
+	public void setFloor(int f){
 		floor = f;
 	}
 }

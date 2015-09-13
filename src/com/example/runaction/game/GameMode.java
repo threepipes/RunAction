@@ -1,6 +1,7 @@
 package com.example.runaction.game;
 
 import com.example.runaction.GameThread;
+import com.example.runaction.R;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -29,6 +30,13 @@ public class GameMode extends Mode{
 	// ポーズ状態
 	private SubMode pause;
 	private MyButton pauseButton; // ポーズ状態へ遷移するためのボタン
+	
+	// 現在有効な自動アニメーション
+	private AutoAnimation activeAnimation;
+	// ゲームオーバー用アニメーション
+	private AutoAnimation gameoverAnimation;
+	// ゲームクリア用アニメーション
+	private AutoAnimation clearAnimation;
 
 	// updateを有効にするか
 	// これがfalseのとき、ゲームは停止状態になる
@@ -46,22 +54,42 @@ public class GameMode extends Mode{
 	private static final int Player_init_y = 850;
 	// 将来的には、ここでステージ名をセット
 	public void init(Context context){
-
 		// マップを作成
 		map = new Map(this);
-
 		// プレイヤーを作成
 		player = new Player(Player_init_x, Player_init_y, map, this);
-
 		validateUpdate = true;
-
 	}
 
 	public void restart(){
 		map.resetStage();
 		player.setPoint(Player_init_x, Player_init_y);
 		validateUpdate = true;
-
+	}
+	
+	// 自動アニメーションの生成(マクロやアニメーションのデータは別ファイルから持ってくるようにしたい)
+	private void createAutoAnimation(){
+		// gameover
+		int[][] macroG = {
+				{0, AutoAnimation.JUMP, 10, 0}
+		};
+		int[][][] animG = {
+				{{3, 1, Animation.FRAME_LOOP}}
+		};
+		gameoverAnimation = new AutoAnimation(macroG, new Animation(animG), R.drawable.player);
+		
+		// clear
+		int[][] macroC = {
+				{0, AutoAnimation.WALK, 5, 0},
+				{AutoAnimation.FLAG_GROUND, AutoAnimation.NO_ACTION, 0, 1}
+		};
+		int[][][] animC = {
+				{{0, 1, Animation.FRAME_LOOP}},
+	    		{{0, 0, 5},{1, 0, 5},{2, 0, 5},{3, 0, 5},{Animation.FLAG_LOOP, 0}},// 走る
+		};
+		clearAnimation = new AutoAnimation(macroC, new Animation(animC), R.drawable.player);
+		
+		activeAnimation = null;
 	}
 
 	private void createSubMode(){
@@ -75,7 +103,7 @@ public class GameMode extends Mode{
 		}));
 		standby = new SubMode(bm);
 
-		// gemeover状態
+		// gameover状態
 		bm = new ButtonManager();
 		bm.put(0, new MyButton(new Rect(170, 500, 370, 550), "RESTART", new ButtonAction() {
 			@Override
@@ -128,6 +156,11 @@ public class GameMode extends Mode{
 	private void changeActiveSubMode(SubMode mode){
 		activeSubMode = mode;
 		activeSubMode.init();
+	}
+	
+	private void startActiveAnimation(AutoAnimation anim, int x, int y){
+		activeAnimation = anim;
+		activeAnimation.startAnimation(x, y);
 	}
 
 	public void playSE(int id){
