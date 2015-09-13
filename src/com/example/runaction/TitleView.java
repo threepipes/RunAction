@@ -231,10 +231,14 @@ class TitleManager{
 		}
 	}
 	
+	private final static int BGM_ANIMATION_X = 150;
+	private final static int BGM_ANIMATION_Y = 840;
 	public void draw(Canvas c, Paint p){
 		ImageManager im = ImageManager.getInstance();
 		im.drawBitmap(c, p, R.drawable.title, windowRect, windowRect);
-		if(bgmState) im.drawBitmap(c, p, R.drawable.music, bgmAnimation.getRect(), new Rect(140, 850, 140 + 32, 850 + 32));
+		if(bgmState) im.drawBitmap(c, p, R.drawable.music, bgmAnimation.getRect()
+				, new Rect(BGM_ANIMATION_X, BGM_ANIMATION_Y
+						, BGM_ANIMATION_X + Animation.SIZE_X, BGM_ANIMATION_Y + Animation.SIZE_Y));
 		playerAnimation.draw(c, p);
 	}
 }

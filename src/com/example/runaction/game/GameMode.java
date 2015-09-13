@@ -126,7 +126,7 @@ public class GameMode extends Mode{
 				releaseSubMode = true;
 			}
 		}));
-		standby = new SubMode(bm);
+		standby = new SubMode(bm, 0);
 
 		// gameover状態
 		bm = new ButtonManager();
