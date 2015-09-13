@@ -29,6 +29,7 @@ public class MainGameView extends SurfaceView
 	public void setGameImage(){
 		ImageManager manager = ImageManager.getInstance();
 		manager.loadBitmap(R.drawable.player);
+		manager.loadBitmap(R.drawable.button);
 	}
 	
 	@Override

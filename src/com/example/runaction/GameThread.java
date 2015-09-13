@@ -137,12 +137,23 @@ public 	class GameThread extends Thread{
 		}
 	}
 	
+	private Rect[] black;
 	public void setWindowSize(int w, int h){
 		float scaleX = (float)w / WINDOW_WIDTH;
 		float scaleY = (float)h /  WINDOW_HEIGHT;
 		scale = scaleX > scaleY ? scaleY : scaleX;
 		translateX = (w - WINDOW_WIDTH*scale)/2;
 		translateY = (h - WINDOW_HEIGHT*scale)/2;
+		black = new Rect[2];
+		if(translateX > 0){
+			black[0] = new Rect(0, 0, (int)translateX, h);
+			black[1] = new Rect((int)(translateX + WINDOW_WIDTH*scale), 0
+					, (int)(translateX*2 + WINDOW_WIDTH*scale), h);
+		}else{
+			black[0] = new Rect(0, 0, w, (int)translateY);
+			black[1] = new Rect(0, (int)(translateY + WINDOW_HEIGHT*scale)
+					, w, (int)(translateY*2 + WINDOW_HEIGHT*scale));
+		}
 		Log.d("Window", "scale: "+scale+" , tX: "+translateX+" , tY: "+translateY);
 		mode.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -162,6 +173,13 @@ public 	class GameThread extends Thread{
 			}
 			mode.update();
 			mode.draw(c, paint);
+			if(black != null){
+				c.scale(1.0f/scale, 1.0f/scale);
+				c.translate(-translateX, -translateY);
+				paint.setColor(0xFF000000);
+				c.drawRect(black[0], paint);
+				c.drawRect(black[1], paint);
+			}
 			surfaceHolder.unlockCanvasAndPost(c);
 		}
 	}
