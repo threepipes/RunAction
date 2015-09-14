@@ -14,6 +14,7 @@ public class TitleActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		MusicManager.getInstance().setContext(this);
 		ImageManager.getInstance().setResources(getResources());
 		setting = Setting.getInstance();
 //		TitleView titleView = new TitleView(this);
