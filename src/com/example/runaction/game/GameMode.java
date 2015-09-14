@@ -94,8 +94,9 @@ public class GameMode extends Mode{
 		
 		// clear
 		int[][] macroC = {
-				{0, AutoAnimation.NO_ACTION, 0, 0},
-				{0, AutoAnimation.BLACKOUT, 0xFF/10, 0},
+				{0, AutoAnimation.BLACKOUT, 0xFF/60, 0},
+				{0, AutoAnimation.STOP, 0, 0},
+				{AutoAnimation.FLAG_ENDOFBLACKOUT, AutoAnimation.NO_ACTION, 0, 0},
 				{AutoAnimation.FLAG_GROUND, AutoAnimation.WALK, 5, 1},
 				{AutoAnimation.FLAG_OUTOFWINDOW, AutoAnimation.NO_ACTION, 0, 1},
 		};

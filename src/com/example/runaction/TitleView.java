@@ -3,6 +3,7 @@ package com.example.runaction;
 import com.example.runaction.TitleView.TitleThread;
 import com.example.runaction.game.Animation;
 import com.example.runaction.game.AutoAnimation;
+import com.example.runaction.game.GameMode;
 import com.example.runaction.game.Player;
 
 import android.content.Context;
@@ -12,13 +13,18 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class TitleView  extends SurfaceView
 implements SurfaceHolder.Callback{
-	TitleThread titleThread;
-	TitleActivity titleActivity;
+	private TitleThread titleThread;
+	private TitleActivity titleActivity;
+	
+	private boolean touchState;
+	private boolean touched;
 
 	public TitleView(TitleActivity context){
 		super(context);
@@ -36,6 +42,8 @@ implements SurfaceHolder.Callback{
 			}
 		});
 		this.titleActivity = context;
+		touchState = false;
+		touched = false;
 	}
 
 	public void setTitleImage(){
@@ -58,6 +66,7 @@ implements SurfaceHolder.Callback{
 	public final static int EVENT_BGM_ON = 1;
 	public final static int EVENT_BGM_OFF = 2;
 	public final static int EVENT_GAMESTART = 3;
+	public final static int EVENT_SKIP_ANIMATION = 4;
 	public void setEvent(int event){
 		titleThread.setEvent(event);
 	}
@@ -77,6 +86,23 @@ implements SurfaceHolder.Callback{
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		titleThread.destroy();
 		titleThread = null;
+	}
+	
+	public void setTouchState(boolean state){
+		touchState = state;
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent e) {
+		if(!touchState) return false;
+		final int act = e.getAction();
+		if((act & 2) > 0 || act == 0){
+			touched = true;
+		}
+		if((act & 1) > 0 && touched){
+			titleThread.setEvent(EVENT_SKIP_ANIMATION);
+		}
+		return true;
 	}
 
 	class TitleThread extends Thread{
@@ -108,6 +134,9 @@ implements SurfaceHolder.Callback{
 			case TitleView.EVENT_BGM_OFF:
 				manager.setVolumeAnimation(false);
 				break;
+			case TitleView.EVENT_SKIP_ANIMATION:
+				gotoGame();
+				break;
 			}
 		}
 		
@@ -131,6 +160,7 @@ implements SurfaceHolder.Callback{
 		}
 		
 		public void gotoGame(){
+			manager.setSkipUpdate();
 			titleActivity.intentToGame();
 		}
 		
@@ -219,6 +249,10 @@ class TitleManager{
 	
 	public void awake(){
 		playerAnimation.contact();
+	}
+	
+	public void setSkipUpdate(){
+		skipUpdate = true;
 	}
 	
 	public void update(){

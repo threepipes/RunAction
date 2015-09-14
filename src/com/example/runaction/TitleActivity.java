@@ -25,7 +25,9 @@ public class TitleActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				((TitleView)findViewById(R.id.titleView)).setEvent(TitleView.EVENT_GAMESTART);
+				TitleView view = (TitleView)findViewById(R.id.titleView);
+				view.setEvent(TitleView.EVENT_GAMESTART);
+				view.setTouchState(true);
 //				intentToGame();
 				((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
 				((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
@@ -65,6 +67,8 @@ public class TitleActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		TitleView view = (TitleView)findViewById(R.id.titleView);
+		view.setTouchState(true);
 		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
 		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
 	}

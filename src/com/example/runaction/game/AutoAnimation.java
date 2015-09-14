@@ -142,7 +142,7 @@ public class AutoAnimation {
 		while(frameCount == macro[actionCount][KEY_FRAME]
 				|| checkActionFlag(macro[actionCount][KEY_FRAME])){
 			// フラグによる進行の場合、この時点でframeが不定なのでリセットされる
-			if(actionFlag < 0) frameCount = 0;
+			if(actionFlag != 0) frameCount = 0;
 			stop = false;
 			final int[] act = macro[actionCount];
 			switch(act[KEY_ACTION]){
@@ -184,7 +184,7 @@ public class AutoAnimation {
 		if(backgroundAlpha > 0){
 			if(backgroundAlpha > 0xFF){
 				backgroundAlpha = 0xFF;
-				actionCount |= -FLAG_ENDOFBLACKOUT;
+				actionFlag |= -FLAG_ENDOFBLACKOUT;
 			}
 			p.setColor(backgroundAlpha << 6*4 | backgroundColor);
 			c.drawRect(GameThread.WindowRect, p);
