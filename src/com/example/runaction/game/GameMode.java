@@ -126,7 +126,7 @@ public class GameMode extends Mode{
 		final int BUTTON_ID_PUSHED = R.drawable.button_pressed;
 		// standby状態(スタート直前状態)の生成
 		ButtonManager bm = new ButtonManager();
-		bm.put(0, new MyButton(new Rect(LEFT, 600, RIGHT, 600+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "START", new ButtonAction() {
+		bm.put(0, new MyButton(new Rect(LEFT, 600, RIGHT, 600+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "GO !", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;
@@ -176,7 +176,8 @@ public class GameMode extends Mode{
 			}
 		}));
 		pause = new SubMode(bm);
-		pauseButton = new MyButton(new Rect(10, 10, 110, 60), -1, -1, "PAUSE", new ButtonAction() {
+		pauseButton = new MyButton(new Rect(10, 10, 10+75, 10+75)
+				, R.drawable.button_pause, R.drawable.button_pause_pressed, null, new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				changeActiveSubMode(pause);
