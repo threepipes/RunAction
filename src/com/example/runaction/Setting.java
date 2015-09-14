@@ -5,7 +5,7 @@ public class Setting {
 	
 	private int value;
 
-	public static final int SET_VOLUME = 1;
+	public static final int SET_VOLUME_OFF = 1;
 	
 	private Setting(){
 		value = 0;
@@ -19,6 +19,10 @@ public class Setting {
 	}
 	
 	public void setSettingValue(int key, boolean value){
+		if(key == SET_VOLUME_OFF){
+			MusicManager.getInstance().setMusicSetting(value);
+		}
+		
 		if(value) this.value |= key;
 		else this.value &= ~key;
 	}

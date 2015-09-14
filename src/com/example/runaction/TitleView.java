@@ -207,7 +207,7 @@ class TitleManager{
 	
 	public TitleManager(TitleThread thread) {
 		this.thread = thread;
-		bgmState = !Setting.getInstance().getSettingValue(Setting.SET_VOLUME);
+		bgmState = !Setting.getInstance().getSettingValue(Setting.SET_VOLUME_OFF);
 		setAnimation();
 		skipUpdate = false;
 	}
@@ -232,6 +232,7 @@ class TitleManager{
 				{0, AutoAnimation.STOP, 0, 0},
 				{AutoAnimation.FLAG_EXE_COMMAND, AutoAnimation.STOP, 0, 1},
 				{20, AutoAnimation.JUMP, 10, 2},
+				{20, AutoAnimation.PLAY_SE, R.raw.jump, 0},
 				{AutoAnimation.FLAG_GROUND, AutoAnimation.NO_ACTION, 0, 3},
 				{10, AutoAnimation.NO_ACTION, 0, 4},
 				{20, AutoAnimation.WALK, 5, 5},

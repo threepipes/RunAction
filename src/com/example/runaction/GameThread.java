@@ -41,13 +41,9 @@ public 	class GameThread extends Thread{
 		mode = new GameMode(context, this);
 		setting = Setting.getInstance();
 		
-		if(!setting.getSettingValue(Setting.SET_VOLUME)){
+		if(!setting.getSettingValue(Setting.SET_VOLUME_OFF)){
 			MusicManager mManager = MusicManager.getInstance();
 			mManager.setBGM(R.raw.chiptune, true);
-			int[] seList = {
-					R.raw.jump
-			};
-			mManager.loadSE(seList);
 		}
 		activity = context;
 	}

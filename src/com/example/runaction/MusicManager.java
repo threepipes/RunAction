@@ -32,6 +32,8 @@ public class MusicManager {
 	private SoundPool sePlayer;
 	private SparseIntArray seMap;
 	
+	private boolean musicOff;
+	
 	// idを指定してBGMを開始
 	// loopがtrueのときループ再生
 	public void setBGM(int id, boolean loop){
@@ -39,6 +41,7 @@ public class MusicManager {
 		bgmPlayer = MediaPlayer.create(context, id);
 		try {
 			if(loop) bgmPlayer.setLooping(true);
+			if(musicOff) return;
 //			bgmPlayer.setVolume(0.1f, 0.1f);
 			bgmPlayer.start();
 		} catch (IllegalStateException e) {
@@ -46,8 +49,12 @@ public class MusicManager {
 		}
 	}
 	
+	public void setMusicSetting(boolean on){
+		musicOff = on;
+	}
+	
 	public void setMusicState(boolean on){
-		if(bgmPlayer == null) return;
+		if(bgmPlayer == null || musicOff) return;
 		if(!on && bgmPlayer.isPlaying()){
 			bgmPlayer.pause();
 		}else if(on && !bgmPlayer.isPlaying()){
@@ -75,7 +82,7 @@ public class MusicManager {
 	
 	// リソースIDで指定したSEを再生
 	public void playSE(int id){
-		if(sePlayer == null) return;
+		if(sePlayer == null || musicOff) return;
 		sePlayer.play(seMap.get(id), 1.0f, 1.0f, 1, 0, 1.0f);
 	}
 	

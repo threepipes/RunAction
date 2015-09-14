@@ -16,6 +16,18 @@ public class MainActivity extends Activity {
 		setContentView(gview);
 	}
 	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MusicManager.getInstance().setMusicState(false);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MusicManager.getInstance().setMusicState(true);
+	}
+	
 	public void intentToTitle(){
 		Intent intent = new Intent(MainActivity.this, TitleActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

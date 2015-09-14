@@ -2,6 +2,7 @@ package com.example.runaction.game;
 
 import com.example.runaction.GameThread;
 import com.example.runaction.ImageManager;
+import com.example.runaction.MusicManager;
 import com.example.runaction.R;
 
 import android.graphics.Canvas;
@@ -164,8 +165,11 @@ public class AutoAnimation {
 			case STOP:
 				stop = true;
 				break;
+			case PLAY_SE:
+				playSE(act[KEY_VALUE]);
+				break;
 			}
-			animation.setAnim(act[KEY_ANIMATION]);
+			if(act[KEY_ACTION] != PLAY_SE) animation.setAnim(act[KEY_ANIMATION]);
 			actionCount++;
 			if(actionCount >= macro.length){
 				onAnimation = false;
@@ -201,6 +205,7 @@ public class AutoAnimation {
 	public final static int SET_Y = 4;
 	public final static int BLACKOUT = 5;
 	public final static int STOP = 6;
+	public final static int PLAY_SE = 7;
 	
 	private void setX(int sx){
 		x = sx;
@@ -216,6 +221,10 @@ public class AutoAnimation {
 	
 	private void walk(int vx){
 		this.vx = vx;
+	}
+	
+	private void playSE(int id){
+		MusicManager.getInstance().playSE(id);
 	}
 	
 	public void setFloor(int f){

@@ -14,7 +14,7 @@ public class TitleActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MusicManager.getInstance().setContext(this);
+		loadMusic();
 		ImageManager.getInstance().setResources(getResources());
 		setting = Setting.getInstance();
 //		TitleView titleView = new TitleView(this);
@@ -37,15 +37,15 @@ public class TitleActivity extends Activity {
 		
 		btn = (Button) findViewById(R.id.button_volume);
 		btn.setVisibility(Button.VISIBLE);
-		if(setting.getSettingValue(Setting.SET_VOLUME)) btn.setText(R.string.button_voleme_off);
+		if(setting.getSettingValue(Setting.SET_VOLUME_OFF)) btn.setText(R.string.button_voleme_off);
 		btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				Button b = (Button) v;
-				setting.setSettingValue(Setting.SET_VOLUME
-						, !setting.getSettingValue(Setting.SET_VOLUME));
-				if(!setting.getSettingValue(Setting.SET_VOLUME)){
+				setting.setSettingValue(Setting.SET_VOLUME_OFF
+						, !setting.getSettingValue(Setting.SET_VOLUME_OFF));
+				if(!setting.getSettingValue(Setting.SET_VOLUME_OFF)){
 					((TitleView)findViewById(R.id.titleView)).setEvent(TitleView.EVENT_BGM_ON);
 					b.setText(R.string.button_volume);
 				}else{
@@ -56,6 +56,15 @@ public class TitleActivity extends Activity {
 		});
 
 		Log.d("TITLE", "called onCreate");
+	}
+	
+	private void loadMusic(){
+		MusicManager manager = MusicManager.getInstance();
+		manager.setContext(this);
+		int[] seList = {
+				R.raw.jump
+		};
+		manager.loadSE(seList);
 	}
 	
 	public void intentToGame(){
