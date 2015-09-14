@@ -1,17 +1,19 @@
 package com.example.runaction.game;
 
 import com.example.runaction.GameThread;
+import com.example.runaction.ImageManager;
 import com.example.runaction.MusicManager;
 import com.example.runaction.R;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class GameOverSubMode extends SubMode{
 	// 背景の暗さを調整するため
 	private int alpha;
 	// ブラックアウトにかける時間(Frame)
-	private static final int BLACKOUT_TIME = 8;
+	private static final int BLACKOUT_TIME = 30;
 	private static final int ADD_ALPHA = 0xFF / BLACKOUT_TIME;
 	// 完全にブラックアウトした後画像表示するためのフラグ
 	private boolean lightUp;
@@ -41,14 +43,19 @@ public class GameOverSubMode extends SubMode{
 			}
 		}
 	}
-	
+	private final static int IMAGE_WIDTH = 300;
+	private final static int IMAGE_HEIGHT = 300;
+	private final static int DRAW_X = GameThread.WINDOW_WIDTH/2 - IMAGE_WIDTH/2;
+	private final static int DRAW_Y = 200;
+	private Rect bgRect = new Rect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+	private Rect drawRect = new Rect(DRAW_X, DRAW_Y, DRAW_X+IMAGE_WIDTH, DRAW_Y+IMAGE_HEIGHT);
 	@Override
 	public void draw(Canvas c, Paint p) {
 		p.setColor(alpha << 6*4);
 		c.drawRect(GameThread.WindowRect, p);
 		if(!lightUp) return;
 		// 背景画像表示
-		
+		ImageManager.getInstance().drawBitmap(c, p, R.drawable.gameover, bgRect, drawRect);
 		// ボタン表示
 		buttonManager.draw(c, p);
 	}

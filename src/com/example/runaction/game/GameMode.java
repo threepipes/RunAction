@@ -120,7 +120,8 @@ public class GameMode extends Mode{
 		final int BUTTON_HEIGHT = 75;
 		final int LEFT = GameThread.WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2;
 		final int RIGHT = LEFT + BUTTON_WIDTH;
-		final int TOP = 400;
+		final int TOP_GAMEOVER = 600;
+		final int TOP_PAUSE = 400;
 		final int SPACE = 50;
 		final int BUTTON_ID = R.drawable.button;
 		final int BUTTON_ID_PUSHED = R.drawable.button_pressed;
@@ -136,14 +137,14 @@ public class GameMode extends Mode{
 
 		// gameover状態
 		bm = new ButtonManager();
-		bm.put(0, new MyButton(new Rect(LEFT, TOP, RIGHT, TOP+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "RESTART", new ButtonAction() {
+		bm.put(0, new MyButton(new Rect(LEFT, TOP_GAMEOVER, RIGHT, TOP_GAMEOVER+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "RESTART", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;
 				restart();
 			}
 		}));
-		bm.put(1, new MyButton(new Rect(LEFT, TOP+BUTTON_HEIGHT + SPACE, RIGHT, TOP+BUTTON_HEIGHT + SPACE + BUTTON_HEIGHT)
+		bm.put(1, new MyButton(new Rect(LEFT, TOP_GAMEOVER+BUTTON_HEIGHT + SPACE, RIGHT, TOP_GAMEOVER+BUTTON_HEIGHT + SPACE + BUTTON_HEIGHT)
 				, BUTTON_ID, BUTTON_ID_PUSHED, "TITLE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
@@ -154,13 +155,13 @@ public class GameMode extends Mode{
 
 		// pause状態
 		bm = new ButtonManager();
-		bm.put(0, new MyButton(new Rect(LEFT, TOP, RIGHT, TOP+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "CONTINUE", new ButtonAction() {
+		bm.put(0, new MyButton(new Rect(LEFT, TOP_PAUSE, RIGHT, TOP_PAUSE+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "CONTINUE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;
 			}
 		}));
-		bm.put(1, new MyButton(new Rect(LEFT, TOP+BUTTON_HEIGHT + SPACE, RIGHT, TOP+BUTTON_HEIGHT + SPACE + BUTTON_HEIGHT)
+		bm.put(1, new MyButton(new Rect(LEFT, TOP_PAUSE+BUTTON_HEIGHT + SPACE, RIGHT, TOP_PAUSE+BUTTON_HEIGHT + SPACE + BUTTON_HEIGHT)
 				, BUTTON_ID, BUTTON_ID_PUSHED, "RESTART", new ButtonAction() {
 			@Override
 			public void onClickAction() {
@@ -168,7 +169,7 @@ public class GameMode extends Mode{
 				restart();
 			}
 		}));
-		bm.put(2, new MyButton(new Rect(LEFT, TOP+(BUTTON_HEIGHT + SPACE)*2, RIGHT, TOP+(BUTTON_HEIGHT + SPACE)*2 + BUTTON_HEIGHT)
+		bm.put(2, new MyButton(new Rect(LEFT, TOP_PAUSE+(BUTTON_HEIGHT + SPACE)*2, RIGHT, TOP_PAUSE+(BUTTON_HEIGHT + SPACE)*2 + BUTTON_HEIGHT)
 				, BUTTON_ID, BUTTON_ID_PUSHED, "TITLE", new ButtonAction() {
 			@Override
 			public void onClickAction() {
