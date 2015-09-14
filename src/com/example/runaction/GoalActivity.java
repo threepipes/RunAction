@@ -14,6 +14,7 @@ public class GoalActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goal);
 		Button btn = (Button) findViewById(R.id.button_to_title);
+		MusicManager.getInstance().setBGM(R.raw.fanfare, false, false);
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -1,6 +1,8 @@
 package com.example.runaction.game;
 
 import com.example.runaction.GameThread;
+import com.example.runaction.MusicManager;
+import com.example.runaction.R;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,8 +16,11 @@ public class GameOverSubMode extends SubMode{
 	// 完全にブラックアウトした後画像表示するためのフラグ
 	private boolean lightUp;
 	
+	private MusicManager mManager;
+	
 	public GameOverSubMode(ButtonManager bm) {
 		super(bm);
+		mManager = MusicManager.getInstance();
 	}
 	
 	public void init(){
@@ -32,6 +37,7 @@ public class GameOverSubMode extends SubMode{
 			if(alpha > 0xFF){
 				alpha = 0xFF;
 				lightUp = true;
+				mManager.setBGM(R.raw.gameover, true, true);
 			}
 		}
 	}

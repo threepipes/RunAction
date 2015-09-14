@@ -34,11 +34,28 @@ public class MusicManager {
 	
 	private boolean musicOff;
 	
+	private int playingMusicID;
+	
 	// idを指定してBGMを開始
 	// loopがtrueのときループ再生
-	public void setBGM(int id, boolean loop){
-		if(bgmPlayer != null && bgmPlayer.isPlaying()) bgmPlayer.stop();
+	public void setBGM(int id, boolean loop, boolean reset){
+		if(bgmPlayer != null){
+			if(bgmPlayer.isPlaying()){
+				if(id != playingMusicID) bgmPlayer.stop();
+				else{
+					if(reset) bgmPlayer.seekTo(0);
+					return;
+				}
+			}else if(id == playingMusicID){
+				bgmPlayer.seekTo(0);
+				if(!musicOff){
+					bgmPlayer.start();
+				}
+				return;
+			}
+		}
 		bgmPlayer = MediaPlayer.create(context, id);
+		playingMusicID = id;
 		try {
 			if(loop) bgmPlayer.setLooping(true);
 			if(musicOff) return;
@@ -50,6 +67,8 @@ public class MusicManager {
 	}
 	
 	public void setMusicSetting(boolean on){
+		musicOff = false;
+		setMusicState(!on);
 		musicOff = on;
 	}
 	

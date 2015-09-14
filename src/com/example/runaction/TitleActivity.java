@@ -60,11 +60,15 @@ public class TitleActivity extends Activity {
 	
 	private void loadMusic(){
 		MusicManager manager = MusicManager.getInstance();
+		// set SE
 		manager.setContext(this);
 		int[] seList = {
-				R.raw.jump
+				R.raw.jump,
 		};
 		manager.loadSE(seList);
+		
+		// set BGM
+//		manager.setBGM(R.raw.title, true);
 	}
 	
 	public void intentToGame(){
@@ -78,9 +82,16 @@ public class TitleActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		TitleView view = (TitleView)findViewById(R.id.titleView);
-		view.setTouchState(true);
+		view.setTouchState(false);
 		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
 		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
+		
+		MusicManager.getInstance().setBGM(R.raw.title, true, false);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MusicManager.getInstance().setMusicState(false);
+	}
 }

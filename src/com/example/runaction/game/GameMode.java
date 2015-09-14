@@ -73,6 +73,7 @@ public class GameMode extends Mode{
 		player = new Player(Player_init_x, Player_init_y, map, this);
 		validateUpdate = true;
 		blackout = false;
+		mManager.setBGM(R.raw.chiptune, true, true);
 	}
 
 	public void restart(){
@@ -80,6 +81,7 @@ public class GameMode extends Mode{
 		player.setPoint(Player_init_x, Player_init_y);
 		validateUpdate = true;
 		blackout = false;
+		mManager.setBGM(R.raw.chiptune, true, true);
 	}
 	
 	// 自動アニメーションの生成(マクロやアニメーションのデータは別ファイルから持ってくるようにしたい)
@@ -253,6 +255,7 @@ public class GameMode extends Mode{
 		if(player.checkGoal()){
 			validateUpdate = false;
 			startAutoAnimation(clearAnimation, (int)(player.getX() + offsetX), (int)player.getY());
+			mManager.setMusicState(false);
 			reservedEvent = RESERVE_GAMECLEAR;
 		}
 	}
@@ -314,6 +317,7 @@ public class GameMode extends Mode{
 	public static final int EXIT_DEATH = 1;
 	public void exitRequest(int code){
 		startAutoAnimation(gameoverAnimation, (int)player.getX()+offsetX, (int)player.getY());
+		mManager.setMusicState(false);
 		reservedEvent = RESERVE_GAMEOVER;
 		validateUpdate = false;
 		Log.d("GAME", "exit="+code);

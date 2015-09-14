@@ -41,10 +41,10 @@ public 	class GameThread extends Thread{
 		mode = new GameMode(context, this);
 		setting = Setting.getInstance();
 		
-		if(!setting.getSettingValue(Setting.SET_VOLUME_OFF)){
-			MusicManager mManager = MusicManager.getInstance();
-			mManager.setBGM(R.raw.chiptune, true);
-		}
+//		if(!setting.getSettingValue(Setting.SET_VOLUME_OFF)){
+//			MusicManager mManager = MusicManager.getInstance();
+//			mManager.setBGM(R.raw.chiptune, true);
+//		}
 		activity = context;
 	}
 	
@@ -64,7 +64,7 @@ public 	class GameThread extends Thread{
 	
 	public void destroy(){
 		shouldContinue = false;
-		MusicManager.getInstance().setMusicState(false);
+//		MusicManager.getInstance().setMusicState(false);
 	}
 	
 	private Rect[] black;
