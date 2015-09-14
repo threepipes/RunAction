@@ -24,8 +24,6 @@ public 	class GameThread extends Thread{
 	Mode mode;
 	int keyEvent;
 	float keyX, keyY;
-	SoundPool sePlayer;
-	MediaPlayer bgmPlayer;
 	MainActivity activity;
 	
 	public static final int WINDOW_WIDTH = 540;
@@ -44,76 +42,16 @@ public 	class GameThread extends Thread{
 		setting = Setting.getInstance();
 		
 		if(!setting.getSettingValue(Setting.SET_VOLUME)){
-			setBGM(context);
-			loadMusic(context);
+			MusicManager mManager = MusicManager.getInstance();
+			mManager.setBGM(R.raw.chiptune, true);
+			int[] seList = {
+					R.raw.jump
+			};
+			mManager.loadSE(seList);
 		}
 		activity = context;
 	}
 	
-	void setBGM(Context context){
-		bgmPlayer = MediaPlayer.create(context, R.raw.chiptune);
-		try {
-			bgmPlayer.setLooping(true);
-//			bgmPlayer.setVolume(0.1f, 0.1f);
-			bgmPlayer.start();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	void switchBGM(){
-		if(bgmPlayer == null) return;
-		if(bgmPlayer.isPlaying()){
-			bgmPlayer.pause();
-		}else{
-			bgmPlayer.start();
-		}
-	}
-	
-	SparseIntArray seMap;
-	private void loadMusic(Context context){
-		seMap = new SparseIntArray();
-		sePlayer = buildSoundPool(1);
-		
-		int tap = sePlayer.load(context, R.raw.landing, 1);
-		seMap.put(R.raw.landing, tap);
-		
-		int jump = sePlayer.load(context, R.raw.jump, 1);
-		seMap.put(R.raw.jump, jump);
-	}
-	
-	public void playSE(int id){
-		if(sePlayer == null) return;
-		sePlayer.play(seMap.get(id), 1.0f, 1.0f, 1, 0, 1.0f);
-//		mp.start();
-		Log.d("Sound", "PlaySE");
-	}
-	
-	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	private SoundPool buildSoundPool(int poolMax)
-	{
-	    SoundPool pool = null;
-
-	    if (true || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-	        pool = new SoundPool(poolMax, AudioManager.STREAM_MUSIC, 0);
-	    }
-	    else {
-	        AudioAttributes attr = new AudioAttributes.Builder()
-	            .setUsage(AudioAttributes.USAGE_MEDIA)
-	            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-	            .build();
-
-	        pool = new SoundPool.Builder()
-	            .setAudioAttributes(attr)
-	            .setMaxStreams(poolMax)
-	            .build();
-	        
-	    }
-	    
-	    return pool;
-	}
-
 	
 	public void setEvent(MotionEvent e){
 		final int act = e.getAction();
@@ -130,11 +68,7 @@ public 	class GameThread extends Thread{
 	
 	public void destroy(){
 		shouldContinue = false;
-		if(bgmPlayer != null){
-			sePlayer.release();
-			bgmPlayer.stop();
-			bgmPlayer.release();
-		}
+		MusicManager.getInstance().setMusicState(false);
 	}
 	
 	private Rect[] black;

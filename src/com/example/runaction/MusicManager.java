@@ -35,6 +35,7 @@ public class MusicManager {
 	// idを指定してBGMを開始
 	// loopがtrueのときループ再生
 	public void setBGM(int id, boolean loop){
+		if(bgmPlayer != null && bgmPlayer.isPlaying()) bgmPlayer.stop();
 		bgmPlayer = MediaPlayer.create(context, id);
 		try {
 			if(loop) bgmPlayer.setLooping(true);
@@ -64,13 +65,15 @@ public class MusicManager {
 		}
 	}
 	
-	public void loadMusic(int[] musicList){
-		for(int i=0; i<musicList.length; i++){
-			int id = sePlayer.load(context, musicList[i], 1);
-			seMap.put(musicList[i], id);
+	// ロードするSEのリソースIDを配列で指定
+	public void loadSE(int[] seList){
+		for(int i=0; i<seList.length; i++){
+			int id = sePlayer.load(context, seList[i], 1);
+			seMap.put(seList[i], id);
 		}
 	}
 	
+	// リソースIDで指定したSEを再生
 	public void playSE(int id){
 		if(sePlayer == null) return;
 		sePlayer.play(seMap.get(id), 1.0f, 1.0f, 1, 0, 1.0f);
@@ -101,6 +104,7 @@ public class MusicManager {
 	    return pool;
 	}
 	
+	// アプリ終了時に呼び出す
 	public void destroy(){
 		if(sePlayer != null){
 			sePlayer.release();

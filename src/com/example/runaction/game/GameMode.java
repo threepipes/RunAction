@@ -1,6 +1,7 @@
 package com.example.runaction.game;
 
 import com.example.runaction.GameThread;
+import com.example.runaction.MusicManager;
 import com.example.runaction.R;
 
 import android.content.Context;
@@ -19,6 +20,7 @@ public class GameMode extends Mode{
 	private int offsetY;
 
 	private GameThread parent;
+	private MusicManager mManager;
 
 	private boolean releaseSubMode;
 	// 現在有効なSubMode
@@ -56,6 +58,7 @@ public class GameMode extends Mode{
 		createSubMode();
 		// AutoAnimationの設定
 		createAutoAnimation();
+		mManager = MusicManager.getInstance();
 
 		init(context);
 	}
@@ -204,7 +207,7 @@ public class GameMode extends Mode{
 	}
 
 	public void playSE(int id){
-		parent.playSE(id);
+		mManager.playSE(id);
 	}
 
 	private void culcOffset(){
