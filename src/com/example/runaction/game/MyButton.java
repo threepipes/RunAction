@@ -5,6 +5,7 @@ import com.example.runaction.ImageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Paint.FontMetrics;
 
 public class MyButton {
 	private Rect rect;
@@ -24,6 +25,8 @@ public class MyButton {
 		this.action = action;
 		this.imageID = imageID;
 		this.imageID_pushed = pushedID;
+		centerX = (rect.left + rect.right) / 2;
+		centerY = (rect.top + rect.bottom) / 2;
 		if(imageID < 0) return;
 		final int width = rect.right - rect.left;
 		final int height = rect.bottom - rect.top;
@@ -31,6 +34,8 @@ public class MyButton {
 	}
 	
 	private Rect range;
+	private int centerX;
+	private int centerY;
 	public void draw(Canvas c, Paint p){
 		if(!isVisualize) return;
 		if(imageID < 0){
@@ -42,7 +47,14 @@ public class MyButton {
 			ImageManager.getInstance().drawBitmap(c, p
 					, isPushed ? imageID_pushed : imageID, range, rect);
 		}
-		if(str != null) c.drawText(str, rect.left, rect.bottom, p);
+		if(str != null) drawText(c, p, str, centerX, centerY);
+	}
+	
+	private void drawText(Canvas c, Paint p, String text, int centerX, int centerY){
+		final int dx = (int)(centerX - p.measureText(text)/2);
+		final FontMetrics met = p.getFontMetrics();
+		final int dy = (int)(centerY - (met.bottom - met.top)/2 - met.top);
+		c.drawText(text, dx, dy, p);
 	}
 	
 	public boolean touchEvent(int x, int y, int event){

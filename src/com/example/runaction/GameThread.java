@@ -91,6 +91,7 @@ public 	class GameThread extends Thread{
 	@Override
 	public void run() {
 		Paint paint = new Paint();
+		setPaint(paint);
 		while(shouldContinue){
 			Canvas c = surfaceHolder.lockCanvas();
 			if(c == null) break;
@@ -112,6 +113,10 @@ public 	class GameThread extends Thread{
 			}
 			surfaceHolder.unlockCanvasAndPost(c);
 		}
+	}
+	
+	private void setPaint(Paint p){
+		p.setTextSize(40.0f);
 	}
 	
 	public void intentToTitle(){

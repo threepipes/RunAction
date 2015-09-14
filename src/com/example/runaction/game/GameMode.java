@@ -116,8 +116,8 @@ public class GameMode extends Mode{
 	}
 
 	private void createSubMode(){
-		final int BUTTON_WIDTH = 200;
-		final int BUTTON_HEIGHT = 50;
+		final int BUTTON_WIDTH = 300;
+		final int BUTTON_HEIGHT = 75;
 		final int LEFT = GameThread.WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2;
 		final int RIGHT = LEFT + BUTTON_WIDTH;
 		final int TOP = 400;
@@ -126,7 +126,7 @@ public class GameMode extends Mode{
 		final int BUTTON_ID_PUSHED = R.drawable.button_pressed;
 		// standby状態(スタート直前状態)の生成
 		ButtonManager bm = new ButtonManager();
-		bm.put(0, new MyButton(new Rect(LEFT, 600, RIGHT, 650), BUTTON_ID, BUTTON_ID_PUSHED, "START", new ButtonAction() {
+		bm.put(0, new MyButton(new Rect(LEFT, 600, RIGHT, 600+BUTTON_HEIGHT), BUTTON_ID, BUTTON_ID_PUSHED, "START", new ButtonAction() {
 			@Override
 			public void onClickAction() {
 				releaseSubMode = true;

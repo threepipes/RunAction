@@ -31,6 +31,7 @@
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:text="@string/to_title" />
+        android:text="@string/to_title"
+        android:textSize="@dimen/button_text_size" />
 
 </RelativeLayout>
