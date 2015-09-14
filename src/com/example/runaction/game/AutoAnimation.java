@@ -30,7 +30,8 @@ public class AutoAnimation {
 	public final static int FLAG_GROUND = -1;
 	public final static int FLAG_OUTOFWINDOW = -2;
 	// 外部からの直接進行命令
-	public final static int FLAG_EXE_COMMAND = -3;
+	public final static int FLAG_EXE_COMMAND = -4;
+	public final static int FLAG_ENDOFBLACKOUT = -8;
 	
 	private final static int SIZE_X = 32;
 	private final static int SIZE_Y = 32;
@@ -117,16 +118,16 @@ public class AutoAnimation {
 		if(y > floor){
 			y = floor;
 			vy = 0;
-			if(!onGround) actionFlag = FLAG_GROUND;
+			if(!onGround) actionFlag |= -FLAG_GROUND;
 		}
 		if(checkOutOfWindow()){
 			onWindow = false;
-			actionFlag = FLAG_OUTOFWINDOW;
+			actionFlag |= -FLAG_OUTOFWINDOW;
 		}
 	}
 	
 	public void contact(){
-		actionFlag = FLAG_EXE_COMMAND;
+		actionFlag |= -FLAG_EXE_COMMAND;
 	}
 	
 	private boolean checkOutOfWindow(){
@@ -139,7 +140,7 @@ public class AutoAnimation {
 			return;
 		}
 		while(frameCount == macro[actionCount][KEY_FRAME]
-				|| actionFlag == macro[actionCount][KEY_FRAME]){
+				|| checkActionFlag(macro[actionCount][KEY_FRAME])){
 			// フラグによる進行の場合、この時点でframeが不定なのでリセットされる
 			if(actionFlag < 0) frameCount = 0;
 			stop = false;
@@ -174,10 +175,17 @@ public class AutoAnimation {
 		actionFlag = 0;
 	}
 	
+	private boolean checkActionFlag(int nextFlag){
+		return nextFlag < 0 && (actionFlag & -nextFlag) > 0;
+	}
+	
 	public void draw(Canvas c, Paint p){
 		backgroundAlpha += blackoutPace;
 		if(backgroundAlpha > 0){
-			if(backgroundAlpha > 0xFF) backgroundAlpha = 0xFF;
+			if(backgroundAlpha > 0xFF){
+				backgroundAlpha = 0xFF;
+				actionCount |= -FLAG_ENDOFBLACKOUT;
+			}
 			p.setColor(backgroundAlpha << 6*4 | backgroundColor);
 			c.drawRect(GameThread.WindowRect, p);
 		}
