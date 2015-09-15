@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.example.runaction.BackGroundImage;
+import com.example.runaction.GameThread;
+import com.example.runaction.ImageManager;
 //import com.example.runaction.Kuribo;
 //import com.example.runaction.Needle;
 import com.example.runaction.R;
@@ -42,9 +45,27 @@ public class Map {
 		map = load("map.map", context);
 		
 		// 背景の読み込み(将来的には移動させたい)
+		loadBackground();
 		
 		
 		this.manager = manager;
+	}
+	
+	private void loadBackground(){
+		int[] imageID = {
+				R.drawable.sky,
+				R.drawable.yama
+		};
+		final int yamaHeight = 180;
+		Rect[] rects = {
+				new Rect(0, 0, GameThread.WINDOW_WIDTH, GameThread.WINDOW_HEIGHT),
+				new Rect(0, GameThread.WINDOW_HEIGHT-yamaHeight, 1440, GameThread.WINDOW_HEIGHT)
+		};
+		double[] offsetCoeff = {
+				0.2,
+				0.5
+		};
+		ImageManager.getInstance().setBackGround(new BackGroundImage(imageID, rects, offsetCoeff, 0));
 	}
 
 	public void resetStage(){
@@ -106,6 +127,7 @@ public class Map {
 	 * @param offsetY Y方向オフセット
 	 */
 	public void draw(Canvas c, Paint p, int offsetX, int offsetY) {
+		ImageManager.getInstance().drawBackground(c, p, offsetX, offsetY);
 		drawMap(c, p, offsetX, offsetY);
 		drawObject(c, p, offsetX, offsetY);
 	}

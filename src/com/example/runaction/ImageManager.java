@@ -25,6 +25,8 @@ public class ImageManager {
 	private Resources res;
 	// Bitmap保持
 	private SparseArray<Bitmap> bitmaps = new SparseArray<Bitmap>();
+	// 背景画像はサイズが大きいので別で管理
+	private BackGroundImage bgImage;
 	
 	public void setResources(Resources r){
 		res = r;
@@ -45,36 +47,29 @@ public class ImageManager {
 		}
 		c.drawBitmap(bitmap, drawableRange, drawRange, null);
 	}
-}
-
-class BackGroundImage{
-	ImageManager manager;
-	// 背景画像(奥のものから順に格納)
-	private int[] imageID;
-	// 各画像の描画位置
-	private Rect[] rect;
-	// offsetに係数をかけて画像の移動を制限
-	private double[] offsetCoeff;
 	
-	public BackGroundImage(int[] id, Rect[] rect, double[] coeff){
-		imageID = id;
-		this.rect = rect;
-		offsetCoeff = coeff;
-		manager = ImageManager.getInstance();
+	// ---------- 背景を扱う関数群 ----------
+	public void setBackGround(BackGroundImage bg){
+		if(bgImage != null && bg.equals(bgImage)) return;
+		// 新しいのが読み込まれるたびに古いものは解放する
+		if(bgImage != null) bgImage.destroy();
+		bgImage = bg;
+		bgImage.load();
 	}
 	
-	public void draw(Canvas c, Paint p, int offsetX, int offsetY){
-		for(int i=0; i<imageID.length; i++){
-			final int offX = (int)(offsetX * offsetCoeff[i]);
-			final int wid = rect[i].right - rect[i].left;
-			final int drawX = (offX/wid)*wid - offX;
-			final int drawNum = (- drawX + GameThread.WINDOW_WIDTH*2 - 1) / wid;
-			for(int j=0; j<drawNum; j++){
-				final int dx = drawX + j*wid;
-				manager.drawBitmap(c, p, imageID[i]
-						, new Rect(0, 0, wid, rect[i].bottom-rect[i].top)
-						, new Rect(dx, rect[i].top, dx + wid, rect[i].bottom));
-			}
+	public void drawBackground(Canvas c, Paint p, int offsetX, int offsetY){
+		if(bgImage == null) return;
+		bgImage.draw(c, p, offsetX, offsetY);
+	}
+	
+	public void release(int id){
+		final Bitmap bitmap = bitmaps.get(id, null);
+		if(bitmap == null){
+			// Bitmapが見つからなかった場合
+			return;
 		}
+		bitmap.recycle();
+		bitmaps.delete(id);
 	}
+	// ---------- ここまで背景関係 ----------
 }
