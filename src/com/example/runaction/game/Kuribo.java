@@ -1,5 +1,8 @@
 package com.example.runaction.game;
 
+
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 
 /*
@@ -13,7 +16,7 @@ import android.graphics.Point;
  */
 public class Kuribo extends Sprite {
     // スピード
-    private static final double SPEED = 1;
+    private static final double SPEED = 3;
 
     // 速度
     protected double vx;
@@ -21,13 +24,13 @@ public class Kuribo extends Sprite {
 
     public Kuribo(double x, double y, Map map) {
         super(x, y, map);
-        
         // 左に移動を続ける
         vx = -SPEED;
         vy = 0;
     }
 
     public void update() {
+    	if(death) return;
         // 重力で下向きに加速度がかかる
         vy += Map.GRAVITY;
 
@@ -77,5 +80,11 @@ public class Kuribo extends Sprite {
             }
         }
     }
+    
+    @Override
+	public void draw(int i, Canvas c, Paint p,int offsetX, int offsetY) {
+		if(death) return;
+		super.draw(i, c,p, offsetX, offsetY);
+	}
 }
 

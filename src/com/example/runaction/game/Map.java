@@ -8,7 +8,6 @@ import java.util.LinkedList;
 //import com.example.runaction.Needle;
 import com.example.runaction.R;
 
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -75,7 +74,7 @@ public class Map {
                      // 上から踏まれてたら
                      if ((int)player.getY() < (int)kuribo.getY()) {
                          // 栗ボーは消える
-                         sprites.remove(kuribo);
+                         sprite.death();
                          // 踏むとプレイヤーは再ジャンプ
                          player.setForceJump(true);
                          player.jump();
@@ -86,6 +85,12 @@ public class Map {
                      }
                  }
             }
+        }
+        iterator = sprites.iterator();
+        while (iterator.hasNext()) {
+        	if(((Sprite)iterator.next()).isdeath()){
+        		iterator.remove();
+        	}
         }
 	}
 	
@@ -155,16 +160,16 @@ public class Map {
 	 * @param newY Y座標
 	 * @return 衝突するブロックの座標
 	 */
-	public Point getTileCollision(Sprite player, double newX, double newY) {
+	public Point getTileCollision(Sprite sprite, double newX, double newY) {
 		// 小数点以下切り上げ
 		// 浮動小数点の関係で切り上げしないと衝突してないと判定される場合がある
 		newX = Math.ceil(newX);
 		newY = Math.ceil(newY);
 
-		double fromX = Math.min(player.getX(), newX);
-		double fromY = Math.min(player.getY(), newY);
-		double toX = Math.max(player.getX(), newX);
-		double toY = Math.max(player.getY(), newY);
+		double fromX = Math.min(sprite.getX(), newX);
+		double fromY = Math.min(sprite.getY(), newY);
+		double toX = Math.max(sprite.getX(), newX);
+		double toY = Math.max(sprite.getY(), newY);
 
 		int fromTileX = pixelsToTiles(fromX);
 		int fromTileY = pixelsToTiles(fromY);
@@ -182,7 +187,7 @@ public class Map {
 					//穴に落ちたらゲームオーバー
 					//                	System.exit(0);
 					//return new Point(x, y);
-					manager.exitRequest(GameMode.EXIT_DEATH);
+					sprite.death();
 					return null;
 				}
 				// ブロックがあったら衝突

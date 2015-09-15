@@ -33,6 +33,8 @@ public abstract class Sprite {
     // マップへの参照
     protected Map map;
 
+    protected boolean death;
+    
     public Sprite(double x, double y,/* String fileName,*/ Map map) {
         this.x = x;
         this.y = y;
@@ -118,7 +120,13 @@ public abstract class Sprite {
     public int getHeight() {
         return HEIGHT;
     }
+    public boolean isdeath(){
+    	return death;
+    }
     
+    public void death(){
+    	death = true;
+    }
     public Rect getRect(){
     	return new Rect((int)x,(int)y,(int)x + WIDTH,(int)y + HEIGHT);
     }

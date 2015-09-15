@@ -265,6 +265,11 @@ public class Player extends Sprite{
 //        c.drawRect(new Rect(dx, dy, dx+WIDTH, dy+HEIGHT), p);
     }
 
+    @Override
+    public void death() {
+    	manager.exitRequest(GameMode.EXIT_DEATH);
+    }
+    
 	/**
 	 * @return Returns the x.
 	 */
