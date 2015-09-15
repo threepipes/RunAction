@@ -20,9 +20,9 @@ public abstract class Sprite {
     protected double y;
     
     // 幅
-    protected static int WIDTH;
+    public static int WIDTH;
     // 高さ
-    protected static int HEIGHT;
+    public static int HEIGHT;
     
     // スプライト画像
 //    protected Image image;
