@@ -46,3 +46,26 @@ public class ImageManager {
 		c.drawBitmap(bitmap, drawableRange, drawRange, null);
 	}
 }
+
+class BackGroundImage{
+	// 背景画像(奥のものから順に格納)
+	private int[] imageID;
+	// 各画像の描画位置
+	private Rect[] rect;
+	// offsetに係数をかけて画像の移動を制限
+	private double[] offsetCoeff;
+	
+	public BackGroundImage(int[] id, Rect[] rect, double[] coeff){
+		imageID = id;
+		this.rect = rect;
+		offsetCoeff = coeff;
+	}
+	
+	public void draw(Canvas c, Paint p, int offsetX, int offsetY){
+		for(int i=0; i<imageID.length; i++){
+			final int drawX = 0;
+			final int drawY = rect[i].top;
+		}
+	}
+	
+}

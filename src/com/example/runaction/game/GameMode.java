@@ -278,11 +278,12 @@ public class GameMode extends Mode{
 		// プレイヤーを描画
 		player.draw(c, p, offsetX, offsetY);
 
-		// ポーズ用ボタン描画
-		pauseButton.draw(c, p);
 
 		if(activeSubMode != null){
 			activeSubMode.draw(c, p);
+		}else{
+			// ポーズ用ボタン描画
+			pauseButton.draw(c, p);
 		}
 		if(blackout){
 			p.setColor(0xFF000000);
