@@ -20,9 +20,9 @@ public abstract class Sprite {
     protected double y;
     
     // 幅
-    protected int WIDTH;
+    protected static int WIDTH;
     // 高さ
-    protected int HEIGHT;
+    protected static int HEIGHT;
     
     // スプライト画像
 //    protected Image image;
@@ -87,8 +87,8 @@ public abstract class Sprite {
      * @param sprite スプライト
      */
     public boolean isCollision(Sprite sprite) {
-        Rect playerRect = new Rect((int)x, (int)y, WIDTH, HEIGHT);
-        Rect spriteRect = new Rect((int)sprite.getX(), (int)sprite.getY(), sprite.getWidth(), sprite.getHeight());
+        Rect playerRect = getRect();
+        Rect spriteRect = sprite.getRect();
         // 自分の矩形と相手の矩形が重なっているか調べる
         if (Rect.intersects(playerRect, spriteRect)) {
             return true;
@@ -120,6 +120,10 @@ public abstract class Sprite {
      */
     public int getHeight() {
         return HEIGHT;
+    }
+    
+    public Rect getRect(){
+    	return new Rect((int)x,(int)y,(int)x + WIDTH,(int)y + HEIGHT);
     }
 
     /**

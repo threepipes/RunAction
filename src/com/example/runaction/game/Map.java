@@ -1,61 +1,46 @@
 package com.example.runaction.game;
 
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+//import com.example.runaction.Kuribo;
+//import com.example.runaction.Needle;
+import com.example.runaction.R;
+
+
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class Map {
 	// タイルサイズ
 	public static final int TILE_SIZE = 32;
 	// 行数
-	public static final int ROW = 30;
+	public static int ROW = 30;
 	// 列数
-	public static final int COL = 30;
+	public static int COL = 1000;
 	// 幅
-	public static final int WIDTH = TILE_SIZE * COL;
+	public static int WIDTH = TILE_SIZE * COL;
 	// 高さ
-	public static final int HEIGHT = TILE_SIZE * ROW;
+	public static int HEIGHT = TILE_SIZE * ROW;
 	// 重力
-	public static final double GRAVITY = 1.0;
+	public static final double GRAVITY = 2.0;
+	
+	   // スプライトリスト
+    private LinkedList sprites;
 
 	// マップ
-	private int[][] map = {
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1},
-			{1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1}
-	};
+	private byte[][] map;
 
 	private GameMode manager;
 
-	public Map(GameMode manager) {
+	public Map(GameMode manager, Context context) {
+		sprites = new LinkedList();
+		map = load("map.map", context);
 		this.manager = manager;
 	}
 
@@ -63,6 +48,47 @@ public class Map {
 		// 敵などの動くオブジェクトがある場合初期状態に戻す（マップのリセット）
 	}
 
+	public void mapupdate(Player player){
+		// マップにいるスプライトを取得
+        LinkedList sprites = getSprites();            
+        Iterator iterator = sprites.iterator();
+        while (iterator.hasNext()) {
+            Sprite sprite = (Sprite)iterator.next();
+            
+            // スプライトの状態を更新する
+            sprite.update();
+
+            // プレイヤーと接触してたら
+            if (player.isCollision(sprite)) {
+                if (sprite instanceof Needle) {  // 針
+                    Needle needle = (Needle)sprite;
+                    exitRequest();
+                    break;
+                 }
+                 else if (sprite instanceof Spring) {  //　ばね
+                        Spring spring = (Spring)sprite;
+                        // コインは消える
+                        player.jump2();
+                        break;
+                 }else if (sprite instanceof Kuribo) {  // 栗ボー
+                     Kuribo kuribo = (Kuribo)sprite;
+                     // 上から踏まれてたら
+                     if ((int)player.getY() < (int)kuribo.getY()) {
+                         // 栗ボーは消える
+                         sprites.remove(kuribo);
+                         // 踏むとプレイヤーは再ジャンプ
+                         player.setForceJump(true);
+                         player.jump();
+                         break;
+                     } else {
+                         // ゲームオーバー
+                    	 exitRequest();
+                     }
+                 }
+            }
+        }
+	}
+	
 	/**
 	 * マップを描画する
 	 * 
@@ -71,7 +97,29 @@ public class Map {
 	 * @param offsetY Y方向オフセット
 	 */
 	public void draw(Canvas c, Paint p, int offsetX, int offsetY) {
-		// オフセットを元に描画範囲を求める
+		drawMap(c, p, offsetX, offsetY);
+		drawObject(c, p, offsetX, offsetY);
+	}
+	
+	private void drawObject(Canvas c, Paint p, int offsetX, int offsetY){
+        // スプライトを描画
+        // マップにいるスプライトを取得
+        LinkedList sprites = getSprites();            
+        Iterator iterator = sprites.iterator();
+        while (iterator.hasNext()) {
+            Sprite sprite = (Sprite)iterator.next();
+            if(sprite instanceof Needle){
+            	sprite.draw(2,c, p, offsetX, offsetY);
+            }else if(sprite instanceof Spring){
+            	sprite.draw(3,c,p, offsetX, offsetY);
+            }else if(sprite instanceof Kuribo){
+            	sprite.draw(4, c,p, offsetX, offsetY);
+            }
+        }
+	}
+	
+	private void drawMap(Canvas c, Paint p, int offsetX, int offsetY){
+				// オフセットを元に描画範囲を求める
 		int firstTileX = pixelsToTiles(-offsetX);
 		int lastTileX = firstTileX + pixelsToTiles(GameMode.Width) + 1;
 		// 描画範囲がマップの大きさより大きくならないように調整
@@ -81,6 +129,9 @@ public class Map {
 		int lastTileY = firstTileY + pixelsToTiles(GameMode.Height) + 1;
 		// 描画範囲がマップの大きさより大きくならないように調整
 		lastTileY = Math.min(lastTileY, ROW);
+		if(map == null){
+			Log.e("ERR", "map is null");
+		}
 
 		p.setColor(0xFFCC8820);
 		for (int i = firstTileY; i < lastTileY; i++) {
@@ -104,7 +155,7 @@ public class Map {
 	 * @param newY Y座標
 	 * @return 衝突するブロックの座標
 	 */
-	public Point getTileCollision(Player player, double newX, double newY) {
+	public Point getTileCollision(Sprite player, double newX, double newY) {
 		// 小数点以下切り上げ
 		// 浮動小数点の関係で切り上げしないと衝突してないと判定される場合がある
 		newX = Math.ceil(newX);
@@ -144,6 +195,70 @@ public class Map {
 		return null;
 	}
 
+    
+    /**
+     * ファイルからマップを読み込む
+     * 
+     * @param filename 読み込むマップデータのファイル名
+     * @return 
+     */
+    private byte[][] load(String filename, Context context) {
+    	byte[][] tmap = null;
+    	try {
+            InputStream in = context.getResources().openRawResource(R.raw.map);
+            int row = in.read();
+            int col = in.read()<<8 | in.read();
+            tmap = new byte[row][col];
+            // マップサイズを設定
+//            int width = col * CHIP_SIZE;
+//            int height = row * CHIP_SIZE;
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    Log.d("START", "ij:"+i+" "+j);
+                    tmap[i][j] = (byte) in.read();
+                    Log.d("LINE", "ij:"+i+" "+j);
+                    switch (tmap[i][j]) {
+                  case 2:  // 針
+                      sprites.add(new Needle(tilesToPixels(j), tilesToPixels(i),/* "coin.gif",*/ this));
+                      break;
+                  case 3:  // ばね
+                  	sprites.add(new Spring(tilesToPixels(j),tilesToPixels(i),this));
+                  	break;
+                  case 4:	//クリボー
+                  	sprites.add(new Kuribo(tilesToPixels(j),tilesToPixels(i),this));
+                  	break;
+                  }
+                    if(i==29 && j == 999)
+                    	Log.d("SWITCHEND", "ij:"+i+" "+j);
+                }
+            }
+//            return tmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return tmap;
+    }
+    
+    /**
+     * @return Returns the width.
+     */
+    public int getWidth() {
+        return WIDTH;
+    }
+    
+    /**
+     * @return Returns the height.
+     */
+    public int getHeight() {
+        return HEIGHT;
+    }
+    /**
+     * @return Returns the sprites.
+     */
+    public LinkedList getSprites() {
+        return sprites;
+    }
+	
 	/**
 	 * ピクセル単位をタイル単位に変更する
 	 * @param pixels ピクセル単位

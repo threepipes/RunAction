@@ -19,27 +19,20 @@ import android.util.SparseArray;
  * @author mori
  *  
  */
-public class Player extends GameObject{
-	// 幅
-	public static final int WIDTH = 32;
-	// 高さ
-	public static final int HEIGHT = 32;
+public class Player extends Sprite{
 	// スピード
-	private static final int SPEED = 6;
+	private static final int SPEED = 8;
 	// ジャンプ力
 	private static final int JUMP_SPEED = 20;
-
-	// 位置
-	private double x;
-	private double y;
-
-
     // 速度
     private double vx;
     private double vy;
     
     // 着地しているか
     private boolean onGround;
+    
+    // 再ジャンプできるか
+    private boolean forceJump;
     
     // マップへの参照
     private Map map;
@@ -53,7 +46,7 @@ public class Player extends GameObject{
     // GoalするためのX座標   これを超えたらゴールとする
     // マップ自体に設定するのが望ましい
     // ゴール周辺は平らな地形にするように(激突してもゴールみたいなことを防ぐ)
-    private int goalX = (30 - 2) * Map.TILE_SIZE - 10;
+    private int goalX = (422 - 2) * Map.TILE_SIZE - 10;
     // キャラクタのアニメーションを実現するためのインスタンス
     private Animation animation;
     // playerがアクションを変えた場合に設定し、update内でアニメーションを切り替える
@@ -63,6 +56,7 @@ public class Player extends GameObject{
     private final static int ACTION_JUMP = 1;
     
     public Player(double x, double y, Map map, GameMode manager) {
+    	super(x,y,map);
         this.x = x;
         this.y = y;
         this.map = map;
@@ -76,6 +70,7 @@ public class Player extends GameObject{
         vx = SPEED;
         vy = 0;
         onGround = false;
+        forceJump = false;
         goal = false;
         animation.setAnim(ANIM_JUMP);
         actionChange = ACTION_NO_CHANGE;
@@ -149,16 +144,25 @@ public class Player extends GameObject{
      * ジャンプする
      */
     public void jump() {
-        if (onGround) {
+        if (onGround || forceJump) {
             // 上向きに速度を加える
             vy = -JUMP_SPEED;
             onGround = false;
+            forceJump = false;
             // Jump効果音
             manager.playSE(R.raw.jump);
             actionChange = ACTION_JUMP;
         }
     }
-
+    public void jump2(){
+    	vy = -JUMP_SPEED * 2;
+    	onGround = false;
+    }
+    
+    public void setForceJump(boolean forceJump) {
+        this.forceJump = forceJump;
+    }
+    
 	/**
 	 * プレイヤーの状態を更新する
 	 */

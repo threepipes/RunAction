@@ -48,7 +48,7 @@ public class GameMode extends Mode{
 	public void init(Context context){
 
 		// マップを作成
-		map = new Map(this);
+		map = new Map(this, context);
 
 		// プレイヤーを作成
 		player = new Player(Player_init_x, Player_init_y, map, this);
@@ -138,7 +138,7 @@ public class GameMode extends Mode{
 
 
 		// X方向のオフセットを計算
-		offsetX = Width / 2 - (int)player.getX();
+		offsetX = Width / 4 - (int)player.getX();
 		// マップの端ではスクロールしないようにする
 		offsetX = Math.min(offsetX, 0);
 		offsetX = Math.max(offsetX, Width - Map.WIDTH);
@@ -165,6 +165,8 @@ public class GameMode extends Mode{
 		culcOffset();
 
 		player.update();
+		
+		map.mapupdate(player);
 		if(player.checkGoal()){
 			validateUpdate = false;
 			gameClear();
