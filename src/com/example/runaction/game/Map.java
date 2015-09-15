@@ -40,6 +40,10 @@ public class Map {
 	public Map(GameMode manager, Context context) {
 		sprites = new LinkedList();
 		map = load("map.map", context);
+		
+		// 背景の読み込み(将来的には移動させたい)
+		
+		
 		this.manager = manager;
 	}
 
@@ -218,26 +222,21 @@ public class Map {
 //            int width = col * CHIP_SIZE;
 //            int height = row * CHIP_SIZE;
             for (int i = 0; i < row; i++) {
-                for (int j = 0; j < col; j++) {
-                    Log.d("START", "ij:"+i+" "+j);
-                    tmap[i][j] = (byte) in.read();
-                    Log.d("LINE", "ij:"+i+" "+j);
-                    switch (tmap[i][j]) {
-                  case 2:  // 針
-                      sprites.add(new Needle(tilesToPixels(j), tilesToPixels(i),/* "coin.gif",*/ this));
-                      break;
-                  case 3:  // ばね
-                  	sprites.add(new Spring(tilesToPixels(j),tilesToPixels(i),this));
-                  	break;
-                  case 4:	//クリボー
-                  	sprites.add(new Kuribo(tilesToPixels(j),tilesToPixels(i),this));
-                  	break;
-                  }
-                    if(i==29 && j == 999)
-                    	Log.d("SWITCHEND", "ij:"+i+" "+j);
-                }
+            	for (int j = 0; j < col; j++) {
+            		tmap[i][j] = (byte) in.read();
+            		switch (tmap[i][j]) {
+            		case 2:  // 針
+            			sprites.add(new Needle(tilesToPixels(j), tilesToPixels(i),/* "coin.gif",*/ this));
+            			break;
+            		case 3:  // ばね
+            			sprites.add(new Spring(tilesToPixels(j),tilesToPixels(i),this));
+            			break;
+            		case 4:	//クリボー
+            			sprites.add(new Kuribo(tilesToPixels(j),tilesToPixels(i),this));
+            			break;
+            		}
+            	}
             }
-//            return tmap;
         } catch (Exception e) {
             e.printStackTrace();
         }

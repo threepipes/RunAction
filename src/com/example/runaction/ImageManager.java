@@ -48,6 +48,7 @@ public class ImageManager {
 }
 
 class BackGroundImage{
+	ImageManager manager;
 	// 背景画像(奥のものから順に格納)
 	private int[] imageID;
 	// 各画像の描画位置
@@ -59,13 +60,21 @@ class BackGroundImage{
 		imageID = id;
 		this.rect = rect;
 		offsetCoeff = coeff;
+		manager = ImageManager.getInstance();
 	}
 	
 	public void draw(Canvas c, Paint p, int offsetX, int offsetY){
 		for(int i=0; i<imageID.length; i++){
-			final int drawX = 0;
-			final int drawY = rect[i].top;
+			final int offX = (int)(offsetX * offsetCoeff[i]);
+			final int wid = rect[i].right - rect[i].left;
+			final int drawX = (offX/wid)*wid - offX;
+			final int drawNum = (- drawX + GameThread.WINDOW_WIDTH*2 - 1) / wid;
+			for(int j=0; j<drawNum; j++){
+				final int dx = drawX + j*wid;
+				manager.drawBitmap(c, p, imageID[i]
+						, new Rect(0, 0, wid, rect[i].bottom-rect[i].top)
+						, new Rect(dx, rect[i].top, dx + wid, rect[i].bottom));
+			}
 		}
 	}
-	
 }
