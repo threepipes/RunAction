@@ -62,7 +62,7 @@ public class Map {
 				new Rect(0, GameThread.WINDOW_HEIGHT-yamaHeight, 1440, GameThread.WINDOW_HEIGHT)
 		};
 		double[] offsetCoeff = {
-				0.2,
+				0.3,
 				0.5
 		};
 		ImageManager.getInstance().setBackGround(new BackGroundImage(imageID, rects, offsetCoeff, 0));

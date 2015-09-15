@@ -62,8 +62,8 @@ public class GameMode extends Mode{
 
 		init(context);
 	}
-
-	private static final int Player_init_x = 60;
+	private static final int OFFSET_POS = GameThread.WINDOW_WIDTH / 5;
+	private static final int Player_init_x = OFFSET_POS;
 	private static final int Player_init_y = GameThread.WINDOW_HEIGHT - Player.HEIGHT*3;
 	// 将来的には、ここでステージ名をセット
 	public void init(Context context){
@@ -89,7 +89,7 @@ public class GameMode extends Mode{
 	private void createAutoAnimation(){
 		// gameover
 		int[][] macroG = {
-				{0, AutoAnimation.JUMP, 5, 0},
+				{0, AutoAnimation.JUMP, 20, 0},
 				{AutoAnimation.FLAG_OUTOFWINDOW, AutoAnimation.NO_ACTION, 0, 0},
 		};
 		int[][][] animG = {
@@ -217,7 +217,7 @@ public class GameMode extends Mode{
 
 	private void culcOffset(){
 		// X方向のオフセットを計算
-		offsetX = Width / 4 - (int)player.getX();
+		offsetX = OFFSET_POS - (int)player.getX();
 		// マップの端ではスクロールしないようにする
 		offsetX = Math.min(offsetX, 0);
 		offsetX = Math.max(offsetX, Width - Map.WIDTH);

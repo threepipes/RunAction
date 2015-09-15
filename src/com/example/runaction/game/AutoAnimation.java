@@ -66,7 +66,7 @@ public class AutoAnimation {
 		this.macro = macro;
 		animation = anim;
 		floor = GameThread.WINDOW_HEIGHT - SIZE_Y * 1; // 一時処置(Mapが決定し次第変更)
-		grav = Map.GRAVITY/4.0;
+		grav = Map.GRAVITY;
 		
 		init();
 	}
@@ -105,7 +105,7 @@ public class AutoAnimation {
 		moveUpdate();
 	}
 	
-	private final static int MAX_SPEED = 10;
+	private final static int MAX_SPEED = 20;
 	private void moveUpdate(){
 		if(stop) return;
 		vy += grav;
