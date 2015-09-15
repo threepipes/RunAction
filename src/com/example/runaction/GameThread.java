@@ -46,6 +46,7 @@ public 	class GameThread extends Thread{
 //			mManager.setBGM(R.raw.chiptune, true);
 //		}
 		activity = context;
+		previousTime = System.currentTimeMillis();
 	}
 	
 	
@@ -87,7 +88,8 @@ public 	class GameThread extends Thread{
 		Log.d("Window", "scale: "+scale+" , tX: "+translateX+" , tY: "+translateY);
 		mode.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
-	
+	private long previousTime;
+	private final static long sleepTime = 33;
 	@Override
 	public void run() {
 		Paint paint = new Paint();
@@ -112,15 +114,25 @@ public 	class GameThread extends Thread{
 				c.drawRect(black[1], paint);
 			}
 			surfaceHolder.unlockCanvasAndPost(c);
-			sleepMin(30);
+			
+			long nowTime = System.currentTimeMillis();
+			sleepMin(sleepTime - (nowTime - previousTime));
+			Log.d("TIME", "sleep:"+(sleepTime - (nowTime - previousTime)));
+			previousTime = nowTime;
 		}
+		Log.e("RUN", "out of method");
 	}
 	
 	private synchronized void sleepMin(long msec)
 	{	//指定ミリ秒実行を止めるメソッド
+		if(msec < 0) return;
+		if(msec > sleepTime) msec = sleepTime;
 		try{
-			wait(msec);
-		}catch(InterruptedException e){}
+//			wait(msec);
+			sleep(msec);
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 	
 	private void setPaint(Paint p){
