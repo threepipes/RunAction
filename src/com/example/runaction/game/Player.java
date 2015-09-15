@@ -159,12 +159,18 @@ public class Player extends Sprite{
             forceJump = false;
             // Jump効果音
             manager.playSE(R.raw.jump);
+            // Jumpアニメーション
             actionChange = ACTION_JUMP;
         }
     }
     public void jump2(){
     	vy = -JUMP_SPEED * 2;
     	onGround = false;
+
+        // Jump効果音
+        manager.playSE(R.raw.jump);
+        // Jumpアニメーション
+        actionChange = ACTION_JUMP;
     }
     
     public void setForceJump(boolean forceJump) {

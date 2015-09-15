@@ -64,7 +64,7 @@ public class GameMode extends Mode{
 	}
 
 	private static final int Player_init_x = 60;
-	private static final int Player_init_y = 850;
+	private static final int Player_init_y = GameThread.WINDOW_HEIGHT - Player.HEIGHT*3;
 	// 将来的には、ここでステージ名をセット
 	public void init(Context context){
 		// マップを作成
