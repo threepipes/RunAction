@@ -20,9 +20,9 @@ public abstract class Sprite {
     protected double y;
     
     // 幅
-    public static int WIDTH;
+    public final static int WIDTH = 32;
     // 高さ
-    public static int HEIGHT;
+    public final static int HEIGHT = 32;
     
     // スプライト画像
 //    protected Image image;
@@ -37,9 +37,6 @@ public abstract class Sprite {
         this.x = x;
         this.y = y;
         this.map = map;
-
-        WIDTH = 32;
-        HEIGHT = 32;
 
         // イメージをロードする
 //        loadImage(fileName);

@@ -112,7 +112,15 @@ public 	class GameThread extends Thread{
 				c.drawRect(black[1], paint);
 			}
 			surfaceHolder.unlockCanvasAndPost(c);
+			sleepMin(30);
 		}
+	}
+	
+	private synchronized void sleepMin(long msec)
+	{	//指定ミリ秒実行を止めるメソッド
+		try{
+			wait(msec);
+		}catch(InterruptedException e){}
 	}
 	
 	private void setPaint(Paint p){
