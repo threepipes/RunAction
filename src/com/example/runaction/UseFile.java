@@ -6,7 +6,7 @@ import android.content.Context;
 
 public class UseFile {
 	public final static int CHIP_SIZE = 32;
-    public byte[][] load(Context context) {
+    public static byte[][] load(Context context) {
         try {
             InputStream in = context.getResources().openRawResource(R.raw.map);
             int row = in.read();

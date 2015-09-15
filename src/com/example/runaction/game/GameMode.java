@@ -68,7 +68,8 @@ public class GameMode extends Mode{
 	// 将来的には、ここでステージ名をセット
 	public void init(Context context){
 		// マップを作成
-		map = new Map(this);
+		map = new Map(this, context);
+
 		// プレイヤーを作成
 		player = new Player(Player_init_x, Player_init_y, map, this);
 		validateUpdate = true;
@@ -216,7 +217,7 @@ public class GameMode extends Mode{
 
 	private void culcOffset(){
 		// X方向のオフセットを計算
-		offsetX = Width / 2 - (int)player.getX();
+		offsetX = Width / 4 - (int)player.getX();
 		// マップの端ではスクロールしないようにする
 		offsetX = Math.min(offsetX, 0);
 		offsetX = Math.max(offsetX, Width - Map.WIDTH);
@@ -254,6 +255,8 @@ public class GameMode extends Mode{
 		culcOffset();
 
 		player.update();
+		
+		map.mapupdate(player);
 		if(player.checkGoal()){
 			validateUpdate = false;
 			startAutoAnimation(clearAnimation, (int)(player.getX() + offsetX), (int)player.getY());
