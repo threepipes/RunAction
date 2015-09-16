@@ -8,7 +8,7 @@ public class UseFile {
 	public final static int CHIP_SIZE = 32;
     public static byte[][] load(Context context) {
         try {
-            InputStream in = context.getResources().openRawResource(R.raw.map);
+            InputStream in = context.getResources().openRawResource(R.raw.event);
             int row = in.read();
             int col = in.read()<<8 | in.read();
             // マップサイズを設定
@@ -24,7 +24,6 @@ public class UseFile {
             return map;
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return null;
+        }        return null;
     }
 }

@@ -1,6 +1,10 @@
 package com.example.runaction.game;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -235,33 +239,61 @@ public class Map {
      */
     private byte[][] load(String filename, Context context) {
     	byte[][] tmap = null;
+    	
     	try {
             InputStream in = context.getResources().openRawResource(R.raw.map);
             int row = in.read();
             int col = in.read()<<8 | in.read();
             tmap = new byte[row][col];
-            // マップサイズを設定
-//            int width = col * CHIP_SIZE;
-//            int height = row * CHIP_SIZE;
             for (int i = 0; i < row; i++) {
             	for (int j = 0; j < col; j++) {
-            		tmap[i][j] = (byte) in.read();
-            		switch (tmap[i][j]) {
-            		case 2:  // 針
-            			sprites.add(new Needle(tilesToPixels(j), tilesToPixels(i),/* "coin.gif",*/ this));
-            			break;
-            		case 3:  // ばね
-            			sprites.add(new Spring(tilesToPixels(j),tilesToPixels(i),this));
-            			break;
-            		case 4:	//クリボー
-            			sprites.add(new Kuribo(tilesToPixels(j),tilesToPixels(i),this));
-            			break;
-            		}
+            		tmap[i][j] = (byte) in.read();   
             	}
             }
-        } catch (Exception e) {
+    		
+//    		File file = new File("event.evt");
+//    		FileReader filereader = new FileReader(file);
+            InputStream is = context.getResources().openRawResource(R.raw.event);
+    		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    		
+    		String str;
+    		String[] event;
+    		int k,l;
+    		while((str = br.readLine())!= null){
+    			 event = str.split(",",-1);
+    			 k = Integer.parseInt(event[1]);
+    			 l = Integer.parseInt(event[2]);
+    			 if(event[0].equals("ENEMY")){
+    				 sprites.add(new Kuribo(tilesToPixels(k),tilesToPixels(l),this));
+    			 }
+    		}
+    		
+    		br.close();
+    		
+            // マップサイズを設定
+////            int width = col * CHIP_SIZE;
+////            int height = row * CHIP_SIZE;
+//            for (int i = 0; i < row; i++) {
+//            	for (int j = 0; j < col; j++) {
+//            		tmap[i][j] = (byte) in.read();
+//            		switch (tmap[i][j]) {
+//            	\	case 2:  // 針
+//            			sprites.add(new Needle(tilesToPixels(j), tilesToPixels(i),/* "coin.gif",*/ this));
+//            			break;
+//            		case 3:  // ばね
+//            			sprites.add(new Spring(tilesToPixels(j),tilesToPixels(i),this));
+//            			break;
+//            		case 4:	//クリボー
+//            			sprites.add(new Kuribo(tilesToPixels(j),tilesToPixels(i),this));
+//            			break;
+//            		}
+//            	}
+//            }
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }catch(IOException e){
+        	System.out.println(e);
+    	}
 		return tmap;
     }
     
