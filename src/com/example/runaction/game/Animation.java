@@ -38,6 +38,13 @@ public class Animation {
     	stop = false;
     }
     
+    public void init(){
+    	animation = defaultAnimation;
+    	animX = animation[0].x*SIZE_X;
+    	animY = animation[0].y*SIZE_Y;
+    	stop = false;
+    }
+    
     public Animation(int[][][] animationData){
     	animMap = new SparseArray<AnimData[]>();
     	AnimData[] defaultData = null;

@@ -17,7 +17,8 @@ public class Spring extends Sprite {
     }
     
     public void reset(){
-    	
+    	animation.init();
+    	animation.stopAnimation();
     }
 
 	public void update() {
