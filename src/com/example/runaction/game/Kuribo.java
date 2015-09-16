@@ -1,6 +1,8 @@
 package com.example.runaction.game;
 
 
+import com.example.runaction.R;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -21,9 +23,16 @@ public class Kuribo extends Sprite {
     // 速度
     protected double vx;
     protected double vy;
+    
+    private final static int ANIM_LEFT = 0;
+    private final static int ANIM_RIGHT = 1;
+    private final static int[][][] anim = {
+    		{{0, 0, 10},{1, 0, 10},{Animation.FLAG_LOOP, 0, 0}}, // 左向き	
+    		{{0, 1, 10},{1, 1, 10},{Animation.FLAG_LOOP, 0, 0}}, // 右向き
+    };
 
     public Kuribo(double x, double y, Map map) {
-        super(x, y, map);
+        super(x, y, map, new Animation(anim), R.drawable.kuri);
         // 左に移動を続ける
         vx = -SPEED;
         vy = 0;
@@ -54,6 +63,7 @@ public class Kuribo extends Sprite {
             }
             // 移動方向を反転
             vx = -vx;
+            animation.setAnim(vx < 0 ? ANIM_LEFT : ANIM_RIGHT);
         }
 
         // y方向の当たり判定
@@ -79,6 +89,7 @@ public class Kuribo extends Sprite {
                 vy = 0;
             }
         }
+        animation.update();
     }
     
     @Override

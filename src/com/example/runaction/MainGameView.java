@@ -34,6 +34,9 @@ public class MainGameView extends SurfaceView
 		manager.loadBitmap(R.drawable.button_pause);
 		manager.loadBitmap(R.drawable.button_pause_pressed);
 		manager.loadBitmap(R.drawable.gameover);
+		manager.loadBitmap(R.drawable.kuri);
+		manager.loadBitmap(R.drawable.toge);
+		manager.loadBitmap(R.drawable.jump);
 	}
 	
 	@Override
