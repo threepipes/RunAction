@@ -44,6 +44,7 @@ public class Map {
 	private byte[][] map;
 
 	private GameMode manager;
+	private final static int mapImageID = R.drawable.map;
 
 	public Map(GameMode manager, Context context) {
 		sprites = new LinkedList();
@@ -52,6 +53,7 @@ public class Map {
 		
 		// 背景の読み込み(将来的には移動させたい)
 		loadBackground();
+		ImageManager.getInstance().loadBitmap(mapImageID);
 		
 		
 		this.manager = manager;
@@ -183,19 +185,23 @@ public class Map {
 			Log.e("ERR", "map is null");
 		}
 
+		ImageManager manager = ImageManager.getInstance();
 		p.setColor(0xFFCC8820);
 		for (int i = firstTileY; i < lastTileY; i++) {
 			for (int j = firstTileX; j < lastTileX; j++) {
-				// mapの値に応じて画像を描く
-				switch (map[i][j]) {
-				case 1 : // ブロック
-					final int x = tilesToPixels(j) + offsetX;
-					final int y = tilesToPixels(i) + offsetY;
-					c.drawRect(new Rect(x, y, x+TILE_SIZE, y+TILE_SIZE), p);
-					break;
-				}
+				if(map[i][j] == 0) continue;
+				final int x = tilesToPixels(j) + offsetX;
+				final int y = tilesToPixels(i) + offsetY;
+				manager.drawBitmap(c, p, mapImageID, getDrawableRect(map[i][j]), new Rect(x, y, x+TILE_SIZE, y+TILE_SIZE));
 			}
 		}
+	}
+	
+	private final static int MAPCHIP_COLUMN = 16;
+	private Rect getDrawableRect(int mapChipID){
+		final int tx = mapChipID%MAPCHIP_COLUMN;
+		final int ty = mapChipID/MAPCHIP_COLUMN;
+		return new Rect(tx*TILE_SIZE, ty*TILE_SIZE, (tx+1)*TILE_SIZE, (ty+1)*TILE_SIZE);
 	}
 
 	/**
