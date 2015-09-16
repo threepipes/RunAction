@@ -1,5 +1,7 @@
 package com.example.runaction.game;
 
+import com.example.runaction.ImageManager;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -35,10 +37,15 @@ public abstract class Sprite {
 
     protected boolean death;
     
-    public Sprite(double x, double y,/* String fileName,*/ Map map) {
+    protected Animation animation;
+    protected int id;
+    
+    public Sprite(double x, double y,/* String fileName,*/ Map map, Animation anim, int imageID) {
         this.x = x;
         this.y = y;
         this.map = map;
+        animation = anim;
+        id = imageID;
 
         // イメージをロードする
 //        loadImage(fileName);
@@ -71,7 +78,9 @@ public abstract class Sprite {
     		p.setColor(0xFF00FF00);
     	final int tx = (int)x + offsetX;
 		final int ty = (int)y + offsetY;
-		c.drawRect(new Rect(tx, ty, tx+32, ty+32), p);
+		final Rect drawableRect = animation == null ? new Rect(0, 0, WIDTH, HEIGHT) : animation.getRect();
+		ImageManager.getInstance().drawBitmap(c, p, id, drawableRect, new Rect(tx, ty, tx+WIDTH, ty+HEIGHT));
+//		c.drawRect(new Rect(tx, ty, tx+WIDTH, ty+HEIGHT), p);
 //        g.fillRect((int)x + offsetX, (int)y + offsetY, 32, 32);
         /*g.drawImage(image,
                 (int) x + offsetX, (int) y + offsetY, 

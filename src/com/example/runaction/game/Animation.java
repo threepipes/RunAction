@@ -17,6 +17,8 @@ public class Animation {
     // 画像上で、表示する位置
     private int animX;
     private int animY;
+    // trueに設定でアニメーション停止
+    private boolean stop;
     
     // アニメーション管理マップ
     private SparseArray<AnimData[]> animMap;
@@ -33,6 +35,7 @@ public class Animation {
     	defaultAnimation = initAnim;
     	animX = animation[0].x*SIZE_X;
     	animY = animation[0].y*SIZE_Y;
+    	stop = false;
     }
     
     public Animation(int[][][] animationData){
@@ -75,6 +78,14 @@ public class Animation {
     	animNumber = 0;
     }
     
+    public void stopAnimation(){
+    	stop = true;
+    }
+    
+    public void restartAnimation(){
+    	stop = false;
+    }
+    
     // 指定画像表示時間を無限大にする場合のフレーム値
     public static final int FRAME_LOOP = 0;
     // フラグが何もない
@@ -83,6 +94,7 @@ public class Animation {
     // 指定画像に戻るフラグ(基本)
     public static final int FLAG_LOOP = -1;
     public void update(){
+    	if(stop) return;
     	// 終端はかならず(フラグ, 位置)で指定すること (無限ループの場合を除く)
     	checkAnimationException();
     	AnimData data = animation[animNumber];

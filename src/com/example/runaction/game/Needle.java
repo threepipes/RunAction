@@ -1,5 +1,7 @@
 package com.example.runaction.game;
 
+import com.example.runaction.R;
+
 /*
  * Created on 2005/06/24
  *
@@ -12,10 +14,9 @@ package com.example.runaction.game;
 public class Needle extends Sprite {
 
     public Needle(double x, double y, Map map) {
-    	super(x,y,map);
+    	super(x,y,map,null, R.drawable.toge);
 	}
 
 	public void update() {
     }
-    
 }

@@ -51,7 +51,7 @@ public class Player extends Sprite{
     // ゴール周辺は平らな地形にするように(激突してもゴールみたいなことを防ぐ)
     private int goalX = (422 - 2) * Map.TILE_SIZE - 10;
     // キャラクタのアニメーションを実現するためのインスタンス
-    private Animation animation;
+//    private Animation animation;
     // playerがアクションを変えた場合に設定し、update内でアニメーションを切り替える
     private int actionChange;
     private final static int ACTION_NO_CHANGE = -1;
@@ -59,12 +59,12 @@ public class Player extends Sprite{
     private final static int ACTION_JUMP = 1;
     
     public Player(double x, double y, Map map, GameMode manager) {
-    	super(x,y,map);
+    	super(x,y,map, new Animation(animationData), R.drawable.player);
         this.x = x;
         this.y = y;
         this.map = map;
         this.manager = manager;
-        animation = new Animation(animationData);
+//        animation = new Animation(animationData);
         initState();
     }
     
@@ -266,7 +266,7 @@ public class Player extends Sprite{
         p.setColor(0xFFFF0000);
         final int dx = (int) x + offsetX;
         final int dy = (int) y + offsetY;
-        ImageManager.getInstance().drawBitmap(c, p, R.drawable.player
+        ImageManager.getInstance().drawBitmap(c, p, id
         		, animation.getRect(), new Rect(dx, dy, dx+WIDTH, dy+HEIGHT));
 //        c.drawRect(new Rect(dx, dy, dx+WIDTH, dy+HEIGHT), p);
     }
