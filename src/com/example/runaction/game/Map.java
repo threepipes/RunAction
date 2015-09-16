@@ -108,7 +108,7 @@ public class Map {
                  }
                  else if (sprite instanceof Spring) {  //　ばね
                         Spring spring = (Spring)sprite;
-                        // コインは消える
+                        spring.setAnimation();
                         player.jump2();
                         break;
                  }else if (sprite instanceof Kuribo) {  // 栗ボー
