@@ -38,6 +38,7 @@ public class Map {
 	
 	   // スプライトリスト
     private LinkedList sprites;
+    private LinkedList tmpsprites;
 
 	// マップ
 	private byte[][] map;
@@ -46,6 +47,7 @@ public class Map {
 
 	public Map(GameMode manager, Context context) {
 		sprites = new LinkedList();
+		tmpsprites = new LinkedList();
 		map = load("map.map", context);
 		
 		// 背景の読み込み(将来的には移動させたい)
@@ -74,14 +76,25 @@ public class Map {
 
 	public void resetStage(){
 		// 敵などの動くオブジェクトがある場合初期状態に戻す（マップのリセット）
+		Iterator<Sprite> it = tmpsprites.iterator();
+        while (it.hasNext()) {
+        	Sprite sp = it.next();
+        	sprites.add(sp);
+        }
+        Iterator<Sprite> iterator = sprites.iterator();
+        while(iterator.hasNext()){
+        	Sprite sprite = iterator.next();
+        	sprite.reset();
+        }
+        tmpsprites.clear();
 	}
 
 	public void mapupdate(Player player){
 		// マップにいるスプライトを取得
-        LinkedList sprites = getSprites();            
-        Iterator iterator = sprites.iterator();
+        LinkedList<Sprite> sprites = getSprites();            
+        Iterator<Sprite> iterator = sprites.iterator();
         while (iterator.hasNext()) {
-            Sprite sprite = (Sprite)iterator.next();
+            Sprite sprite = iterator.next();
             
             // スプライトの状態を更新する
             sprite.update();
@@ -95,7 +108,7 @@ public class Map {
                  }
                  else if (sprite instanceof Spring) {  //　ばね
                         Spring spring = (Spring)sprite;
-                        spring.setAnimation();
+                        // コインは消える
                         player.jump2();
                         break;
                  }else if (sprite instanceof Kuribo) {  // 栗ボー
@@ -117,7 +130,9 @@ public class Map {
         }
         iterator = sprites.iterator();
         while (iterator.hasNext()) {
-        	if(((Sprite)iterator.next()).isdeath()){
+        	Sprite sp = iterator.next();
+        	if(sp.isdeath()){
+        		tmpsprites.add(sp);
         		iterator.remove();
         	}
         }
@@ -221,7 +236,7 @@ public class Map {
 					return null;
 				}
 				// ブロックがあったら衝突
-				if (map[y][x] == 1) {
+				if (map[y][x] != 0) {
 					return new Point(x, y);
 				}
 			}
@@ -265,6 +280,10 @@ public class Map {
     			 l = Integer.parseInt(event[2]);
     			 if(event[0].equals("ENEMY")){
     				 sprites.add(new Kuribo(tilesToPixels(k),tilesToPixels(l),this));
+    			 }else if(event[0].equals("NEEDLE")){
+    				 sprites.add(new Needle(tilesToPixels(k),tilesToPixels(l),this));
+    			 }else if(event[0].equals("SPRING")){
+    				 sprites.add(new Spring(tilesToPixels(k),tilesToPixels(l),this));
     			 }
     		}
     		

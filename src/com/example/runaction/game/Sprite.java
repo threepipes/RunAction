@@ -21,6 +21,9 @@ public abstract class Sprite {
     protected double x;
     protected double y;
     
+    protected double startx;
+    protected double starty;
+    
     // 幅
     public final static int WIDTH = 32;
     // 高さ
@@ -43,6 +46,8 @@ public abstract class Sprite {
     public Sprite(double x, double y,/* String fileName,*/ Map map, Animation anim, int imageID) {
         this.x = x;
         this.y = y;
+        startx = x;
+        starty = y;
         this.map = map;
         animation = anim;
         id = imageID;
@@ -140,6 +145,8 @@ public abstract class Sprite {
     	return new Rect((int)x,(int)y,(int)x + WIDTH,(int)y + HEIGHT);
     }
 
+    public abstract void reset();
+    
     /**
      * イメージをロードする
      * @param filename イメージファイル名

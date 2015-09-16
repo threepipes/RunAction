@@ -16,7 +16,11 @@ public class Needle extends Sprite {
     public Needle(double x, double y, Map map) {
     	super(x,y,map,null, R.drawable.toge);
 	}
-
+    
+    public void reset(){
+    	
+    }
+    
 	public void update() {
     }
 }

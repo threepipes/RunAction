@@ -251,6 +251,10 @@ public class Player extends Sprite{
         if(x >= goalX) goal = true;
     }
     
+	public void reset(){
+		
+	}
+	
     public boolean checkGoal(){
     	return goal;
     }

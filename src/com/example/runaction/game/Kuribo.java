@@ -92,6 +92,12 @@ public class Kuribo extends Sprite {
         animation.update();
     }
     
+    public void reset(){
+    	x = startx;
+    	y = starty;
+    	death = false;
+    }
+    
     @Override
 	public void draw(int i, Canvas c, Paint p,int offsetX, int offsetY) {
 		if(death) return;
