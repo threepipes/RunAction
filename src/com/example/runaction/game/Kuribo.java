@@ -27,8 +27,8 @@ public class Kuribo extends Sprite {
     private final static int ANIM_LEFT = 0;
     private final static int ANIM_RIGHT = 1;
     private final static int[][][] anim = {
-    		{{0, 0, 10},{1, 0, 10},{Animation.FLAG_LOOP, 0, 0}}, // 左向き	
-    		{{0, 1, 10},{1, 1, 10},{Animation.FLAG_LOOP, 0, 0}}, // 右向き
+    		{{0, 0, 8},{1, 0, 8},{Animation.FLAG_LOOP, 0, 0}}, // 左向き	
+    		{{0, 1, 8},{1, 1, 8},{Animation.FLAG_LOOP, 0, 0}}, // 右向き
     };
 
     public Kuribo(double x, double y, Map map) {
