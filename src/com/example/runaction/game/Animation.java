@@ -42,6 +42,8 @@ public class Animation {
     	animation = defaultAnimation;
     	animX = animation[0].x*SIZE_X;
     	animY = animation[0].y*SIZE_Y;
+    	animFrame = 0;
+    	animNumber = 0;
     	stop = false;
     }
     

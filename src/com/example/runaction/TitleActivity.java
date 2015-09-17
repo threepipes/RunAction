@@ -109,6 +109,10 @@ public class TitleActivity extends Activity {
 	}
 }
 
+class StartFragment extends Fragment{
+	
+}
+
 
 class SelectStageFragment extends Fragment{
 	private TitleActivity activity;
