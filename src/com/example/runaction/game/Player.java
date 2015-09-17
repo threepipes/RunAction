@@ -64,7 +64,6 @@ public class Player extends Sprite{
         this.y = y;
         this.map = map;
         this.manager = manager;
-//        animation = new Animation(animationData);
         initState();
     }
     
@@ -127,27 +126,6 @@ public class Player extends Sprite{
     	animation = new Animation(anim, defaultData);
     }
     
-    /**
-     * 停止する
-     
-    public void stop() {
-        vx = 0;
-    }
-	 */
-	/**
-	 * 左に加速する
-
-    public void accelerateLeft() {
-        vx = -SPEED;
-    }*/
-
-	/**
-	 * 右に加速する
-
-    public void accelerateRight() {
-        vx = SPEED;
-    }*/
-    
     @Override
     public boolean hitPlayer(Player player, Map map) {
     	return false;
@@ -202,14 +180,6 @@ public class Player extends Sprite{
 		} else {
 			// 衝突するタイルがある場合
 			map.exitRequest();
-			/*if (vx > 0) { // 右へ移動中なので右のブロックと衝突
-                // ブロックにめりこむ or 隙間がないように位置調整
-                //x = Map.tilesToPixels(tile.x) - WIDTH;
-            } else if (vx < 0) { // 左へ移動中なので左のブロックと衝突
-                // 位置調整
-                x = Map.tilesToPixels(tile.x + 1);
-            }*/
-			//vx = 0;
 		}
 
         // y方向の当たり判定
@@ -277,7 +247,6 @@ public class Player extends Sprite{
         final int dy = (int) y + offsetY;
         ImageManager.getInstance().drawBitmap(c, p, id
         		, animation.getRect(), new Rect(dx, dy, dx+WIDTH, dy+HEIGHT));
-//        c.drawRect(new Rect(dx, dy, dx+WIDTH, dy+HEIGHT), p);
     }
 
     @Override

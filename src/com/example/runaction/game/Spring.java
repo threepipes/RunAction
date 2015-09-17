@@ -23,7 +23,6 @@ public class Spring extends Sprite {
     
     @Override
     public boolean hitPlayer(Player player, Map map) {
-    	// TODO 自動生成されたメソッド・スタブ
         setAnimation();
         player.jump2();
         return true;
