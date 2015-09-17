@@ -66,6 +66,8 @@ public abstract class Sprite {
      * スプライトの状態を更新する
      */
     public abstract void update();
+    
+    public abstract boolean hitPlayer(Player player, Map map);
 
     /**
      * スプライトを描画
@@ -74,13 +76,13 @@ public abstract class Sprite {
      * @param offsetX X方向オフセット
      * @param offsetY Y方向オフセット
      */
-    public void draw(int i,Canvas c,Paint p, int offsetX, int offsetY) {
-    	if(i==2)
-    		p.setColor(0xFF0000FF);
-    	if(i==3)
-    		p.setColor(0xFFFFFFFF);
-    	if(i==4)
-    		p.setColor(0xFF00FF00);
+    public void draw(Canvas c,Paint p, int offsetX, int offsetY) {
+//    	if(i==2)
+//    		p.setColor(0xFF0000FF);
+//    	if(i==3)
+//    		p.setColor(0xFFFFFFFF);
+//    	if(i==4)
+//    		p.setColor(0xFF00FF00);
     	final int tx = (int)x + offsetX;
 		final int ty = (int)y + offsetY;
 		final Rect drawableRect = animation == null ? new Rect(0, 0, WIDTH, HEIGHT) : animation.getRect();

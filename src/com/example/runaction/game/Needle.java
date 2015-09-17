@@ -17,6 +17,12 @@ public class Needle extends Sprite {
     	super(x,y,map,null, R.drawable.toge);
 	}
     
+    @Override
+    public boolean hitPlayer(Player player, Map map) {
+    	map.exitRequest();
+    	return true;
+    }
+    
     public void reset(){
     	
     }

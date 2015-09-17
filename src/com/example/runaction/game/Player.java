@@ -147,6 +147,11 @@ public class Player extends Sprite{
     public void accelerateRight() {
         vx = SPEED;
     }*/
+    
+    @Override
+    public boolean hitPlayer(Player player, Map map) {
+    	return false;
+    }
 
     /**
      * ジャンプする

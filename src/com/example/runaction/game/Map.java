@@ -37,8 +37,8 @@ public class Map {
 	public static final double GRAVITY = 2.0;
 	
 	   // スプライトリスト
-    private LinkedList sprites;
-    private LinkedList tmpsprites;
+    private LinkedList<Sprite> sprites;
+    private LinkedList<Sprite> tmpsprites;
 
 	// マップ
 	private byte[][] map;
@@ -47,9 +47,9 @@ public class Map {
 	private final static int mapImageID = R.drawable.map;
 
 	public Map(GameMode manager, Context context) {
-		sprites = new LinkedList();
-		tmpsprites = new LinkedList();
-		map = load("map.map", context);
+		sprites = new LinkedList<Sprite>();
+		tmpsprites = new LinkedList<Sprite>();
+		map = load(R.raw.map, R.raw.event, context);
 		
 		// 背景の読み込み(将来的には移動させたい)
 		loadBackground();
@@ -70,8 +70,8 @@ public class Map {
 				new Rect(0, GameThread.WINDOW_HEIGHT-yamaHeight, 1440, GameThread.WINDOW_HEIGHT)
 		};
 		double[] offsetCoeff = {
-				0.3,
-				0.5
+				0.5,
+				0.8
 		};
 		ImageManager.getInstance().setBackGround(new BackGroundImage(imageID, rects, offsetCoeff, 0));
 	}
@@ -102,33 +102,8 @@ public class Map {
             sprite.update();
 
             // プレイヤーと接触してたら
-            if (player.isCollision(sprite)) {
-                if (sprite instanceof Needle) {  // 針
-                    Needle needle = (Needle)sprite;
-                    exitRequest();
-                    break;
-                 }
-                 else if (sprite instanceof Spring) {  //　ばね
-                        Spring spring = (Spring)sprite;
-                        spring.setAnimation();
-                        player.jump2();
-                        break;
-                 }else if (sprite instanceof Kuribo) {  // 栗ボー
-                     Kuribo kuribo = (Kuribo)sprite;
-                     // 上から踏まれてたら
-                     if ((int)player.getY() < (int)kuribo.getY()) {
-                         // 栗ボーは消える
-                         sprite.death();
-                         // 踏むとプレイヤーは再ジャンプ
-                         player.setForceJump(true);
-                         player.jump();
-                         break;
-                     } else {
-                         // ゲームオーバー
-                    	 exitRequest();
-                     }
-                 }
-            }
+            if (player.isCollision(sprite) && sprite.hitPlayer(player, this))
+            	break;
         }
         iterator = sprites.iterator();
         while (iterator.hasNext()) {
@@ -156,17 +131,10 @@ public class Map {
 	private void drawObject(Canvas c, Paint p, int offsetX, int offsetY){
         // スプライトを描画
         // マップにいるスプライトを取得
-        LinkedList sprites = getSprites();            
-        Iterator iterator = sprites.iterator();
+        LinkedList<Sprite> sprites = getSprites();            
+        Iterator<Sprite> iterator = sprites.iterator();
         while (iterator.hasNext()) {
-            Sprite sprite = (Sprite)iterator.next();
-            if(sprite instanceof Needle){
-            	sprite.draw(2,c, p, offsetX, offsetY);
-            }else if(sprite instanceof Spring){
-            	sprite.draw(3,c,p, offsetX, offsetY);
-            }else if(sprite instanceof Kuribo){
-            	sprite.draw(4, c,p, offsetX, offsetY);
-            }
+        	iterator.next().draw(c, p, offsetX, offsetY);
         }
 	}
 	
@@ -258,11 +226,11 @@ public class Map {
      * @param filename 読み込むマップデータのファイル名
      * @return 
      */
-    private byte[][] load(String filename, Context context) {
+    private byte[][] load(int mapID, int eventID, Context context) {
     	byte[][] tmap = null;
     	
     	try {
-            InputStream in = context.getResources().openRawResource(R.raw.map);
+            InputStream in = context.getResources().openRawResource(mapID);
             int row = in.read();
             int col = in.read()<<8 | in.read();
             tmap = new byte[row][col];
@@ -274,7 +242,7 @@ public class Map {
     		
 //    		File file = new File("event.evt");
 //    		FileReader filereader = new FileReader(file);
-            InputStream is = context.getResources().openRawResource(R.raw.event);
+            InputStream is = context.getResources().openRawResource(eventID);
     		BufferedReader br = new BufferedReader(new InputStreamReader(is));
     		
     		String str;
@@ -294,26 +262,6 @@ public class Map {
     		}
     		
     		br.close();
-    		
-            // マップサイズを設定
-////            int width = col * CHIP_SIZE;
-////            int height = row * CHIP_SIZE;
-//            for (int i = 0; i < row; i++) {
-//            	for (int j = 0; j < col; j++) {
-//            		tmap[i][j] = (byte) in.read();
-//            		switch (tmap[i][j]) {
-//            	\	case 2:  // 針
-//            			sprites.add(new Needle(tilesToPixels(j), tilesToPixels(i),/* "coin.gif",*/ this));
-//            			break;
-//            		case 3:  // ばね
-//            			sprites.add(new Spring(tilesToPixels(j),tilesToPixels(i),this));
-//            			break;
-//            		case 4:	//クリボー
-//            			sprites.add(new Kuribo(tilesToPixels(j),tilesToPixels(i),this));
-//            			break;
-//            		}
-//            	}
-//            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }catch(IOException e){
@@ -338,7 +286,7 @@ public class Map {
     /**
      * @return Returns the sprites.
      */
-    public LinkedList getSprites() {
+    public LinkedList<Sprite> getSprites() {
         return sprites;
     }
 	

@@ -99,9 +99,25 @@ public class Kuribo extends Sprite {
     }
     
     @Override
-	public void draw(int i, Canvas c, Paint p,int offsetX, int offsetY) {
+    public boolean hitPlayer(Player player, Map map) {
+        if ((int)player.getY() < (int)getY()) {
+            // 栗ボーは消える
+            death();
+            // 踏むとプレイヤーは再ジャンプ
+            player.setForceJump(true);
+            player.jump();
+            return true;
+        } else {
+            // ゲームオーバー
+        	map.exitRequest();
+        }
+    	return false;
+    }
+    
+    @Override
+	public void draw(Canvas c, Paint p,int offsetX, int offsetY) {
 		if(death) return;
-		super.draw(i, c,p, offsetX, offsetY);
+		super.draw(c,p, offsetX, offsetY);
 	}
 }
 
