@@ -80,9 +80,11 @@ public class GameMode extends Mode{
 	public void restart(){
 		map.resetStage();
 		player.setPoint(Player_init_x, Player_init_y);
+		culcOffset();
 		validateUpdate = true;
 		blackout = false;
 		mManager.setBGM(R.raw.chiptune, true, true);
+		changeActiveSubMode(standby);
 	}
 	
 	// 自動アニメーションの生成(マクロやアニメーションのデータは別ファイルから持ってくるようにしたい)
@@ -202,6 +204,7 @@ public class GameMode extends Mode{
 	
 	private void changeActiveSubMode(SubMode mode){
 		activeSubMode = mode;
+		releaseSubMode = false;
 		activeSubMode.init();
 	}
 	
