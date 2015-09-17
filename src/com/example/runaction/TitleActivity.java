@@ -17,9 +17,12 @@ public class TitleActivity extends Activity {
 		loadMusic();
 		ImageManager.getInstance().setResources(getResources());
 		setting = Setting.getInstance();
-//		TitleView titleView = new TitleView(this);
 		setContentView(R.layout.activity_title);
-//		setContentView(titleView);
+
+		Log.d("TITLE", "called onCreate");
+	}
+	
+	private void setButtonEvent(){
 		Button btn = (Button) findViewById(R.id.button);
 		btn.setVisibility(Button.VISIBLE);
 		btn.setOnClickListener(new OnClickListener() {
@@ -54,8 +57,6 @@ public class TitleActivity extends Activity {
 				}
 			}
 		});
-
-		Log.d("TITLE", "called onCreate");
 	}
 	
 	private void loadMusic(){

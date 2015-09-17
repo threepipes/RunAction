@@ -4,49 +4,35 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical" >
-    
-    <com.example.runaction.TitleView 
-        android:id="@+id/titleView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"/>
-
-    <RelativeLayout
-        android:id="@+id/layout_title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/text_stage_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/title_name"
+            android:text="@string/stage_select"
             android:textSize="@dimen/title_text_size" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_stage01"
             style="@style/button_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="215dp"
-            android:text="@string/button_start"
+            android:text="@string/stage_01"
             android:textSize="@dimen/button_text_size" />
 
         <Button
-            android:id="@+id/button_volume"
+            android:id="@+id/button_stage02"
             style="@style/button_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/button"
-            android:layout_alignTop="@+id/button"
+            android:layout_alignLeft="@+id/button_stage01"
+            android:layout_alignTop="@+id/button_stage01"
             android:layout_marginTop="78dp"
-            android:text="@string/button_volume"
+            android:text="@string/stage_02"
             android:textSize="@dimen/button_text_size" />
-
-    </RelativeLayout>
-    
 
 </RelativeLayout>
