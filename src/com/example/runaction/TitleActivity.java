@@ -1,15 +1,15 @@
 package com.example.runaction;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 public class TitleActivity extends Activity {
 
@@ -25,7 +25,7 @@ public class TitleActivity extends Activity {
 		Log.d("TITLE", "called onCreate");
 	}
 	
-	private void setStartAnimation(int stage){
+	public void setStartAnimation(int stage){
 		TitleView view = (TitleView)findViewById(R.id.titleView);
 		view.setEvent(TitleView.EVENT_GAMESTART);
 		view.setTouchState(true);
@@ -40,10 +40,10 @@ public class TitleActivity extends Activity {
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				setStartAnimation(0);
-				RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout_title);
-				layout.removeAllViews();
-				getLayoutInflater().inflate(R.layout.layout_select, layout);
+				setStartAnimation(0);
+//				RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout_title);
+//				layout.removeAllViews();
+//				getLayoutInflater().inflate(R.layout.layout_select, layout);
 //				setStageButtonAction();
 			}
 		});
@@ -67,52 +67,9 @@ public class TitleActivity extends Activity {
 				}
 			}
 		});
-		setStageButtonAction();
 	}
-	
-	private void setStageButtonAction(){
-		LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View testView = layoutInflater.inflate(R.layout.layout_select, null, false);
-		setContentView(testView);
-		Button btn = (Button) testView.findViewById(R.id.button_stage01);
-		btn.setVisibility(Button.VISIBLE);
-		btn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setStartAnimation(0);
-				setInvisibleSelectButton();
-			}
-		});
-		btn = (Button) testView.findViewById(R.id.button_stage02);
-		btn.setVisibility(Button.VISIBLE);
-		btn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setStartAnimation(1);
-				setInvisibleSelectButton();
-			}
-		});
-		btn = (Button) testView.findViewById(R.id.button_back);
-		btn.setVisibility(Button.VISIBLE);
-		btn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				RelativeLayout layout = (RelativeLayout)findViewById(R.layout.layout_select);
-				layout.removeAllViews();
-				getLayoutInflater().inflate(R.id.layout_title, layout);
-			}
-		});
-	}
-	
-	private void setInvisibleSelectButton(){
-		LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View testView = layoutInflater.inflate(R.layout.layout_select, null, false);
-		setContentView(testView);
-		Button btn = (Button) testView.findViewById(R.id.button_stage01);
-		btn.setVisibility(Button.INVISIBLE);
-		btn = (Button) testView.findViewById(R.id.button_stage02);
-		btn.setVisibility(Button.INVISIBLE);
-	}
+
+
 	
 	private void loadMusic(){
 		MusicManager manager = MusicManager.getInstance();
@@ -149,5 +106,52 @@ public class TitleActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		MusicManager.getInstance().setMusicState(false);
+	}
+}
+
+
+class SelectStageFragment extends Fragment{
+	private TitleActivity activity;
+	public SelectStageFragment(TitleActivity title) {
+		activity = title;
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.layout_select, container, false);
+		setStageButtonAction(rootView);
+        return rootView;
+	}
+	
+	private void setStageButtonAction(View view){
+		Button btn = (Button) view.findViewById(R.id.button_stage01);
+		btn.setVisibility(Button.VISIBLE);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.setStartAnimation(0);
+				setInvisibleSelectButton();
+			}
+		});
+		btn = (Button) view.findViewById(R.id.button_stage02);
+		btn.setVisibility(Button.VISIBLE);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.setStartAnimation(1);
+				setInvisibleSelectButton();
+			}
+		});
+		btn = (Button) view.findViewById(R.id.button_back);
+		btn.setVisibility(Button.VISIBLE);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// titleに戻る
+			}
+		});
+	}
+	
+	private void setInvisibleSelectButton(){
+		// buttonの不可視化(フラグメントごと消せるならそれで)
 	}
 }
