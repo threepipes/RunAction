@@ -52,7 +52,7 @@ public class GameMode extends Mode{
 	// これがfalseのとき、ゲームは停止状態になる
 	private boolean validateUpdate;
 
-	public GameMode(Context context, GameThread thread){
+	public GameMode(Context context, GameThread thread, int mapNumber){
 		this.parent = thread;
 		// pause画面などの一時画面を生成
 		createSubMode();
@@ -60,15 +60,15 @@ public class GameMode extends Mode{
 		createAutoAnimation();
 		mManager = MusicManager.getInstance();
 
-		init(context);
+		init(context, mapNumber);
 	}
 	private static final int OFFSET_POS = GameThread.WINDOW_WIDTH / 5;
 	private static final int Player_init_x = OFFSET_POS;
 	private static final int Player_init_y = GameThread.WINDOW_HEIGHT - Player.HEIGHT*3;
 	// 将来的には、ここでステージ名をセット
-	public void init(Context context){
+	public void init(Context context, int mapNumber){
 		// マップを作成
-		map = new Map(this, context);
+		map = new Map(this, context, mapNumber);
 
 		// プレイヤーを作成
 		player = new Player(Player_init_x, Player_init_y, map, this);

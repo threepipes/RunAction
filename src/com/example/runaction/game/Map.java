@@ -22,6 +22,18 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
 
+
+class MapData{
+	int mapDataID, eventID, mapChipID;
+	BackGroundImage backgroundData;
+	public MapData(int mID, int eID, int mapchip, BackGroundImage bgData){
+		mapDataID = mID;
+		eventID = eID;
+		mapChipID = mapchip;
+		backgroundData = bgData;
+	}
+}
+
 public class Map {
 	// タイルサイズ
 	public static final int TILE_SIZE = 32;
@@ -46,20 +58,35 @@ public class Map {
 	private GameMode manager;
 	private final static int mapImageID = R.drawable.map;
 
-	public Map(GameMode manager, Context context) {
+	public Map(GameMode manager, Context context, int mapNumber) {
 		sprites = new LinkedList<Sprite>();
 		tmpsprites = new LinkedList<Sprite>();
-		map = load(R.raw.map, R.raw.event, context);
-		
-		// 背景の読み込み(将来的には移動させたい)
-		loadBackground();
+		setMapData(createMapData(mapNumber), context);
+//		map = load(R.raw.map, R.raw.event, context);
+//		
+//		// 背景の読み込み(将来的には移動させたい)
+//		loadBackground();
 		ImageManager.getInstance().loadBitmap(mapImageID);
 		
 		
 		this.manager = manager;
 	}
 	
-	private void loadBackground(){
+	private void setMapData(MapData data, Context context){
+		map = load(data.mapDataID, data.eventID, context);
+		ImageManager.getInstance().setBackGround(data.backgroundData);
+	}
+	
+	private MapData createMapData(int mapNumber){
+		if(mapNumber == 0){
+			return new MapData(R.raw.map, R.raw.event, R.drawable.map, getBackgroundData());
+		}else if(mapNumber == 1){
+			
+		}
+		return null;
+	}
+	
+	private BackGroundImage getBackgroundData(){
 		int[] imageID = {
 				R.drawable.sky,
 				R.drawable.yama
@@ -73,7 +100,7 @@ public class Map {
 				0.5,
 				0.8
 		};
-		ImageManager.getInstance().setBackGround(new BackGroundImage(imageID, rects, offsetCoeff, 0));
+		return new BackGroundImage(imageID, rects, offsetCoeff, 0);
 	}
 
 	public void resetStage(){

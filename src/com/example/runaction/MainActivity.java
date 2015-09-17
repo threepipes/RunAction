@@ -12,7 +12,7 @@ public class MainActivity extends Activity {
 		Intent intent = getIntent();
 		int setting = intent.getIntExtra("settings", 0);
 		
-		MainGameView gview = new MainGameView(this, setting);
+		MainGameView gview = new MainGameView(this, 0, setting);
 		setContentView(gview);
 	}
 	

@@ -12,13 +12,13 @@ public class MainGameView extends SurfaceView
 	implements SurfaceHolder.Callback{
 	GameThread gameThread;
 	
-	public MainGameView(MainActivity context, int setting){
+	public MainGameView(MainActivity context, int mapNumber, int setting){
 		super(context);
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		// プレイヤー画像の設定(ここで呼び出すべきかどうか TODO )
 		setGameImage();
-		gameThread = new GameThread(holder, context, new Handler(){
+		gameThread = new GameThread(holder, context, mapNumber, new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);

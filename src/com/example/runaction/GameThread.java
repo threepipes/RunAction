@@ -3,19 +3,11 @@ package com.example.runaction;
 import com.example.runaction.game.GameMode;
 import com.example.runaction.game.Mode;
 
-import android.annotation.TargetApi;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
-import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
@@ -36,9 +28,9 @@ public 	class GameThread extends Thread{
 	private Setting setting;
 	
 	boolean shouldContinue = true;
-	public GameThread(SurfaceHolder surfaceHolder, MainActivity context, Handler handler){
+	public GameThread(SurfaceHolder surfaceHolder, MainActivity context, int mapNumber, Handler handler){
 		this.surfaceHolder = surfaceHolder;
-		mode = new GameMode(context, this);
+		mode = new GameMode(context, this, mapNumber);
 		setting = Setting.getInstance();
 		
 //		if(!setting.getSettingValue(Setting.SET_VOLUME_OFF)){
