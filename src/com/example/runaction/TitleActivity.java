@@ -1,12 +1,15 @@
 package com.example.runaction;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 public class TitleActivity extends Activity {
 
@@ -18,28 +21,35 @@ public class TitleActivity extends Activity {
 		ImageManager.getInstance().setResources(getResources());
 		setting = Setting.getInstance();
 		setContentView(R.layout.activity_title);
-
+		setButtonEvent();
 		Log.d("TITLE", "called onCreate");
+	}
+	
+	private void setStartAnimation(int stage){
+		TitleView view = (TitleView)findViewById(R.id.titleView);
+		view.setEvent(TitleView.EVENT_GAMESTART);
+		view.setTouchState(true);
+		view.setStage(stage);
+//		((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
+//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
 	}
 	
 	private void setButtonEvent(){
 		Button btn = (Button) findViewById(R.id.button);
-		btn.setVisibility(Button.VISIBLE);
+//		btn.setVisibility(Button.VISIBLE);
 		btn.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				TitleView view = (TitleView)findViewById(R.id.titleView);
-				view.setEvent(TitleView.EVENT_GAMESTART);
-				view.setTouchState(true);
-//				intentToGame();
-				((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
-				((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
+//				setStartAnimation(0);
+				RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout_title);
+				layout.removeAllViews();
+				getLayoutInflater().inflate(R.layout.layout_select, layout);
+//				setStageButtonAction();
 			}
 		});
 		
 		btn = (Button) findViewById(R.id.button_volume);
-		btn.setVisibility(Button.VISIBLE);
+//		btn.setVisibility(Button.VISIBLE);
 		if(setting.getSettingValue(Setting.SET_VOLUME_OFF)) btn.setText(R.string.button_voleme_off);
 		btn.setOnClickListener(new OnClickListener() {
 			
@@ -57,6 +67,51 @@ public class TitleActivity extends Activity {
 				}
 			}
 		});
+		setStageButtonAction();
+	}
+	
+	private void setStageButtonAction(){
+		LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View testView = layoutInflater.inflate(R.layout.layout_select, null, false);
+		setContentView(testView);
+		Button btn = (Button) testView.findViewById(R.id.button_stage01);
+		btn.setVisibility(Button.VISIBLE);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setStartAnimation(0);
+				setInvisibleSelectButton();
+			}
+		});
+		btn = (Button) testView.findViewById(R.id.button_stage02);
+		btn.setVisibility(Button.VISIBLE);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setStartAnimation(1);
+				setInvisibleSelectButton();
+			}
+		});
+		btn = (Button) testView.findViewById(R.id.button_back);
+		btn.setVisibility(Button.VISIBLE);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				RelativeLayout layout = (RelativeLayout)findViewById(R.layout.layout_select);
+				layout.removeAllViews();
+				getLayoutInflater().inflate(R.id.layout_title, layout);
+			}
+		});
+	}
+	
+	private void setInvisibleSelectButton(){
+		LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View testView = layoutInflater.inflate(R.layout.layout_select, null, false);
+		setContentView(testView);
+		Button btn = (Button) testView.findViewById(R.id.button_stage01);
+		btn.setVisibility(Button.INVISIBLE);
+		btn = (Button) testView.findViewById(R.id.button_stage02);
+		btn.setVisibility(Button.INVISIBLE);
 	}
 	
 	private void loadMusic(){
@@ -72,9 +127,9 @@ public class TitleActivity extends Activity {
 //		manager.setBGM(R.raw.title, true);
 	}
 	
-	public void intentToGame(){
+	public void intentToGame(int stage){
 		Intent intent = new Intent(TitleActivity.this, MainActivity.class);
-		intent.putExtra("settings", setting.getAllValue());
+		intent.putExtra("stage", stage);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(intent);
 	}
@@ -84,8 +139,8 @@ public class TitleActivity extends Activity {
 		super.onResume();
 		TitleView view = (TitleView)findViewById(R.id.titleView);
 		view.setTouchState(false);
-		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
-		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
+//		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
+//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
 		
 		MusicManager.getInstance().setBGM(R.raw.title, true, false);
 	}

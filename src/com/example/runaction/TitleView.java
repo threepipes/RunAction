@@ -25,6 +25,8 @@ implements SurfaceHolder.Callback{
 	
 	private boolean touchState;
 	private boolean touched;
+	
+	private int stage;
 
 	public TitleView(TitleActivity context){
 		super(context);
@@ -86,6 +88,10 @@ implements SurfaceHolder.Callback{
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		titleThread.destroy();
 		titleThread = null;
+	}
+	
+	public void setStage(int st){
+		stage = st;
 	}
 	
 	public void setTouchState(boolean state){
@@ -161,7 +167,7 @@ implements SurfaceHolder.Callback{
 		
 		public void gotoGame(){
 			manager.setSkipUpdate();
-			titleActivity.intentToGame();
+			titleActivity.intentToGame(stage);
 		}
 		
 		public void destroy(){

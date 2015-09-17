@@ -16,5 +16,6 @@
     <string name="to_title">TITLE</string>
     <string name="stage_01">STAGE EASY</string>
     <string name="stage_02">STAGE DIFFICULT</string>
+    <string name="back">BACK</string>
 
 </resources>
