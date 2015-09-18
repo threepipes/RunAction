@@ -40,6 +40,9 @@ public class TitleActivity extends Activity {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		SelectStageFragment fragment = new SelectStageFragment(this);
+//		fragmentTransaction.setCustomAnimations(
+//				R.anim.fragment_slide_right_enter
+//				, R.anim.fragment_slide_left_exit);
 		fragmentTransaction.replace(R.id.container, fragment);
 		fragmentTransaction.commit();
 	}
@@ -48,6 +51,9 @@ public class TitleActivity extends Activity {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		StartFragment fragment = new StartFragment(this);
+//		fragmentTransaction.setCustomAnimations(
+//				R.anim.fragment_slide_left_enter
+//				, R.anim.fragment_slide_right_exit);
 		fragmentTransaction.replace(R.id.container, fragment);
 		fragmentTransaction.commit();
 	}

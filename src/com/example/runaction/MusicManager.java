@@ -1,5 +1,7 @@
 package com.example.runaction;
 
+import java.io.IOException;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.media.AudioAttributes;
@@ -41,7 +43,18 @@ public class MusicManager {
 	public void setBGM(int id, boolean loop, boolean reset){
 		if(bgmPlayer != null){
 			if(bgmPlayer.isPlaying()){
-				if(id != playingMusicID) bgmPlayer.stop();
+				if(id != playingMusicID){
+					bgmPlayer.stop();
+					try {
+						bgmPlayer.prepare();
+					} catch (IllegalStateException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					}
+				}
 				else{
 					if(reset) bgmPlayer.seekTo(0);
 					return;
