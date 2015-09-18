@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -62,6 +63,7 @@ public class Map {
 		sprites = new LinkedList<Sprite>();
 		tmpsprites = new LinkedList<Sprite>();
 		setMapData(createMapData(mapNumber), context);
+		Collections.sort(sprites);
 //		map = load(R.raw.map, R.raw.event, context);
 //		
 //		// 背景の読み込み(将来的には移動させたい)
@@ -116,6 +118,7 @@ public class Map {
         	sprite.reset();
         }
         tmpsprites.clear();
+        Collections.sort(sprites);
 	}
 
 	public void mapupdate(Player player){
@@ -131,14 +134,16 @@ public class Map {
             // プレイヤーと接触してたら
             if (player.isCollision(sprite) && sprite.hitPlayer(player, this))
             	break;
-        }
-        iterator = sprites.iterator();
-        while (iterator.hasNext()) {
-        	Sprite sp = iterator.next();
-        	if(sp.isdeath()){
-        		tmpsprites.add(sp);
-        		iterator.remove();
-        	}
+            
+            // プレイヤーより一画面以上先にいるスプライトと衝突判定しても仕方ないのでbreak
+            if(sprite.getX() > player.getX() + GameThread.WINDOW_WIDTH)
+            	break;
+            
+            // プレイヤーより後ろ且つ画面外に出たスプライトはリセットまで扱わないのでいったん除外
+            if(sprite.getX() < player.getX() - GameThread.WINDOW_WIDTH/2 || sprite.isdeath()){
+            	tmpsprites.add(sprite);
+            	iterator.remove();
+            }
         }
 	}
 	
@@ -149,19 +154,23 @@ public class Map {
 	 * @param offsetX X方向オフセット
 	 * @param offsetY Y方向オフセット
 	 */
-	public void draw(Canvas c, Paint p, int offsetX, int offsetY) {
+	public void draw(Canvas c, Paint p, int offsetX, int offsetY, int playerX) {
 		ImageManager.getInstance().drawBackground(c, p, offsetX, offsetY);
 		drawMap(c, p, offsetX, offsetY);
-		drawObject(c, p, offsetX, offsetY);
+		drawObject(c, p, offsetX, offsetY, playerX);
 	}
 	
-	private void drawObject(Canvas c, Paint p, int offsetX, int offsetY){
+	private void drawObject(Canvas c, Paint p, int offsetX, int offsetY, int playerX){
         // スプライトを描画
         // マップにいるスプライトを取得
         LinkedList<Sprite> sprites = getSprites();            
         Iterator<Sprite> iterator = sprites.iterator();
         while (iterator.hasNext()) {
-        	iterator.next().draw(c, p, offsetX, offsetY);
+        	Sprite sp = iterator.next();
+        	sp.draw(c, p, offsetX, offsetY);
+        	// プレイヤーより一画面以上先にいるスプライトを描いても仕方ないのでbreak
+            if(sp.getX() > playerX + GameThread.WINDOW_WIDTH)
+            	break;
         }
 	}
 	

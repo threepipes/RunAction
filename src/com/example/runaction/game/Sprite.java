@@ -16,7 +16,7 @@ import android.graphics.Rect;
  * @author mori
  *
  */
-public abstract class Sprite {
+public abstract class Sprite implements Comparable<Sprite>{
     // 位置
     protected double x;
     protected double y;
@@ -119,4 +119,13 @@ public abstract class Sprite {
     }
 
     public abstract void reset();
+    
+    @Override
+    public int compareTo(Sprite another) {
+    	return (int)(this.x-another.getX());
+    }
+    
+    public String toString(){
+    	return "("+x+","+y+")";
+    }
 }

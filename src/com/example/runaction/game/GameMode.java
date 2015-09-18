@@ -275,7 +275,7 @@ public class GameMode extends Mode{
 		c.drawRect(new Rect(0, 0, Width, Height), p);
 
 		// マップを描画
-		map.draw(c, p, offsetX, offsetY);
+		map.draw(c, p, offsetX, offsetY, (int)player.getX());
 
 		if(activeAnimation != null){
 			activeAnimation.draw(c, p);
