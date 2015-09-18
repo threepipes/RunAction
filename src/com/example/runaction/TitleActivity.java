@@ -24,15 +24,32 @@ public class TitleActivity extends Activity {
 		loadMusic();
 		ImageManager.getInstance().setResources(getResources());
 		
-//		FragmentManager fragmentManager = getFragmentManager();
-//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//		StartFragment fragment1 = new StartFragment(this);
-//		fragmentTransaction.replace(android.R.id.content, fragment1);
+		setContentView(R.layout.activity_title);
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		StartFragment fragment = new StartFragment(this);
+		fragmentTransaction.replace(R.id.container, fragment);
+		fragmentTransaction.commit();
 		
 		setting = Setting.getInstance();
-		setContentView(R.layout.activity_title);
-		setButtonEvent();
+//		setButtonEvent();
 		Log.d("TITLE", "called onCreate");
+	}
+	
+	public void moveToSelect(){
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		SelectStageFragment fragment = new SelectStageFragment(this);
+		fragmentTransaction.replace(R.id.container, fragment);
+		fragmentTransaction.commit();
+	}
+	
+	public void moveToTitle(){
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		StartFragment fragment = new StartFragment(this);
+		fragmentTransaction.replace(R.id.container, fragment);
+		fragmentTransaction.commit();
 	}
 	
 	public void setStartAnimation(int stage){
@@ -40,8 +57,8 @@ public class TitleActivity extends Activity {
 		view.setEvent(TitleView.EVENT_GAMESTART);
 		view.setTouchState(true);
 		view.setStage(stage);
-		((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
-		((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
+//		((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
+//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
 	}
 	
 	private void setButtonEvent(){
@@ -109,8 +126,14 @@ public class TitleActivity extends Activity {
 		TitleView view = (TitleView)findViewById(R.id.titleView);
 		view.setTouchState(false);
 		
-		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
-		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		StartFragment fragment = new StartFragment(this);
+		fragmentTransaction.replace(R.id.container, fragment);
+		fragmentTransaction.commit();
+		
+//		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
+//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
 		
 		MusicManager.getInstance().setBGM(R.raw.title, true, false);
 	}
@@ -131,18 +154,19 @@ class StartFragment extends Fragment{
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.id.layout_title, container, false);
-        return rootView;
+		View view = inflater.inflate(R.layout.layout_title, container, false);
+		setButtonAction(view);
+        return view;
 	}
 	
-	private void setStageButtonAction(View view){
+	private void setButtonAction(View view){
 		// start
 		Button btn = (Button) view.findViewById(R.id.button);
 		btn.setVisibility(Button.VISIBLE);
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.setStartAnimation(0);
+				activity.moveToSelect();
 			}
 		});
 		// bgm
@@ -194,7 +218,7 @@ class SelectStageFragment extends Fragment{
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.setStartAnimation(1);
+				activity.setStartAnimation(0);
 				setInvisibleSelectButton();
 			}
 		});
@@ -204,11 +228,17 @@ class SelectStageFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// titleに戻る
+				activity.moveToTitle();
 			}
 		});
 	}
 	
 	private void setInvisibleSelectButton(){
 		// buttonの不可視化(フラグメントごと消せるならそれで)
+
+		((Button) activity.findViewById(R.id.button_stage01)).setVisibility(Button.INVISIBLE);
+		((Button) activity.findViewById(R.id.button_stage02)).setVisibility(Button.INVISIBLE);
+		((Button) activity.findViewById(R.id.button_back)).setVisibility(Button.INVISIBLE);
 	}
 }
+
