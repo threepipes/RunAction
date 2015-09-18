@@ -72,6 +72,7 @@ public class GameMode extends Mode{
 
 		// プレイヤーを作成
 		player = new Player(Player_init_x, Player_init_y, map, this);
+		player.setGoal(Map.COL);
 		validateUpdate = true;
 		blackout = false;
 		mManager.setBGM(R.raw.chiptune, true, true);

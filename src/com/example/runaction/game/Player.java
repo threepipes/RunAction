@@ -1,5 +1,6 @@
 package com.example.runaction.game;
 
+import com.example.runaction.GameThread;
 import com.example.runaction.ImageManager;
 import com.example.runaction.R;
 
@@ -129,6 +130,10 @@ public class Player extends Sprite{
     @Override
     public boolean hitPlayer(Player player, Map map) {
     	return false;
+    }
+    
+    public void setGoal(int mapCol){
+    	goalX = mapCol*Map.TILE_SIZE - GameThread.WINDOW_WIDTH;
     }
 
     /**
