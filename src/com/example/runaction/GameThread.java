@@ -81,7 +81,7 @@ public 	class GameThread extends Thread{
 		mode.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	private long previousTime;
-	private final static long sleepTime = 40;
+	private final static long sleepTime = 33;
 	@Override
 	public void run() {
 		Paint paint = new Paint();

@@ -2,13 +2,17 @@ package com.example.runaction;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class TitleActivity extends Activity {
@@ -19,6 +23,12 @@ public class TitleActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		loadMusic();
 		ImageManager.getInstance().setResources(getResources());
+		
+//		FragmentManager fragmentManager = getFragmentManager();
+//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//		StartFragment fragment1 = new StartFragment(this);
+//		fragmentTransaction.replace(android.R.id.content, fragment1);
+		
 		setting = Setting.getInstance();
 		setContentView(R.layout.activity_title);
 		setButtonEvent();
@@ -30,13 +40,13 @@ public class TitleActivity extends Activity {
 		view.setEvent(TitleView.EVENT_GAMESTART);
 		view.setTouchState(true);
 		view.setStage(stage);
-//		((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
-//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
+		((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
+		((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
 	}
 	
 	private void setButtonEvent(){
 		Button btn = (Button) findViewById(R.id.button);
-//		btn.setVisibility(Button.VISIBLE);
+		btn.setVisibility(Button.VISIBLE);
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -49,7 +59,7 @@ public class TitleActivity extends Activity {
 		});
 		
 		btn = (Button) findViewById(R.id.button_volume);
-//		btn.setVisibility(Button.VISIBLE);
+		btn.setVisibility(Button.VISIBLE);
 		if(setting.getSettingValue(Setting.SET_VOLUME_OFF)) btn.setText(R.string.button_voleme_off);
 		btn.setOnClickListener(new OnClickListener() {
 			
@@ -69,7 +79,9 @@ public class TitleActivity extends Activity {
 		});
 	}
 
-
+	public void setEvent(int event){
+		((TitleView)findViewById(R.id.titleView)).setEvent(event);
+	}
 	
 	private void loadMusic(){
 		MusicManager manager = MusicManager.getInstance();
@@ -96,8 +108,9 @@ public class TitleActivity extends Activity {
 		super.onResume();
 		TitleView view = (TitleView)findViewById(R.id.titleView);
 		view.setTouchState(false);
-//		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
-//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
+		
+		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
+		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
 		
 		MusicManager.getInstance().setBGM(R.raw.title, true, false);
 	}
@@ -110,9 +123,49 @@ public class TitleActivity extends Activity {
 }
 
 class StartFragment extends Fragment{
+	private TitleActivity activity;
+	private Setting setting;
+	public StartFragment(TitleActivity title) {
+		activity = title;
+		setting = Setting.getInstance();
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.id.layout_title, container, false);
+        return rootView;
+	}
 	
+	private void setStageButtonAction(View view){
+		// start
+		Button btn = (Button) view.findViewById(R.id.button);
+		btn.setVisibility(Button.VISIBLE);
+		btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.setStartAnimation(0);
+			}
+		});
+		// bgm
+		btn = (Button) view.findViewById(R.id.button_volume);
+		if(setting.getSettingValue(Setting.SET_VOLUME_OFF)) btn.setText(R.string.button_voleme_off);
+		btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Button b = (Button) v;
+				setting.setSettingValue(Setting.SET_VOLUME_OFF
+						, !setting.getSettingValue(Setting.SET_VOLUME_OFF));
+				if(!setting.getSettingValue(Setting.SET_VOLUME_OFF)){
+					activity.setEvent(TitleView.EVENT_BGM_ON);
+					b.setText(R.string.button_volume);
+				}else{
+					activity.setEvent(TitleView.EVENT_BGM_OFF);
+					b.setText(R.string.button_voleme_off);
+				}
+			}
+		});
+	}
 }
-
 
 class SelectStageFragment extends Fragment{
 	private TitleActivity activity;
