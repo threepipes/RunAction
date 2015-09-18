@@ -4,14 +4,6 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical" >
-        <TextView
-            android:id="@+id/text_stage_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/stage_select"
-            android:textSize="@dimen/title_text_size" />
 
         <Button
             android:id="@+id/button_stage01"

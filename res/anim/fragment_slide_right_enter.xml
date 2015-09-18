@@ -1,12 +1,11 @@
 <!--Fragment slide animation-->
 <set 
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <translate
+    <objectAnimator
         android:duration="800"
-        android:fillAfter="true"
-        android:fillEnabled="true"
-        android:fromXDelta="100%"
-        android:toXDelta="0%" />
+        android:propertyName="translationX"
+        android:valueFrom="0"
+        android:valueTo="1"
+        android:valueType="floatType" />
 
 </set>

@@ -2,11 +2,11 @@
 <set 
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <translate
+    <objectAnimator
         android:duration="800"
-        android:fillAfter="true"
-        android:fillEnabled="true"
-        android:fromXDelta="-100%"
-        android:toXDelta="0%" />
+        android:valueFrom="-1000"
+        android:valueTo="0"
+        android:valueType="floatType"
+        android:propertyName="x" />
 
 </set>

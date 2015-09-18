@@ -40,6 +40,10 @@ public class TitleActivity extends Activity {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		SelectStageFragment fragment = new SelectStageFragment(this);
+
+//		fragmentTransaction.setCustomAnimations(
+//				R.anim.fragment_slide_left_enter
+//				, R.anim.fragment_slide_right_exit);
 //		fragmentTransaction.setCustomAnimations(
 //				R.anim.fragment_slide_right_enter
 //				, R.anim.fragment_slide_left_exit);
