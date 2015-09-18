@@ -44,22 +44,17 @@ public class MusicManager {
 		if(bgmPlayer != null){
 			if(bgmPlayer.isPlaying()){
 				if(id != playingMusicID){
-					bgmPlayer.stop();
-					try {
-						bgmPlayer.prepare();
-					} catch (IllegalStateException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-					}
+					stopBGM();
 				}
 				else{
-					if(reset) bgmPlayer.seekTo(0);
+					if(reset){
+						stopBGM();
+						bgmPlayer.seekTo(0);
+					}
 					return;
 				}
 			}else if(id == playingMusicID){
+				stopBGM();
 				bgmPlayer.seekTo(0);
 				if(!musicOff){
 					bgmPlayer.start();
@@ -75,6 +70,19 @@ public class MusicManager {
 //			bgmPlayer.setVolume(0.1f, 0.1f);
 			bgmPlayer.start();
 		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void stopBGM(){
+		bgmPlayer.stop();
+		try {
+			bgmPlayer.prepare();
+		} catch (IllegalStateException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 	}
