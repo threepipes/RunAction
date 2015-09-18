@@ -49,7 +49,7 @@ public class Player extends Sprite{
     // GoalするためのX座標   これを超えたらゴールとする
     // マップ自体に設定するのが望ましい
     // ゴール周辺は平らな地形にするように(激突してもゴールみたいなことを防ぐ)
-    private int goalX = (422 - 2) * Map.TILE_SIZE - 10;
+    private int goalX = (990 - 2) * Map.TILE_SIZE - 10;
     // キャラクタのアニメーションを実現するためのインスタンス
 //    private Animation animation;
     // playerがアクションを変えた場合に設定し、update内でアニメーションを切り替える
