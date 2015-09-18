@@ -41,12 +41,9 @@ public class TitleActivity extends Activity {
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		SelectStageFragment fragment = new SelectStageFragment(this);
 
-//		fragmentTransaction.setCustomAnimations(
-//				R.anim.fragment_slide_left_enter
-//				, R.anim.fragment_slide_right_exit);
-//		fragmentTransaction.setCustomAnimations(
-//				R.anim.fragment_slide_right_enter
-//				, R.anim.fragment_slide_left_exit);
+		fragmentTransaction.setCustomAnimations(
+				R.anim.fragment_slide_right_enter
+				, R.anim.fragment_slide_left_exit);
 		fragmentTransaction.replace(R.id.container, fragment);
 		fragmentTransaction.commit();
 	}
@@ -55,9 +52,9 @@ public class TitleActivity extends Activity {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		StartFragment fragment = new StartFragment(this);
-//		fragmentTransaction.setCustomAnimations(
-//				R.anim.fragment_slide_left_enter
-//				, R.anim.fragment_slide_right_exit);
+		fragmentTransaction.setCustomAnimations(
+				R.anim.fragment_slide_left_enter
+				, R.anim.fragment_slide_right_exit);
 		fragmentTransaction.replace(R.id.container, fragment);
 		fragmentTransaction.commit();
 	}
@@ -67,43 +64,6 @@ public class TitleActivity extends Activity {
 		view.setEvent(TitleView.EVENT_GAMESTART);
 		view.setTouchState(true);
 		view.setStage(stage);
-//		((Button) findViewById(R.id.button)).setVisibility(Button.INVISIBLE);
-//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.INVISIBLE);
-	}
-	
-	private void setButtonEvent(){
-		Button btn = (Button) findViewById(R.id.button);
-		btn.setVisibility(Button.VISIBLE);
-		btn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setStartAnimation(0);
-//				RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout_title);
-//				layout.removeAllViews();
-//				getLayoutInflater().inflate(R.layout.layout_select, layout);
-//				setStageButtonAction();
-			}
-		});
-		
-		btn = (Button) findViewById(R.id.button_volume);
-		btn.setVisibility(Button.VISIBLE);
-		if(setting.getSettingValue(Setting.SET_VOLUME_OFF)) btn.setText(R.string.button_voleme_off);
-		btn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Button b = (Button) v;
-				setting.setSettingValue(Setting.SET_VOLUME_OFF
-						, !setting.getSettingValue(Setting.SET_VOLUME_OFF));
-				if(!setting.getSettingValue(Setting.SET_VOLUME_OFF)){
-					((TitleView)findViewById(R.id.titleView)).setEvent(TitleView.EVENT_BGM_ON);
-					b.setText(R.string.button_volume);
-				}else{
-					((TitleView)findViewById(R.id.titleView)).setEvent(TitleView.EVENT_BGM_OFF);
-					b.setText(R.string.button_voleme_off);
-				}
-			}
-		});
 	}
 
 	public void setEvent(int event){
@@ -141,9 +101,6 @@ public class TitleActivity extends Activity {
 		StartFragment fragment = new StartFragment(this);
 		fragmentTransaction.replace(R.id.container, fragment);
 		fragmentTransaction.commit();
-		
-//		((Button) findViewById(R.id.button)).setVisibility(Button.VISIBLE);
-//		((Button) findViewById(R.id.button_volume)).setVisibility(Button.VISIBLE);
 		
 		MusicManager.getInstance().setBGM(R.raw.title, true, false);
 	}
@@ -245,7 +202,6 @@ class SelectStageFragment extends Fragment{
 	
 	private void setInvisibleSelectButton(){
 		// buttonの不可視化(フラグメントごと消せるならそれで)
-
 		((Button) activity.findViewById(R.id.button_stage01)).setVisibility(Button.INVISIBLE);
 		((Button) activity.findViewById(R.id.button_stage02)).setVisibility(Button.INVISIBLE);
 		((Button) activity.findViewById(R.id.button_back)).setVisibility(Button.INVISIBLE);
