@@ -57,6 +57,7 @@ public class MusicManager {
 				stopBGM();
 				bgmPlayer.seekTo(0);
 				if(!musicOff){
+					bgmPlayer.setLooping(loop);
 					bgmPlayer.start();
 				}
 				return;
