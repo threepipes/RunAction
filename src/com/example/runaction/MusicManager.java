@@ -50,6 +50,7 @@ public class MusicManager {
 					if(reset){
 						stopBGM();
 						bgmPlayer.seekTo(0);
+						bgmPlayer.start();
 					}
 					return;
 				}

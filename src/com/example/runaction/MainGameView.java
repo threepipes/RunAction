@@ -12,7 +12,7 @@ public class MainGameView extends SurfaceView
 	implements SurfaceHolder.Callback{
 	GameThread gameThread;
 	
-	public MainGameView(MainActivity context, int mapNumber, int setting){
+	public MainGameView(MainActivity context, int mapNumber){
 		super(context);
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);

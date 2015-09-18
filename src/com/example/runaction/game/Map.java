@@ -83,7 +83,7 @@ public class Map {
 		if(mapNumber == 0){
 			return new MapData(R.raw.map, R.raw.event, R.drawable.map, getBackgroundData());
 		}else if(mapNumber == 1){
-			
+			return new MapData(R.raw.map_easy01, R.raw.event_easy01, R.drawable.map, getBackgroundData());
 		}
 		return null;
 	}

@@ -10,9 +10,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
-		int setting = intent.getIntExtra("settings", 0);
+		int mapNumber = intent.getIntExtra("stage", 0);
 		
-		MainGameView gview = new MainGameView(this, 0, setting);
+		MainGameView gview = new MainGameView(this, mapNumber);
 		setContentView(gview);
 	}
 	

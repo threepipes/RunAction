@@ -176,7 +176,7 @@ class SelectStageFragment extends Fragment{
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.setStartAnimation(0);
+				activity.setStartAnimation(1);
 				setInvisibleSelectButton();
 			}
 		});
