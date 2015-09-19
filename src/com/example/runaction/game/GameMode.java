@@ -79,8 +79,8 @@ public class GameMode extends Mode{
 	}
 
 	public void restart(){
-		map.resetStage();
 		player.setPoint(Player_init_x, Player_init_y);
+		map.resetStage(player);
 		culcOffset();
 		validateUpdate = true;
 		blackout = false;

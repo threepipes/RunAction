@@ -93,6 +93,9 @@ public class Map {
 	private GameMode manager;
 	private final static int mapImageID = R.drawable.map;
 	private ProgressBar progressBar;
+	
+	// 中間ゲート
+	private MiddleGate gate;
 
 	public Map(GameMode manager, Context context, int mapNumber) {
 		sprites = new LinkedList<Sprite>();
@@ -141,7 +144,7 @@ public class Map {
 		return new BackGroundImage(imageID, rects, offsetCoeff, 0);
 	}
 
-	public void resetStage(){
+	public void resetStage(Player player){
 		// 敵などの動くオブジェクトがある場合初期状態に戻す（マップのリセット）
 		Iterator<Sprite> it = tmpsprites.iterator();
         while (it.hasNext()) {
@@ -155,6 +158,7 @@ public class Map {
         }
         tmpsprites.clear();
         Collections.sort(sprites);
+        if(gate != null) gate.setPlayerState(player);
 	}
 
 	public void mapupdate(Player player){

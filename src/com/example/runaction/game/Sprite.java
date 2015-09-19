@@ -62,6 +62,7 @@ public abstract class Sprite implements Comparable<Sprite>{
      * @param offsetY Y方向オフセット
      */
     public void draw(Canvas c,Paint p, int offsetX, int offsetY) {
+    	if(death) return;
     	final int tx = (int)x + offsetX;
 		final int ty = (int)y + offsetY;
 		final Rect drawableRect = animation == null ? new Rect(0, 0, WIDTH, HEIGHT) : animation.getRect();

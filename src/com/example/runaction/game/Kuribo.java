@@ -95,6 +95,8 @@ public class Kuribo extends Sprite {
     public void reset(){
     	x = startx;
     	y = starty;
+    	vx = -SPEED;
+    	vy = 0;
     	death = false;
     }
     
@@ -113,11 +115,5 @@ public class Kuribo extends Sprite {
         }
     	return false;
     }
-    
-    @Override
-	public void draw(Canvas c, Paint p,int offsetX, int offsetY) {
-		if(death) return;
-		super.draw(c,p, offsetX, offsetY);
-	}
 }
 
