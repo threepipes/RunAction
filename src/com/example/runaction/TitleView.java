@@ -53,6 +53,7 @@ implements SurfaceHolder.Callback{
 		manager.loadBitmap(R.drawable.title);
 		manager.loadBitmap(R.drawable.player);
 		manager.loadBitmap(R.drawable.music);
+//		manager.loadBitmap(R.drawable.title_logo);
 	}
 
 	public TitleView(Context context, AttributeSet attrs) {
@@ -274,12 +275,19 @@ class TitleManager{
 	
 	private final static int BGM_ANIMATION_X = 150;
 	private final static int BGM_ANIMATION_Y = 840;
+	
+	private final static int LOGO_WID = 500;
+	private final static int LOGO_HEI = 200;
+	private final static int LOGO_X = (GameThread.WINDOW_WIDTH-LOGO_WID)/2;
+	private final static int LOGO_Y = 70;
 	public void draw(Canvas c, Paint p){
 		ImageManager im = ImageManager.getInstance();
 		im.drawBitmap(c, p, R.drawable.title, windowRect, windowRect);
 		if(bgmState) im.drawBitmap(c, p, R.drawable.music, bgmAnimation.getRect()
 				, new Rect(BGM_ANIMATION_X, BGM_ANIMATION_Y
 						, BGM_ANIMATION_X + Animation.SIZE_X, BGM_ANIMATION_Y + Animation.SIZE_Y));
+//		im.drawBitmap(c, p, R.drawable.title_logo, new Rect(0, 0, LOGO_WID, LOGO_HEI)
+//				, new Rect(LOGO_X, LOGO_Y, LOGO_X+LOGO_WID, LOGO_Y+LOGO_HEI));
 		playerAnimation.draw(c, p);
 	}
 }

@@ -8,7 +8,7 @@
         android:valueTo="1" />
     <objectAnimator
         android:duration="200"
-        android:valueFrom="100"
+        android:valueFrom="50"
         android:valueTo="0"
         android:propertyName="x" />
 
