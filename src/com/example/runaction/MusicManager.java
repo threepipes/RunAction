@@ -15,7 +15,7 @@ public class MusicManager {
 	private static MusicManager instance;
 	private MusicManager(){
 		seMap = new SparseIntArray();
-		sePlayer = buildSoundPool(1);
+		sePlayer = buildSoundPool(2);
 	}
 	
 	private Context context;

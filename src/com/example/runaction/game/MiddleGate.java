@@ -1,5 +1,6 @@
 package com.example.runaction.game;
 
+import com.example.runaction.MusicManager;
 import com.example.runaction.R;
 
 public class MiddleGate extends Sprite{
@@ -10,8 +11,10 @@ public class MiddleGate extends Sprite{
 	}
 	
 	public boolean hitPlayer(Player player, Map map) {
+		if(death) return false;
 		death = true;
 		psx = player.getX();
+		MusicManager.getInstance().playSE(R.raw.gate);
 		return false;
 	}
 	

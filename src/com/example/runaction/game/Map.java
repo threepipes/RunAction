@@ -57,7 +57,7 @@ class ProgressBar{
 		drawY = y;
 		drawBaseRect = new Rect(x, y, x+wid, y+hei);
 		drawPointY = y - 40;
-		lineX = drawX + outOffset;
+		lineX = drawX + outOffset*2;
 		lineY = drawPointY + drawPointHei;
 	}
 	public void init(){
@@ -70,8 +70,11 @@ class ProgressBar{
 		int dx = drawX + percent*(wid-outOffset*2)/100 - drawPointWid/2 + outOffset;
 		im.drawBitmap(c, p, R.drawable.bar_progress, drawablePointRect
 				, new Rect(dx, drawPointY, dx+drawPointWid, drawPointY+drawPointHei));
-		p.setColor(0xFFFF9999);
-		c.drawRect(new Rect(lineX, lineY, dx+drawPointWid/2, lineY + lineHei), p);
+		p.setColor(0xFFFF1111);
+		int lineWid = dx+drawPointWid/2 - lineX;
+		if(lineWid < 0) return;
+		if(lineWid > wid-outOffset*4) lineWid = wid-outOffset*4;
+		c.drawRect(new Rect(lineX, lineY, lineX + lineWid, lineY + lineHei), p);
 	}
 }
 
@@ -108,7 +111,7 @@ public class Map {
 		tmpsprites = new LinkedList<Sprite>();
 		setMapData(createMapData(mapNumber), context);
 		Collections.sort(sprites);
-		progressBar = new ProgressBar(COL*Map.TILE_SIZE - GameThread.WINDOW_WIDTH, 180, 60);
+		progressBar = new ProgressBar(COL*Map.TILE_SIZE - GameThread.WINDOW_WIDTH, 180, 50);
 //		map = load(R.raw.map, R.raw.event, context);
 //		
 //		// 背景の読み込み(将来的には移動させたい)

@@ -76,6 +76,7 @@ public class TitleActivity extends Activity {
 		manager.setContext(this);
 		int[] seList = {
 				R.raw.jump,
+				R.raw.gate
 		};
 		manager.loadSE(seList);
 		

@@ -100,33 +100,6 @@ public class Player extends Sprite{
     private final static int ANIM_JUMP = 1;
     // ---------- 仮データここまで ----------
     
-    private void initAnimation(){
-    	// 将来的には別ファイルでアニメーションデータ(座標配列など)を管理し、ここでは読み込みを行う
-    	SparseArray<AnimData[]> anim = new SparseArray<AnimData[]>();
-    	AnimData[] defaultData = null;
-    	for(int i=0; i<animationData.length; i++){
-    		AnimData[] data = new AnimData[animationData[i].length];
-    		for(int j=0; j<data.length; j++){
-    			if(animationData[i][j][0] >= 0){
-    				final int ax = animationData[i][j][0];
-    				final int ay = animationData[i][j][1];
-    				final int frame = animationData[i][j][2];
-    				data[j] = new AnimData(ax, ay, frame, Animation.FLAG_NONE);
-    			}else{
-    				final int flag = animationData[i][j][0];
-    				final int frame = animationData[i][j][1];
-    				data[j] = new AnimData(0, 0, frame, flag);
-    			}
-    		}
-    		if(i == 0) defaultData = data;
-    		anim.append(i, data);
-    	}
-    	if(defaultData == null){
-    		Log.e("ANIM_SET", "No animation data found");
-    	}
-    	animation = new Animation(anim, defaultData);
-    }
-    
     @Override
     public boolean hitPlayer(Player player, Map map) {
     	return false;
