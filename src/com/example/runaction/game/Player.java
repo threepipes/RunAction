@@ -135,6 +135,10 @@ public class Player extends Sprite{
     public void setGoal(int mapCol){
     	goalX = mapCol*Map.TILE_SIZE - GameThread.WINDOW_WIDTH;
     }
+    
+    public int getGoalX(){
+    	return goalX;
+    }
 
     /**
      * ジャンプする

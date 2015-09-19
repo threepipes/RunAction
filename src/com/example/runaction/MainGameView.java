@@ -37,6 +37,8 @@ public class MainGameView extends SurfaceView
 		manager.loadBitmap(R.drawable.kuri);
 		manager.loadBitmap(R.drawable.toge);
 		manager.loadBitmap(R.drawable.jump);
+		manager.loadBitmap(R.drawable.bar_base);
+		manager.loadBitmap(R.drawable.bar_progress);
 	}
 	
 	@Override

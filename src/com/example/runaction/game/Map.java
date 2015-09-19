@@ -35,6 +35,40 @@ class MapData{
 	}
 }
 
+class ProgressBar{
+	int percent;
+	int goalX;
+	int drawX, drawY;
+	final static int wid = 300;
+	final static int hei = 50;
+	final static int drawPointWid = 32;
+	final static int drawPointHei = 64;
+	final static Rect drawableBaseRect = new Rect(0, 0, wid, hei);
+	final static Rect drawablePointRect = new Rect(0, 0, drawPointWid, drawPointHei);
+	final static int outOffset = 6;
+	int drawPointY;
+	Rect drawBaseRect;
+	public ProgressBar(int goal, int x, int y){
+		init();
+		goalX = goal;
+		drawX = x;
+		drawY = y;
+		drawBaseRect = new Rect(x, y, x+wid, y+hei);
+		drawPointY = y - 40;
+	}
+	public void init(){
+		percent = 0;
+	}
+	public void draw(Canvas c, Paint p, int playerX){
+		percent = playerX*100/goalX;
+		ImageManager im = ImageManager.getInstance();
+		im.drawBitmap(c, p, R.drawable.bar_base, drawableBaseRect, drawBaseRect);
+		int dx = drawX + percent*(wid-outOffset*2)/100 - drawPointWid/2 + outOffset;
+		im.drawBitmap(c, p, R.drawable.bar_progress, drawablePointRect
+				, new Rect(dx, drawPointY, dx+drawPointWid, drawPointY+drawPointHei));
+	}
+}
+
 public class Map {
 	// タイルサイズ
 	public static final int TILE_SIZE = 32;
@@ -58,12 +92,14 @@ public class Map {
 
 	private GameMode manager;
 	private final static int mapImageID = R.drawable.map;
+	private ProgressBar progressBar;
 
 	public Map(GameMode manager, Context context, int mapNumber) {
 		sprites = new LinkedList<Sprite>();
 		tmpsprites = new LinkedList<Sprite>();
 		setMapData(createMapData(mapNumber), context);
 		Collections.sort(sprites);
+		progressBar = new ProgressBar(COL*Map.TILE_SIZE - GameThread.WINDOW_WIDTH, 180, 60);
 //		map = load(R.raw.map, R.raw.event, context);
 //		
 //		// 背景の読み込み(将来的には移動させたい)
@@ -158,6 +194,7 @@ public class Map {
 		ImageManager.getInstance().drawBackground(c, p, offsetX, offsetY);
 		drawMap(c, p, offsetX, offsetY);
 		drawObject(c, p, offsetX, offsetY, playerX);
+		progressBar.draw(c, p, playerX);
 	}
 	
 	private void drawObject(Canvas c, Paint p, int offsetX, int offsetY, int playerX){
