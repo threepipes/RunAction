@@ -1,10 +1,12 @@
 package com.example.runaction.game;
 
+import com.example.runaction.R;
+
 public class MiddleGate extends Sprite{
 	private double psx, psy;
 	public MiddleGate(int x, int y, Map map) {
-		super(x, y, map, null, 0);
-		psy = y*Map.TILE_SIZE;
+		super(x, y, map, null, R.drawable.gate);
+		psy = y;
 	}
 	
 	public boolean hitPlayer(Player player, Map map) {

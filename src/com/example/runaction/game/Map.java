@@ -327,6 +327,7 @@ public class Map {
     		String str;
     		String[] event;
     		int k,l;
+    		gate = null;
     		while((str = br.readLine())!= null){
     			 event = str.split(",",-1);
     			 k = Integer.parseInt(event[1]);
@@ -337,6 +338,9 @@ public class Map {
     				 sprites.add(new Needle(tilesToPixels(k),tilesToPixels(l),this));
     			 }else if(event[0].equals("SPRING")){
     				 sprites.add(new Spring(tilesToPixels(k),tilesToPixels(l),this));
+    			 }else if(event[0].equals("GATE")){
+    				 gate = new MiddleGate(tilesToPixels(k), tilesToPixels(l), this);
+    				 sprites.add(gate);
     			 }
     		}
     		
