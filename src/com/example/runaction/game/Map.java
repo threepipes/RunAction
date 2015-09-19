@@ -46,6 +46,8 @@ class ProgressBar{
 	final static Rect drawableBaseRect = new Rect(0, 0, wid, hei);
 	final static Rect drawablePointRect = new Rect(0, 0, drawPointWid, drawPointHei);
 	final static int outOffset = 6;
+	final static int lineHei = 10;
+	int lineX, lineY;
 	int drawPointY;
 	Rect drawBaseRect;
 	public ProgressBar(int goal, int x, int y){
@@ -55,6 +57,8 @@ class ProgressBar{
 		drawY = y;
 		drawBaseRect = new Rect(x, y, x+wid, y+hei);
 		drawPointY = y - 40;
+		lineX = drawX + outOffset;
+		lineY = drawPointY + drawPointHei;
 	}
 	public void init(){
 		percent = 0;
@@ -66,6 +70,8 @@ class ProgressBar{
 		int dx = drawX + percent*(wid-outOffset*2)/100 - drawPointWid/2 + outOffset;
 		im.drawBitmap(c, p, R.drawable.bar_progress, drawablePointRect
 				, new Rect(dx, drawPointY, dx+drawPointWid, drawPointY+drawPointHei));
+		p.setColor(0xFFFF9999);
+		c.drawRect(new Rect(lineX, lineY, dx+drawPointWid/2, lineY + lineHei), p);
 	}
 }
 
