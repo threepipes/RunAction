@@ -339,6 +339,7 @@ public class Map {
     			 }else if(event[0].equals("SPRING")){
     				 sprites.add(new Spring(tilesToPixels(k),tilesToPixels(l),this));
     			 }else if(event[0].equals("GATE")){
+    				 if(gate != null) continue;
     				 gate = new MiddleGate(tilesToPixels(k), tilesToPixels(l), this);
     				 sprites.add(gate);
     			 }

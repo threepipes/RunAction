@@ -75,7 +75,7 @@ public class Player extends Sprite{
         onGround = false;
         forceJump = false;
         goal = false;
-        animation.setAnim(ANIM_JUMP);
+        animation.setAnim(ANIM_RUN);
         actionChange = ACTION_NO_CHANGE;
         isExist = true;
     }
