@@ -129,9 +129,11 @@ public class Map {
 	
 	private MapData createMapData(int mapNumber){
 		if(mapNumber == 0){
-			return new MapData(R.raw.map, R.raw.event, R.drawable.map, getBackgroundData());
-		}else if(mapNumber == 1){
 			return new MapData(R.raw.map_easy01, R.raw.event_easy01, R.drawable.map, getBackgroundData());
+		}else if(mapNumber == 1){
+			return new MapData(R.raw.map_medium01, R.raw.event_medium01, R.drawable.map, getBackgroundData());
+		}else if(mapNumber == 2){
+			return new MapData(R.raw.map, R.raw.event, R.drawable.map, getBackgroundData());
 		}
 		return null;
 	}
@@ -224,6 +226,7 @@ public class Map {
         }
 	}
 	
+	private Rect drawRect = new Rect();
 	private void drawMap(Canvas c, Paint p, int offsetX, int offsetY){
 				// オフセットを元に描画範囲を求める
 		int firstTileX = pixelsToTiles(-offsetX);
@@ -246,16 +249,26 @@ public class Map {
 				if(map[i][j] == 0) continue;
 				final int x = tilesToPixels(j) + offsetX;
 				final int y = tilesToPixels(i) + offsetY;
-				manager.drawBitmap(c, p, mapImageID, getDrawableRect(map[i][j]), new Rect(x, y, x+TILE_SIZE, y+TILE_SIZE));
+				drawRect.left = x;
+				drawRect.right = x+TILE_SIZE;
+				drawRect.top = y;
+				drawRect.bottom = y+TILE_SIZE;
+				manager.drawBitmap(c, p, mapImageID, getDrawableRect(map[i][j]), drawRect);
 			}
 		}
 	}
 	
 	private final static int MAPCHIP_COLUMN = 16;
+	private Rect drawableRect = new Rect();
 	private Rect getDrawableRect(int mapChipID){
 		final int tx = mapChipID%MAPCHIP_COLUMN;
 		final int ty = mapChipID/MAPCHIP_COLUMN;
-		return new Rect(tx*TILE_SIZE, ty*TILE_SIZE, (tx+1)*TILE_SIZE, (ty+1)*TILE_SIZE);
+		drawableRect.left = tx*TILE_SIZE;
+		drawableRect.top = ty*TILE_SIZE;
+		drawableRect.right = (tx+1)*TILE_SIZE;
+		drawableRect.bottom = (ty+1)*TILE_SIZE;
+		return drawableRect;
+//		return new Rect(tx*TILE_SIZE, ty*TILE_SIZE, (tx+1)*TILE_SIZE, (ty+1)*TILE_SIZE);
 	}
 
 	/**

@@ -171,26 +171,31 @@ class SelectStageFragment extends Fragment{
         return rootView;
 	}
 	
+	final static int[] buttonID = {
+			R.id.button_stage01,
+			R.id.button_stage02,
+			R.id.button_stage03,
+	};
+	
+	class ButtonListener implements OnClickListener{
+		private int id;
+		ButtonListener(int id){
+			this.id = id;
+		}
+		@Override
+		public void onClick(View v) {
+			activity.setStartAnimation(id);
+			setInvisibleSelectButton();
+		}
+	}
+	
 	private void setStageButtonAction(View view){
-		Button btn = (Button) view.findViewById(R.id.button_stage01);
-		btn.setVisibility(Button.VISIBLE);
-		btn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				activity.setStartAnimation(1);
-				setInvisibleSelectButton();
-			}
-		});
-		btn = (Button) view.findViewById(R.id.button_stage02);
-		btn.setVisibility(Button.VISIBLE);
-		btn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				activity.setStartAnimation(0);
-				setInvisibleSelectButton();
-			}
-		});
-		btn = (Button) view.findViewById(R.id.button_back);
+		for(int i=0; i<buttonID.length; i++){
+			Button btn = (Button) view.findViewById(buttonID[i]);
+			btn.setVisibility(Button.VISIBLE);
+			btn.setOnClickListener(new ButtonListener(i));
+		}
+		Button btn = (Button) view.findViewById(R.id.button_back);
 		btn.setVisibility(Button.VISIBLE);
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -203,8 +208,9 @@ class SelectStageFragment extends Fragment{
 	
 	private void setInvisibleSelectButton(){
 		// buttonの不可視化(フラグメントごと消せるならそれで)
-		((Button) activity.findViewById(R.id.button_stage01)).setVisibility(Button.INVISIBLE);
-		((Button) activity.findViewById(R.id.button_stage02)).setVisibility(Button.INVISIBLE);
+		for(int i=0; i<buttonID.length; i++){
+			((Button) activity.findViewById(buttonID[i])).setVisibility(Button.INVISIBLE);
+		}
 		((Button) activity.findViewById(R.id.button_back)).setVisibility(Button.INVISIBLE);
 	}
 }

@@ -23,6 +23,8 @@ public class BackGroundImage{
 		this.id = backgroundID;
 	}
 	
+	private Rect drawRect = new Rect();
+	private Rect drawableRect = new Rect();
 	public void draw(Canvas c, Paint p, int offsetX, int offsetY){
 		for(int i=0; i<imageID.length; i++){
 			final int offX = -(int)(offsetX * offsetCoeff[i]);
@@ -32,10 +34,27 @@ public class BackGroundImage{
 			for(int j=0; j<drawNum; j++){
 				final int dx = drawX + j*wid;
 				manager.drawBitmap(c, p, imageID[i]
-						, new Rect(0, 0, wid, rect[i].bottom-rect[i].top)
-						, new Rect(dx, rect[i].top, dx + wid, rect[i].bottom));
+						, getDrawableRect(0, 0, wid, rect[i].bottom-rect[i].top)
+						, getDrawRect(dx, rect[i].top, dx + wid, rect[i].bottom));
 			}
 		}
+	}
+	
+	// 汚い処理
+	private Rect getDrawRect(int left, int top, int right, int bottom){
+		drawRect.left = left;
+		drawRect.top = top;
+		drawRect.right = right;
+		drawRect.bottom = bottom;
+		return drawRect;
+	}
+	
+	private Rect getDrawableRect(int left, int top, int right, int bottom){
+		drawableRect.left = left;
+		drawableRect.top = top;
+		drawableRect.right = right;
+		drawableRect.bottom = bottom;
+		return drawableRect;
 	}
 	
 	// 背景Bitmapは大きい(場合が多い)ので、Load場所を細かく設定する必要がある

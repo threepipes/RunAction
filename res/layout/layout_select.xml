@@ -23,6 +23,15 @@
             android:textSize="@dimen/button_text_size" />
         
         <Button
+            android:id="@+id/button_stage03"
+            style="@style/button_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/stage_03"
+            android:textSize="@dimen/button_text_size" />
+        
+        <Button
             android:id="@+id/button_back"
             style="@style/button_state"
             android:layout_width="wrap_content"

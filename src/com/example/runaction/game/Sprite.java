@@ -28,6 +28,8 @@ public abstract class Sprite implements Comparable<Sprite>{
     public final static int WIDTH = 32;
     // 高さ
     public final static int HEIGHT = 32;
+    
+    protected final static Rect chipRect = new Rect(0, 0, WIDTH, HEIGHT);
 
     // マップへの参照
     protected Map map;
@@ -65,8 +67,17 @@ public abstract class Sprite implements Comparable<Sprite>{
     	if(death) return;
     	final int tx = (int)x + offsetX;
 		final int ty = (int)y + offsetY;
-		final Rect drawableRect = animation == null ? new Rect(0, 0, WIDTH, HEIGHT) : animation.getRect();
-		ImageManager.getInstance().drawBitmap(c, p, id, drawableRect, new Rect(tx, ty, tx+WIDTH, ty+HEIGHT));
+		final Rect drawableRect = animation == null ? chipRect : animation.getRect();
+		ImageManager.getInstance().drawBitmap(c, p, id, drawableRect, getDrawRect(tx, ty, tx+WIDTH, ty+HEIGHT));
+    }
+    
+    private Rect drawRect = new Rect();
+    private Rect getDrawRect(int left, int top, int right, int bottom){
+    	drawRect.left = left;
+    	drawRect.top = top;
+    	drawRect.right = right;
+    	drawRect.bottom = bottom;
+    	return drawRect;
     }
 
     /**
