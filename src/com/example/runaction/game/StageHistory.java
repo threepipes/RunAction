@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import android.content.Context;
+import android.util.Log;
 
 public class StageHistory {
 	// 値の最大値
@@ -46,6 +47,7 @@ public class StageHistory {
 	
 	private void loadHistory(Context context){
 		try{
+			Log.d("LOAD", "started");
 			InputStream in = context.openFileInput("stage"+stageID+".sav");
 			BufferedReader reader =
 					new BufferedReader(new InputStreamReader(in,"UTF-8"));
@@ -58,10 +60,13 @@ public class StageHistory {
 			beatEnemy = Integer.parseInt(s[KEY_ENEMY]);
 			stars = Integer.parseInt(s[KEY_STARS]);
 			reader.close();
+			Log.d("LOAD", "completed");
 		}catch(FileNotFoundException e){
 			initData();
+			Log.d("LOAD", "data not found");
 		}catch(IOException e){
 			e.printStackTrace();
+			Log.d("LOAD", "data error");
 		}
 	}
 	
@@ -72,13 +77,16 @@ public class StageHistory {
 				+","+clearNum
 				+","+(notUseGate ? 1 : 0)
 				+","+beatEnemy
-				+","+stars;
+				+","+stars
+				+"\n";
 		try{
+			Log.d("SAVE", "started");
 			OutputStream out = context.openFileOutput("stage"+stageID+".sav", Context.MODE_PRIVATE);
 			PrintWriter writer =
 				new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
-			writer.append(s);
+			writer.write(s);
 			writer.close();
+			Log.d("SAVE", "completed");
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -115,6 +123,10 @@ public class StageHistory {
 	
 	public int getClearNum(){
 		return clearNum;
+	}
+	
+	public int getMaxReach(){
+		return maxReach;
 	}
 	
 	// とったスターの番号を設定する

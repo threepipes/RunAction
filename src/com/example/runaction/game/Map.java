@@ -76,6 +76,9 @@ class ProgressBar{
 		if(lineWid > wid-outOffset*4) lineWid = wid-outOffset*4;
 		c.drawRect(new Rect(lineX, lineY, lineX + lineWid, lineY + lineHei), p);
 	}
+	public int getPercent(){
+		return percent;
+	}
 }
 
 public class Map {
@@ -98,6 +101,7 @@ public class Map {
 
 	// マップ
 	private byte[][] map;
+	private int mapID;
 
 	private GameMode manager;
 	private final static int mapImageID = R.drawable.map;
@@ -112,12 +116,8 @@ public class Map {
 		setMapData(createMapData(mapNumber), context);
 		Collections.sort(sprites);
 		progressBar = new ProgressBar(COL*Map.TILE_SIZE - GameThread.WINDOW_WIDTH, 180, 50);
-//		map = load(R.raw.map, R.raw.event, context);
-//		
-//		// 背景の読み込み(将来的には移動させたい)
-//		loadBackground();
 		ImageManager.getInstance().loadBitmap(mapImageID);
-		
+		StageHistoryManager.getInstance().playGame(mapID);
 		
 		this.manager = manager;
 	}
@@ -128,6 +128,7 @@ public class Map {
 	}
 	
 	private MapData createMapData(int mapNumber){
+		mapID = mapNumber;
 		if(mapNumber == 0){
 			return new MapData(R.raw.map_easy01, R.raw.event_easy01, R.drawable.map, getBackgroundData());
 		}else if(mapNumber == 1){
@@ -170,6 +171,7 @@ public class Map {
         tmpsprites.clear();
         Collections.sort(sprites);
         if(gate != null) gate.setPlayerState(player);
+		StageHistoryManager.getInstance().playGame(mapID);
 	}
 
 	public void mapupdate(Player player){
@@ -413,8 +415,13 @@ public class Map {
 	public static int tilesToPixels(int tiles) {
 		return tiles * TILE_SIZE;
 	}
+	
+	public void goal(){
+		StageHistoryManager.getInstance().clearGame(mapID);
+	}
 
 	public void exitRequest(){
+		StageHistoryManager.getInstance().gameOver(mapID, progressBar.getPercent());
 		manager.exitRequest(GameMode.EXIT_DEATH);
 	}
 }

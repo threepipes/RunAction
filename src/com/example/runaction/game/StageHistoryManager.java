@@ -49,4 +49,12 @@ public class StageHistoryManager {
 			stage[i].saveHistory(context);
 		}
 	}
+	
+	public int getMaxReach(int stageID){
+		return stage[stageID].getMaxReach();
+	}
+	
+	public boolean isCleared(int stageID){
+		return stage[stageID].getClearNum()>0;
+	}
 }

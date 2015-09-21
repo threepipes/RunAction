@@ -1,5 +1,7 @@
 package com.example.runaction;
 
+import com.example.runaction.game.StageHistoryManager;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -22,6 +24,7 @@ public class TitleActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		loadMusic();
+		StageHistoryManager.getInstance().init(this);
 		ImageManager.getInstance().setResources(getResources());
 		
 		setContentView(R.layout.activity_title);
@@ -190,10 +193,15 @@ class SelectStageFragment extends Fragment{
 	}
 	
 	private void setStageButtonAction(View view){
+		StageHistoryManager hist = StageHistoryManager.getInstance();
 		for(int i=0; i<buttonID.length; i++){
 			Button btn = (Button) view.findViewById(buttonID[i]);
 			btn.setVisibility(Button.VISIBLE);
 			btn.setOnClickListener(new ButtonListener(i));
+			if(hist.isCleared(i)){
+				btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.stamp, 0);
+				btn.setCompoundDrawablePadding(5);
+			}
 		}
 		Button btn = (Button) view.findViewById(R.id.button_back);
 		btn.setVisibility(Button.VISIBLE);

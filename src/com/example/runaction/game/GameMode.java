@@ -18,7 +18,7 @@ public class GameMode extends Mode{
 	// マップのオフセット
 	private int offsetX;
 	private int offsetY;
-
+	
 	private GameThread parent;
 	private MusicManager mManager;
 
@@ -59,7 +59,6 @@ public class GameMode extends Mode{
 		// AutoAnimationの設定
 		createAutoAnimation();
 		mManager = MusicManager.getInstance();
-
 		init(context, mapNumber);
 	}
 	private static final int OFFSET_POS = GameThread.WINDOW_WIDTH / 5;
