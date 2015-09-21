@@ -170,7 +170,7 @@ public class Map {
         }
         tmpsprites.clear();
         Collections.sort(sprites);
-        if(gate != null) gate.setPlayerState(player);
+        if(gate != null)gate.setPlayerState(player);
 		StageHistoryManager.getInstance().playGame(mapID);
 	}
 
@@ -417,7 +417,7 @@ public class Map {
 	}
 	
 	public void goal(){
-		StageHistoryManager.getInstance().clearGame(mapID);
+		StageHistoryManager.getInstance().clearGame(mapID, gate!=null&&gate.isUsed());
 	}
 
 	public void exitRequest(){

@@ -5,8 +5,10 @@ import com.example.runaction.R;
 
 public class MiddleGate extends Sprite{
 	private double psx, psy;
+	private boolean used;
 	public MiddleGate(int x, int y, Map map) {
 		super(x, y, map, null, R.drawable.gate);
+		used = false;
 		psy = y;
 	}
 	
@@ -21,6 +23,11 @@ public class MiddleGate extends Sprite{
 	public void setPlayerState(Player player){
 		if(!death) return;
 		player.setPoint(psx, psy);
+		used = true;
+	}
+	
+	public boolean isUsed(){
+		return used;
 	}
 	
 	@Override

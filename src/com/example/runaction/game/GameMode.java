@@ -334,6 +334,7 @@ public class GameMode extends Mode{
 
 	public void gameClear(){
 		blackout = true;
+		map.goal();
 		parent.intentToGoal();
 	}
 

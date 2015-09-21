@@ -32,8 +32,8 @@ public class StageHistoryManager {
 		needSave = true;
 	}
 	
-	public void clearGame(int stageID){
-		stage[stageID].incClear();
+	public void clearGame(int stageID, boolean useGate){
+		stage[stageID].incClear(useGate);
 		needSave = true;
 	}
 	
@@ -56,5 +56,9 @@ public class StageHistoryManager {
 	
 	public boolean isCleared(int stageID){
 		return stage[stageID].getClearNum()>0;
+	}
+	
+	public boolean isGateLessCleared(int stageID){
+		return stage[stageID].gateLessCleared();
 	}
 }

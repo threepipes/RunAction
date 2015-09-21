@@ -199,7 +199,8 @@ class SelectStageFragment extends Fragment{
 			btn.setVisibility(Button.VISIBLE);
 			btn.setOnClickListener(new ButtonListener(i));
 			if(hist.isCleared(i)){
-				btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.stamp, 0);
+				btn.setCompoundDrawablesWithIntrinsicBounds(0, 0
+						, hist.isGateLessCleared(i) ? R.drawable.stamp : R.drawable.stamp_sub, 0);
 				btn.setCompoundDrawablePadding(5);
 			}
 		}

@@ -51,7 +51,8 @@ public class StageHistory {
 			InputStream in = context.openFileInput("stage"+stageID+".sav");
 			BufferedReader reader =
 					new BufferedReader(new InputStreamReader(in,"UTF-8"));
-			String[] s = reader.readLine().split(",");
+			String line = reader.readLine();
+			String[] s = line.split(",");
 			playNum = Integer.parseInt(s[KEY_PLAY]);
 			maxReach = Integer.parseInt(s[KEY_REACH]);
 			firstClear = Integer.parseInt(s[KEY_FIRST]);
@@ -60,7 +61,7 @@ public class StageHistory {
 			beatEnemy = Integer.parseInt(s[KEY_ENEMY]);
 			stars = Integer.parseInt(s[KEY_STARS]);
 			reader.close();
-			Log.d("LOAD", "completed");
+			Log.d("LOAD", "completed:"+line);
 		}catch(FileNotFoundException e){
 			initData();
 			Log.d("LOAD", "data not found");
@@ -86,7 +87,7 @@ public class StageHistory {
 				new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
 			writer.write(s);
 			writer.close();
-			Log.d("SAVE", "completed");
+			Log.d("SAVE", "completed:"+s);
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -115,10 +116,18 @@ public class StageHistory {
 		return false;
 	}
 	
-	public void incClear(){
+	public void incClear(boolean useGate){
+		if(!useGate && !notUseGate) notUseGate = true;
 		if(clearNum >= MAX) return;
-		if(clearNum == 0) firstClear = playNum;
+		if(clearNum == 0){
+			firstClear = playNum;
+			maxReach = 100;
+		}
 		clearNum++;
+	}
+	
+	public boolean gateLessCleared(){
+		return notUseGate;
 	}
 	
 	public int getClearNum(){
