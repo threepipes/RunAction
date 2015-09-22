@@ -43,10 +43,10 @@ public class GameOverSubMode extends SubMode{
 			}
 		}
 	}
-	private final static int IMAGE_WIDTH = 300;
-	private final static int IMAGE_HEIGHT = 300;
+	private final static int IMAGE_WIDTH = 420;
+	private final static int IMAGE_HEIGHT = 420;
 	private final static int DRAW_X = GameThread.WINDOW_WIDTH/2 - IMAGE_WIDTH/2;
-	private final static int DRAW_Y = 200;
+	private final static int DRAW_Y = 100;
 	private Rect bgRect = new Rect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
 	private Rect drawRect = new Rect(DRAW_X, DRAW_Y, DRAW_X+IMAGE_WIDTH, DRAW_Y+IMAGE_HEIGHT);
 	@Override

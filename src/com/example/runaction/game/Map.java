@@ -363,7 +363,7 @@ public class Map {
     		gate = null;
     		maxStar = 0;
     		maxEnemy = 0;
-    		int deathStar = StageHistoryManager.getInstance().getStarState(mapID);
+    		int deathStar = StageHistoryManager.getInstance().getStarState(this.mapID);
     		while((str = br.readLine())!= null){
     			 event = str.split(",",-1);
     			 k = Integer.parseInt(event[1]);
