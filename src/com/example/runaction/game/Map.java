@@ -109,6 +109,8 @@ public class Map {
 	
 	// 中間ゲート
 	private MiddleGate gate;
+	
+	private int treadEnemy;
 
 	public Map(GameMode manager, Context context, int mapNumber) {
 		sprites = new LinkedList<Sprite>();
@@ -118,6 +120,7 @@ public class Map {
 		progressBar = new ProgressBar(COL*Map.TILE_SIZE - GameThread.WINDOW_WIDTH, 180, 50);
 		ImageManager.getInstance().loadBitmap(mapImageID);
 		StageHistoryManager.getInstance().playGame(mapID);
+		treadEnemy = 0;
 		
 		this.manager = manager;
 	}
@@ -172,6 +175,7 @@ public class Map {
         Collections.sort(sprites);
         if(gate != null)gate.setPlayerState(player);
 		StageHistoryManager.getInstance().playGame(mapID);
+		treadEnemy = 0;
 	}
 
 	public void mapupdate(Player player){
@@ -416,8 +420,12 @@ public class Map {
 		return tiles * TILE_SIZE;
 	}
 	
+	public void treadEnemy(){
+		treadEnemy++;
+	}
+	
 	public void goal(){
-		StageHistoryManager.getInstance().clearGame(mapID, gate!=null&&gate.isUsed());
+		StageHistoryManager.getInstance().clearGame(mapID, gate!=null&&gate.isUsed(), treadEnemy);
 	}
 
 	public void exitRequest(){

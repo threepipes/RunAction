@@ -32,8 +32,9 @@ public class StageHistoryManager {
 		needSave = true;
 	}
 	
-	public void clearGame(int stageID, boolean useGate){
+	public void clearGame(int stageID, boolean useGate, int treadEnemy){
 		stage[stageID].incClear(useGate);
+		stage[stageID].setMaxBeat(treadEnemy);
 		needSave = true;
 	}
 	
@@ -52,6 +53,10 @@ public class StageHistoryManager {
 	
 	public int getMaxReach(int stageID){
 		return stage[stageID].getMaxReach();
+	}
+	
+	public int getMaxBeat(int stageID){
+		return stage[stageID].getMaxBeat();
 	}
 	
 	public boolean isCleared(int stageID){

@@ -126,6 +126,16 @@ public class StageHistory {
 		clearNum++;
 	}
 	
+	public void setMaxBeat(int enemy){
+		if(enemy > beatEnemy){
+			beatEnemy = enemy;
+		}
+	}
+	
+	public int getMaxBeat(){
+		return beatEnemy;
+	}
+	
 	public boolean gateLessCleared(){
 		return notUseGate;
 	}
