@@ -111,6 +111,9 @@ public class Map {
 	private MiddleGate gate;
 	
 	private int treadEnemy;
+	private int maxEnemy;
+	private int gottenStar;
+	private int maxStar;
 
 	public Map(GameMode manager, Context context, int mapNumber) {
 		sprites = new LinkedList<Sprite>();
@@ -121,6 +124,7 @@ public class Map {
 		ImageManager.getInstance().loadBitmap(mapImageID);
 		StageHistoryManager.getInstance().playGame(mapID);
 		treadEnemy = 0;
+		gottenStar = 0;
 		
 		this.manager = manager;
 	}
@@ -176,6 +180,7 @@ public class Map {
         if(gate != null)gate.setPlayerState(player);
 		StageHistoryManager.getInstance().playGame(mapID);
 		treadEnemy = 0;
+		gottenStar = 0;
 	}
 
 	public void mapupdate(Player player){
@@ -356,12 +361,16 @@ public class Map {
     		String[] event;
     		int k,l;
     		gate = null;
+    		maxStar = 0;
+    		maxEnemy = 0;
+    		int deathStar = StageHistoryManager.getInstance().getStarState(mapID);
     		while((str = br.readLine())!= null){
     			 event = str.split(",",-1);
     			 k = Integer.parseInt(event[1]);
     			 l = Integer.parseInt(event[2]);
     			 if(event[0].equals("ENEMY")){
     				 sprites.add(new Kuribo(tilesToPixels(k),tilesToPixels(l),this));
+    				 maxEnemy++;
     			 }else if(event[0].equals("NEEDLE")){
     				 sprites.add(new Needle(tilesToPixels(k),tilesToPixels(l),this));
     			 }else if(event[0].equals("SPRING")){
@@ -370,6 +379,9 @@ public class Map {
     				 if(gate != null) continue;
     				 gate = new MiddleGate(tilesToPixels(k), tilesToPixels(l), this);
     				 sprites.add(gate);
+    			 }else if(event[0].equals("STAR")){
+    				 if((deathStar&1<<maxStar)>0) continue;
+    				 sprites.add(new Star(tilesToPixels(k), tilesToPixels(l), this, maxStar++));
     			 }
     		}
     		
@@ -424,8 +436,13 @@ public class Map {
 		treadEnemy++;
 	}
 	
+	public void getStar(int id){
+		gottenStar |= 1<<id;
+	}
+	
 	public void goal(){
-		StageHistoryManager.getInstance().clearGame(mapID, gate!=null&&gate.isUsed(), treadEnemy);
+		StageHistoryManager.getInstance()
+			.clearGame(mapID, gate!=null&&gate.isUsed(), treadEnemy, gottenStar);
 	}
 
 	public void exitRequest(){

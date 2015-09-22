@@ -132,6 +132,10 @@ public class StageHistory {
 		}
 	}
 	
+	public void setGottenStars(int stars){
+		this.stars |= stars;
+	}
+	
 	public int getMaxBeat(){
 		return beatEnemy;
 	}
@@ -146,6 +150,10 @@ public class StageHistory {
 	
 	public int getMaxReach(){
 		return maxReach;
+	}
+	
+	public int getStarState(){
+		return stars;
 	}
 	
 	// とったスターの番号を設定する

@@ -1,13 +1,14 @@
 package com.example.runaction.game;
 
 public class Star extends Sprite{
-	public Star(int x, int y, Map map) {
+	private int id;
+	public Star(int x, int y, Map map, int id) {
 		super(x, y, map, null, 0);
 	}
 	
 	@Override
 	public boolean hitPlayer(Player player, Map map) {
-		// TODO 自動生成されたメソッド・スタブ
+		map.getStar(id);
 		return false;
 	}
 	
