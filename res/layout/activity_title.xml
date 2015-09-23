@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
     
-    <com.example.runaction.TitleView 
+    <com.threepipes.runaction.TitleView 
         android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.runaction.MainActivity" >
+    tools:context="com.threepipes.runaction.MainActivity" >
 
-    <com.example.runaction.MainGameView 
+    <com.threepipes.runaction.MainGameView 
         android:id="@+id/gameView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
